@@ -322,7 +322,8 @@
   function renderSync(){
     if(!chip) return;
     var state, label, title;
-    if(syncError){ state = 'err'; label = '同步出错'; title = syncError; }
+    if(stuck){ state = 'err fix'; label = '点我修复'; title = '这台设备上的本地数据卡住了。点一下会清掉本机缓存并重新从云端下载（云端数据不受影响）。'; }
+    else if(syncError){ state = 'err'; label = '同步出错'; title = syncError; }
     else if(!navigator.onLine){ state = 'off'; label = '离线'; title = '没有网络：修改已经存在这台设备上，联网后会自动同步。'; }
     else if(Object.keys(pending).some(function(c){ return pending[c]; })){ state = 'busy'; label = '同步中'; title = '正在把修改上传到云端…'; }
     else { state = 'ok'; label = '已同步'; title = '所有修改都已经同步到云端。'; }
@@ -339,13 +340,29 @@
     chip.appendChild(el('span', 'sync-dot'));
     chip.appendChild(el('span', 'sync-label', ''));
     actions.insertBefore(chip, actions.firstChild);
+    chip.addEventListener('click', function(){
+      if(!stuck) return;
+      chip.querySelector('.sync-label').textContent = '修复中…';
+      resetLocalAndReload(false);
+    });
     window.addEventListener('online', renderSync);
     window.addEventListener('offline', renderSync);
     renderSync();
   }
+  // Watchdog: a healthy local database answers within a second or two, even offline.
+  // If nothing arrives, the on-device copy is jammed; offer a one-tap repair.
+  var gotSnapshot = false, stuck = false;
+  function startWatchdog(){
+    setTimeout(function(){
+      if(!gotSnapshot && !signingOut){ stuck = true; renderSync(); }
+    }, window.__watchdogMs || 12000);
+  }
   function watchPending(){
+    startWatchdog();
     COLLECTIONS.concat(['images', 'settings', 'dietFoods']).forEach(function(name){
       FB.onSnapshot(FB.collection(fs, 'users', uid, name), {includeMetadataChanges: true}, function(snap){
+        gotSnapshot = true;
+        if(stuck){ stuck = false; }
         pending[name] = snap.metadata.hasPendingWrites;
         renderSync();
       }, function(e){
@@ -385,13 +402,40 @@
     btns.appendChild(out);
     box.appendChild(btns);
   }
-  function signOutAll(){
-    var p = auth ? FB.signOut(auth) : Promise.resolve();
-    p.then(function(){ return fs ? FB.terminate(fs) : null; })
-     .then(function(){ return fs ? FB.clearIndexedDbPersistence(fs) : null; })
+  // Never let one step hang the whole sequence
+  function within(p, ms){
+    return Promise.race([Promise.resolve(p).catch(function(){}), new Promise(function(r){ setTimeout(r, ms); })]);
+  }
+  // Delete this app's on-device Firestore databases (the cloud copy is untouched)
+  function deleteLocalDbs(){
+    var names = {};
+    if(cfg && cfg.projectId){
+      names['firestore/[DEFAULT]/' + cfg.projectId + '/main'] = 1;
+    }
+    var listP = (window.indexedDB && indexedDB.databases) ? indexedDB.databases().catch(function(){ return []; }) : Promise.resolve([]);
+    return listP.then(function(list){
+      (list || []).forEach(function(d){ if(d && d.name && /firestore/i.test(d.name)) names[d.name] = 1; });
+      return Promise.all(Object.keys(names).map(function(n){
+        return within(new Promise(function(res){
+          try{
+            var rq = indexedDB.deleteDatabase(n);
+            rq.onsuccess = rq.onerror = rq.onblocked = function(){ res(); };
+          }catch(e){ res(); }
+        }), 3000);
+      }));
+    });
+  }
+  var signingOut = false;
+  function resetLocalAndReload(doSignOut){
+    signingOut = true;
+    var p = (doSignOut && auth) ? within(FB.signOut(auth), 4000) : Promise.resolve();
+    p.then(function(){ return fs ? within(FB.terminate(fs), 2500) : null; })
+     .then(function(){ return fs ? within(FB.clearIndexedDbPersistence(fs), 2500) : null; })
+     .then(deleteLocalDbs)
      .catch(function(){})
      .then(function(){ location.reload(); });
   }
+  function signOutAll(){ resetLocalAndReload(true); }
 
   /* ---------------- login gate ---------------- */
   var gate = null, gateMsg = null;
@@ -507,7 +551,7 @@
         }
         renderAccount();
       }else{
-        if(resolved){ location.reload(); return; }
+        if(resolved){ if(!signingOut) location.reload(); return; }   // signOutAll reloads itself once local data is cleared
         showGate(true);
       }
     });

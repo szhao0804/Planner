@@ -1015,6 +1015,7 @@
   .sync-chip.off{color:var(--ink-faint);}
   .sync-chip.err{color:var(--crit);border-color:color-mix(in srgb, var(--crit) 40%, transparent);}
   .sync-chip.err .sync-dot{background:var(--crit);}
+  .sync-chip.fix{cursor:pointer;animation:syncpulse 1.6s ease-in-out infinite;}
   @keyframes syncpulse{50%{opacity:.35}}
   @media (max-width:420px){ .sync-chip{padding:5px 8px;} }
   @media (max-width:480px){ .brand .tag{display:none;} }
