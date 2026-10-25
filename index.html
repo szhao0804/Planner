@@ -1328,6 +1328,19 @@
   .tn-player .tn-rpeb{background:var(--pl-soft);border-color:var(--pl-line);color:#C9D2DB;}
   .tn-player .tn-rpeb.on{color:#fff;}
   @media (min-width:760px){ .pl-target{font-size:52px;} .pl-name{font-size:30px;} }
+  /* classic "my workouts" layout */
+  .tn-psec{margin-top:8px;padding-top:6px;}
+  .tn-psec + .tn-psec{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);}
+  .tn-psec-h{display:flex;align-items:center;gap:10px;}
+  .tn-psec-h h3{font-size:17px;margin:0;}
+  .tn-psec-h > span{font-size:12px;color:var(--ink-faint);margin-left:auto;}
+  .tn-ptip{font-size:12.5px;color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:12px 0 0;line-height:1.6;}
+  .tn-full{display:flex;flex-direction:column;}
+  .tn-full .set-list, .tn-full .ex-list{flex:1;}
+  .tn-full-foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);}
+  .tn-full-foot .tn-wd{margin-top:0;}
+  .tn-full .sess-head{gap:10px;}
+  .tn-full .sess-head .m{flex:none;}
 
   /* ---------- installable-app additions ---------- */
   .sync-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;
@@ -4891,7 +4904,7 @@
         '<button type="button" class="tn-btn ghost sm" data-act="quicklog" data-wid="' + p.w.id + '" data-date="' + k0 + '">直接记完成</button>' +
         (p.src === 'cal' ? '<button type="button" class="tn-btn ghost sm" data-act="uncal" data-cal="' + p.calId + '">移除</button>' :
           '<button type="button" class="tn-btn ghost sm" data-act="skip" data-wid="' + p.w.id + '" data-date="' + k0 + '">这天不练</button>');
-      h += wCard(p.w, {date: k0, badge: badge, actions: acts, done: !!lg});
+      h += wCard(p.w, {date: k0, badge: badge, actions: acts, done: !!lg, limit: 99});
     });
     lg0.forEach(function(l){
       if(pl0.some(function(p){ return p.w.id === l.workoutId; })) return;
@@ -4902,28 +4915,126 @@
   }
   function playIcon(){ return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>'; }
 
-  /* ================= MY WORKOUTS ================= */
+  /* ================= MY WORKOUTS (classic layout: stage tabs, everything visible, videos inline) ================= */
+  var SPORT_SEC = {swim: '泳池训练', land: '陆地训练', run: '跑步', other: '其他训练'};
+  var SPORT_TIP = {
+    swim: '怎么判断该换下一阶段：这阶段的组数做完不算吃力、休息时间内心率能恢复，而且计时测试连续两次比上阶段稳或更快——大概 3–4 周，就切到下一个标签。',
+    land: '怎么判断该换下一阶段：组数/次数做完不觉得吃力、动作全程能保持标准，大概 3–4 周就可以点下一个标签。累的时候留在原阶段多练几次没关系。'
+  };
+  var phaseSel = {};
+  try{ phaseSel = JSON.parse(localStorage.getItem('tn-phase') || '{}') || {}; }catch(e){ phaseSel = {}; }
+  function groupLabel(g, sport){
+    var t = String(g || '').replace(new RegExp('^(' + Object.keys(SPORT).map(function(k){ return SPORT[k].name; }).join('|') + ')\\s*·\\s*'), '');
+    var m = /^阶段\s*(\d+)\s*(.*)$/.exec(t);
+    return m ? {n: pad(+m[1]), t: m[2] || '阶段' + m[1]} : {n: '', t: t || '其他'};
+  }
+  function seqBar(w){
+    var steps = w.steps || [], useDist = w.sport === 'swim' && totals(w).dist > 0, runs = [];
+    steps.forEach(function(s){
+      var v = useDist ? stepDist(s) : stepSecs(s), sec = s.sec || '主项';
+      if(runs.length && runs[runs.length - 1].sec === sec) runs[runs.length - 1].v += v; else runs.push({sec: sec, v: v});
+    });
+    var tot = runs.reduce(function(a, r){ return a + r.v; }, 0);
+    if(!tot) return '';
+    return '<div class="dist-bar" aria-hidden="true">' + runs.map(function(r){ return '<span style="width:' + (r.v / tot * 100).toFixed(1) + '%;background:' + secColor(r.sec, w.sport) + ';"></span>'; }).join('') + '</div>';
+  }
+  function fullFoot(w){
+    return '<div class="tn-full-foot">' + wdChips(w) + '<div class="tn-w-act">' +
+      '<button type="button" class="tn-btn go sm" data-act="start" data-wid="' + w.id + '">' + playIcon() + '开始</button>' +
+      '<button type="button" class="tn-btn ghost sm" data-act="edit" data-wid="' + w.id + '">编辑</button>' +
+      '<button type="button" class="tn-btn ghost sm" data-act="dup" data-wid="' + w.id + '">复制</button>' +
+      '<button type="button" class="tn-btn ghost sm danger" data-act="del" data-wid="' + w.id + '">删除</button></div></div>';
+  }
+  function headBadge(w){
+    var t = totals(w);
+    var S = sp(w.sport);
+    return '<span class="m" style="background:' + S.soft + ';color:' + S.ink + ';">' + (t.dist && w.sport === 'swim' ? Math.round(t.dist) + 'm' : '约 ' + fmtDur(t.secs)) + '</span>';
+  }
+  function sessCard(w){
+    var seen = {}, legend = '';
+    (w.steps || []).forEach(function(s){ var k = s.sec || '主项'; if(!seen[k]){ seen[k] = 1; legend += '<span class="li"><span class="dot" style="background:' + secColor(k, w.sport) + ';"></span>' + esc(k) + '</span>'; } });
+    var h = '<div class="card tn-full" data-wid="' + w.id + '"><div class="sess-head"><h3>' + esc(w.name || '未命名训练') + '</h3>' + headBadge(w) + '</div>' +
+      '<div class="legend">' + legend + '</div>' + seqBar(w) + '<ul class="set-list">';
+    (w.steps || []).forEach(function(s){
+      var desc = [];
+      if(num(s.rest) && num(s.sets, 1) > 1) desc.push('休息' + num(s.rest) + '秒');
+      if(s.note) desc.push(esc(s.note));
+      h += '<li><span class="set-dot" style="background:' + secColor(s.sec, w.sport) + ';"></span><div class="set-body"><div class="set-row"><span class="set-title">' + esc(s.name || '未命名') + '</span><span class="set-badge">' + esc(target(s)) + '</span></div>' +
+        (desc.length ? '<div class="set-desc">' + desc.join(' — ') + '</div>' : '') + '</div></li>';
+    });
+    if(!(w.steps || []).length) h += '<li><span class="tn-faint">还没有步骤，点「编辑」添加。</span></li>';
+    h += '</ul>' + (w.note ? '<p class="tn-wnote">' + esc(w.note) + '</p>' : '');
+    return h + fullFoot(w) + '</div>';
+  }
+  function landCard(w){
+    var h = '<div class="card tn-full" data-wid="' + w.id + '"><div class="sess-head"><h3>' + esc(w.name || '未命名训练') + '</h3>' + headBadge(w) + '</div><ul class="ex-list">';
+    (w.steps || []).forEach(function(s){
+      var e = s.exId ? getEx(s.exId) : null, vid = s.exId && LIBMAP[s.exId];
+      var note = s.note || (e && e.cue) || '';
+      var rest = num(s.rest) && num(s.sets, 1) > 1 ? '组间休息 ' + num(s.rest) + ' 秒' : '';
+      h += '<li' + (vid ? '' : ' class="plain"') + '>' +
+        (vid ? '<div class="ex-pic" style="aspect-ratio:' + (vid.ar ? vid.ar[0] + '/' + vid.ar[1] : '16/9') + ';"><video data-src="' + VBASE + s.exId + '.mp4" poster="' + VBASE + s.exId + '.jpg" muted loop playsinline preload="none" aria-label="' + esc(s.name) + ' 示范视频"></video></div>' : '') +
+        '<div class="ex-row"><div class="ex-info"><div class="ex-name">' + esc(s.name || '未命名') + '</div>' +
+        ((note || rest) ? '<div class="ex-note">' + esc([note, rest].filter(Boolean).join(' · ')) + '</div>' : '') + '</div>' +
+        '<span class="badge">' + esc(target(s)) + '</span></div></li>';
+    });
+    if(!(w.steps || []).length) h += '<li class="plain"><span class="tn-faint">还没有动作，点「编辑」添加。</span></li>';
+    h += '</ul>' + (w.note ? '<p class="tn-wnote">' + esc(w.note) + '</p>' : '');
+    return h + fullFoot(w) + '</div>';
+  }
+  var lastPlansHtml = '';
   function renderPlans(){
     var el = $('tnPlans');
     if(!el) return;
-    if(!loaded.w){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; return; }
+    if(!loaded.w){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; lastPlansHtml = ''; return; }
     var arr = workoutsArr();
     var h = '<div class="tn-toolbar"><button type="button" class="tn-btn" data-act="new">+ 新建训练</button><button type="button" class="tn-btn ghost" data-act="tpl">从模板添加</button></div>';
-    if(!arr.length){ el.innerHTML = h + onboardingHtml(); return; }
-    var groups = {}, order = [];
-    arr.forEach(function(w){ var g = w.group || '未分组'; if(!groups[g]){ groups[g] = []; order.push(g); } groups[g].push(w); });
-    order.sort(function(a, b){ return (a === '未分组') - (b === '未分组') || a.localeCompare(b, 'zh'); });
-    order.forEach(function(g){
-      h += '<h3 class="tn-group">' + esc(g) + ' <span>' + groups[g].length + '</span></h3>';
-      groups[g].forEach(function(w){
-        h += wCard(w, {wd: true, limit: 3, actions:
-          '<button type="button" class="tn-btn go sm" data-act="start" data-wid="' + w.id + '">' + playIcon() + '开始</button>' +
-          '<button type="button" class="tn-btn ghost sm" data-act="edit" data-wid="' + w.id + '">编辑</button>' +
-          '<button type="button" class="tn-btn ghost sm" data-act="dup" data-wid="' + w.id + '">复制</button>' +
-          '<button type="button" class="tn-btn ghost sm danger" data-act="del" data-wid="' + w.id + '">删除</button>'});
+    if(!arr.length){ h += onboardingHtml(); }
+    ['swim', 'land', 'run', 'other'].forEach(function(spk){
+      var list = arr.filter(function(w){ return (SPORT[w.sport] ? w.sport : 'other') === spk; });
+      if(!list.length) return;
+      var groups = [], by = {};
+      list.forEach(function(w){ var g = w.group || ''; if(!by[g]){ by[g] = []; groups.push(g); } by[g].push(w); });
+      groups.sort(function(a, b){ return (a === '') - (b === '') || a.localeCompare(b, 'zh', {numeric: true}); });
+      var sel = groups.indexOf(phaseSel[spk]) >= 0 ? phaseSel[spk] : groups[0];
+      h += '<div class="tn-psec"><div class="tn-psec-h">' + spTile(spk) + '<h3>' + SPORT_SEC[spk] + '</h3><span>' + list.length + ' 个训练</span></div>';
+      if(SPORT_TIP[spk] && groups.length > 1) h += '<p class="tn-ptip">' + SPORT_TIP[spk] + '</p>';
+      if(groups.length > 1){
+        h += '<div class="phase-tabs" role="tablist" aria-label="' + SPORT_SEC[spk] + '阶段">';
+        groups.forEach(function(g){
+          var L = groupLabel(g, spk), on = g === sel;
+          h += '<button type="button" class="phase-tab' + (on ? ' active' : '') + '" role="tab" aria-selected="' + on + '" data-act="phase" data-sp="' + spk + '" data-g="' + esc(g) + '">' + (L.n ? '<span class="n">' + L.n + '</span>' : '') + esc(L.t) + '</button>';
+        });
+        h += '</div>';
+      }
+      h += '<div class="' + (spk === 'land' ? 'land-grid' : 'sessions') + '">';
+      by[sel].forEach(function(w){ h += spk === 'land' || (w.steps || []).some(function(s){ return s.exId; }) ? landCard(w) : sessCard(w); });
+      h += '</div></div>';
+    });
+    if(h === lastPlansHtml && el.innerHTML) return;
+    lastPlansHtml = h;
+    el.innerHTML = h;
+    watchVideos(el);
+  }
+  // inline demo videos: load only when on screen, play while visible, tap to pause
+  var vio = null;
+  function watchVideos(root){
+    if(vio) vio.disconnect();
+    var vids = root.querySelectorAll('video[data-src]');
+    function start(v){
+      if(!v.getAttribute('src')) v.setAttribute('src', v.dataset.src);
+      if(!v.dataset.userPaused){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+    }
+    vids.forEach(function(v){
+      v.addEventListener('click', function(){
+        if(v.paused){ delete v.dataset.userPaused; start(v); } else { v.dataset.userPaused = '1'; v.pause(); }
       });
     });
-    el.innerHTML = h;
+    if(!('IntersectionObserver' in window)){ vids.forEach(start); return; }
+    vio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) start(e.target); else e.target.pause(); });
+    }, {rootMargin: '150px 0px', threshold: 0.1});
+    vids.forEach(function(v){ vio.observe(v); });
   }
 
   /* ================= LIBRARY ================= */
@@ -5244,6 +5355,7 @@
           if(!n){ toast('没有选中训练。'); return; }
           closeSheet();
           toast('已加入 ' + n + ' 个训练');
+          phaseSel = {}; try{ localStorage.removeItem('tn-phase'); }catch(e){}
           switchTab('plans');
         }
       }});
@@ -5636,7 +5748,9 @@
     document.querySelectorAll('.tn-panel').forEach(function(p){ p.hidden = p.dataset.tnp !== t; });
     renderTab();
   }
+  function pauseInline(){ document.querySelectorAll('#tnPlans video').forEach(function(v){ try{ v.pause(); }catch(e){} }); }
   function renderTab(){
+    if(ui.tab !== 'plans') pauseInline();
     if(ui.tab === 'today') renderToday();
     else if(ui.tab === 'plans') renderPlans();
     else if(ui.tab === 'lib') renderLib();
@@ -5691,6 +5805,7 @@
       case 'uncal': col('trainCal').doc(b.dataset.cal).delete(); cal = cal.filter(function(c){ return c.id !== b.dataset.cal; }); renderAll(); break;
       case 'resume': P = loadPlayer(); if(P) openPlayer(); break;
       case 'dropresume': P = null; savePlayer(); renderToday(); break;
+      case 'phase': phaseSel[b.dataset.sp] = b.dataset.g; try{ localStorage.setItem('tn-phase', JSON.stringify(phaseSel)); }catch(e){} renderPlans(); break;
       case 'cat': ui.libCat = b.dataset.cat; renderLib(); break;
       case 'newex': editCustomEx(null); break;
       case 'exinfo': openExInfo(b.dataset.ex); break;
@@ -5716,7 +5831,7 @@
     root.addEventListener('focusin', function(e){ var h = e.target.closest && e.target.closest('.tn-chart .hit'); if(h) showTip(h); });
     root.addEventListener('mouseleave', function(){ var t = root.querySelector('.tn-tip'); if(t) t.hidden = true; root.querySelectorAll('.tn-chart .hit.on').forEach(function(h){ h.classList.remove('on'); }); }, true);
     root.addEventListener('keydown', function(e){ if((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-act]')){ e.preventDefault(); e.target.click(); } });
-    new MutationObserver(function(){ if(document.body.getAttribute('data-active-page') === 'training') renderTab(); }).observe(document.body, {attributes: true, attributeFilter: ['data-active-page']});
+    new MutationObserver(function(){ if(document.body.getAttribute('data-active-page') === 'training') renderTab(); else pauseInline(); }).observe(document.body, {attributes: true, attributeFilter: ['data-active-page']});
     document.addEventListener('visibilitychange', function(){ if(!document.hidden) renderAll(); });
     switchTab(ui.tab);
   }
