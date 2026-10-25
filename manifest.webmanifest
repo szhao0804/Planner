@@ -1,0 +1,17 @@
+{
+  "name": "有氧引擎计划",
+  "short_name": "有氧引擎",
+  "description": "课表、待办、笔记、饮食和游泳训练——离线可用，联网自动同步",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F6F4EE",
+  "theme_color": "#5B5EA6",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
