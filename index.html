@@ -4633,25 +4633,101 @@
     if(!settings.key) return Promise.reject({msg: '先到最下面「饮食设置」填 Gemini API key（免费）。', settings: true});
     if(!navigator.onLine) return Promise.reject({msg: '没有网络，AI 需要联网。离线时可以先用上面的常用食物记。'});
     var model = (settings.model || DEFAULT_SETTINGS.model).trim();
-    var body = {contents: [{role: 'user', parts: parts}], generationConfig: {temperature: 0.2}};
-    if(wantJson){ body.generationConfig.responseMimeType = 'application/json'; body.generationConfig.responseSchema = SCHEMA; }
-    return fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
-      method: 'POST', headers: {'Content-Type': 'application/json', 'x-goog-api-key': settings.key}, body: JSON.stringify(body)
-    }).then(function(r){
-      return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw {status: r.status, j: j}; return j; });
-    }).then(function(j){
-      var c = (j.candidates || [])[0];
-      var text = c && c.content && (c.content.parts || []).map(function(p){ return p.text || ''; }).join('');
-      if(!text) throw {msg: 'AI 没有给出结果，换个说法或换张照片再试。'};
-      return text;
-    });
+    var key = settings.key, noThinkCfg = {};
+    function bodyFor(m){
+      // Gemini 3+: keep the default temperature (a low one makes it loop while "thinking" and never answer)
+      // and ask for light thinking so a meal estimate comes back in seconds.
+      var cfg = {maxOutputTokens: 8192};
+      var v = m.match(/gemini-(\d+(?:\.\d+)?)/), ver = v ? parseFloat(v[1]) : 0;
+      if(ver >= 3 && !noThinkCfg[m]) cfg.thinkingConfig = {thinkingLevel: 'low'};
+      else if(ver > 0 && ver < 3) cfg.temperature = 0.2;
+      if(wantJson){ cfg.responseMimeType = 'application/json'; cfg.responseSchema = SCHEMA; }
+      return JSON.stringify({contents: [{role: 'user', parts: parts}], generationConfig: cfg});
+    }
+    function call(m){
+      var ctl = window.AbortController ? new AbortController() : null;
+      var timer = ctl ? setTimeout(function(){ ctl.abort(); }, window.__geminiTimeoutMs || 40000) : null;
+      return fetch(GEMINI_BASE + 'models/' + encodeURIComponent(m) + ':generateContent', {
+        method: 'POST', headers: {'Content-Type': 'application/json', 'x-goog-api-key': key}, body: bodyFor(m),
+        signal: ctl ? ctl.signal : undefined
+      }).then(function(r){
+        return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw {status: r.status, j: j, model: m}; return j; });
+      }, function(err){
+        if(err && err.name === 'AbortError') throw {status: 504, timeout: true, model: m};
+        throw err;
+      }).then(function(j){
+        clearTimeout(timer);
+        var c = (j.candidates || [])[0];
+        var text = c && c.content && (c.content.parts || []).filter(function(p){ return !p.thought; }).map(function(p){ return p.text || ''; }).join('');
+        if(!text) throw {msg: 'AI 没有给出结果，换个说法或换张照片再试。', empty: true, model: m};
+        return text;
+      }, function(e){
+        clearTimeout(timer);
+        // a model that doesn't accept thinkingLevel: retry the same model without it
+        var msg = (e && e.j && e.j.error && e.j.error.message) || '';
+        if(e && e.status === 400 && /thinking/i.test(msg) && !noThinkCfg[m]){ noThinkCfg[m] = true; return call(m); }
+        throw e;
+      });
+    }
+    // Busy / overloaded model: retry once, then switch to other Flash models Google currently offers.
+    var tried = {};
+    function attempt(m, retried){
+      tried[m] = true;
+      return call(m).then(function(text){
+        if(m !== model) setAi('（' + model + ' 太忙，这次用了 ' + m + '）');
+        return text;
+      }, function(e){
+        if(!isBusy(e) && !(e && (e.status === 404 || e.empty))) throw e;
+        if(isBusy(e) && !retried && !e.timeout){
+          setAi('AI 有点忙，正在重试…');
+          return wait(1500).then(function(){ return attempt(m, true); });
+        }
+        return fallbackModels(key).then(function(list){
+          var next = list.filter(function(x){ return !tried[x]; })[0];
+          if(!next || Object.keys(tried).length >= 3) throw e;
+          setAi('AI 有点忙，换用 ' + next + '…');
+          return attempt(next, false);
+        });
+      });
+    }
+    return attempt(model, false);
+  }
+  var GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/';
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function isBusy(e){
+    var s = e && e.status, m = (e && e.j && e.j.error && (e.j.error.message + ' ' + e.j.error.status)) || '';
+    return s === 500 || s === 502 || s === 503 || s === 504 || /high demand|overloaded|UNAVAILABLE|try again later/i.test(m) ||
+      (s === 429 && !/quota/i.test(m));
+  }
+  var modelListP = null;
+  function fallbackModels(key){
+    if(!modelListP){
+      modelListP = fetch(GEMINI_BASE + 'models?pageSize=200', {headers: {'x-goog-api-key': key}})
+        .then(function(r){ return r.ok ? r.json() : {models: []}; })
+        .then(function(j){
+          var names = (j.models || []).filter(function(md){
+            return (md.supportedGenerationMethods || []).indexOf('generateContent') >= 0;
+          }).map(function(md){ return String(md.name || '').replace(/^models\//, ''); }).filter(function(n){
+            return /^gemini-[\d.]+-flash(-lite)?(-latest)?$/.test(n) || /^gemini-flash(-lite)?-latest$/.test(n);
+          });
+          function ver(n){ var v = n.match(/gemini-([\d.]+)/); return v ? parseFloat(v[1]) : 99; }
+          // newest first; full flash before lite within a version
+          names.sort(function(a, b){ return (ver(b) - ver(a)) || ((/lite/.test(a) ? 1 : 0) - (/lite/.test(b) ? 1 : 0)); });
+          return names;
+        }).catch(function(){ return []; });
+      modelListP.then(function(l){ if(!l.length) modelListP = null; });
+    }
+    return modelListP;
   }
   function aiErr(e){
+    if(e && e.timeout && !e.msg) return 'AI 太久没回应（超过 40 秒），已经试过换模型。过几分钟再按一次。';
     if(e && e.msg) return e.msg;
+    if(e instanceof SyntaxError) return 'AI 的回复格式不对，再按一次试试。';
     var s = e && e.status, m = (e && e.j && e.j.error && e.j.error.message) || '';
     if(s === 400 && /api key/i.test(m)) return 'API key 不对，到「饮食设置」检查一下。';
     if(s === 403) return 'API key 没有权限，检查 key 是否完整。';
     if(s === 404) return '找不到这个模型，到「饮食设置」换一个（例如 gemini-3.5-flash-lite）。';
+    if(isBusy(e)) return 'Google 的 AI 现在太忙（不是你的问题），已经自动重试和换模型了。过几分钟再按一次「估算」。';
     if(s === 429) return '免费额度暂时用完了，过一会儿再试。';
     if(!navigator.onLine) return '没有网络，AI 需要联网。';
     return 'AI 估算失败：' + (m || s || '网络错误');
