@@ -12,7 +12,7 @@
   var cfg = window.FIREBASE_CONFIG;
   var FB = window.FB;
   var PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-  var COLLECTIONS = ['schedule', 'todos', 'notes', 'diet'];
+  var COLLECTIONS = ['schedule', 'todos', 'notes', 'diet', 'workouts', 'trainLogs', 'trainCal', 'trainTests', 'exercises'];
   var DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
   var DRIVE_FOLDER = '有氧引擎备份';
 

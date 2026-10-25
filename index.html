@@ -807,7 +807,7 @@
   .bp-title{font-size:14.5px;font-weight:800;color:var(--ink);}
   .bp-close{background:none;border:none;font-size:20px;line-height:1;color:var(--ink-faint);cursor:pointer;padding:2px 6px;}
   .bp-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 10px;}
-  .bp-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
+  .bp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
   .bp-stat{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:6px 4px;text-align:center;}
   .bp-stat b{display:block;font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums;}
   .bp-stat span{font-size:10.5px;color:var(--ink-faint);}
@@ -1006,6 +1006,329 @@
   .app-banner .cl{flex:none;background:none;border:none;color:var(--ink-faint);font-size:18px;cursor:pointer;padding:2px 4px;}
   @keyframes bannerIn{from{opacity:0;transform:translate(-50%, 10px);}to{opacity:1;transform:translate(-50%, 0);}}
 
+  /* ================= training ================= */
+  #train{border-top:0;padding-top:22px;}
+  .tn-tabs{display:flex;gap:6px;margin:4px 0 16px;overflow-x:auto;scrollbar-width:none;}
+  .tn-tabs::-webkit-scrollbar{display:none;}
+  .tn-tab{flex:none;font:inherit;font-size:13px;font-weight:700;padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;}
+  .tn-tab.active{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+  .tn-tab:focus-visible, .tn-btn:focus-visible, .tn-chip:focus-visible, .tn-day:focus-visible, .tn-wd-b:focus-visible{outline:2px solid var(--plan);outline-offset:2px;}
+  .tn-panel[hidden]{display:none;}
+  .tn-pad{padding:6px 2px 14px;}
+  .tn-faint{color:var(--ink-faint);font-size:12.5px;}
+  .tn-faint.sm{font-size:11.5px;}
+  .tn-msg{color:var(--crit);font-size:12.5px;min-height:1px;margin:4px 0 0;}
+  .tn-msg:empty{display:none;}
+
+  .tn-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-size:13px;font-weight:700;padding:9px 16px;border-radius:999px;border:1px solid var(--plan);background:var(--plan);color:#fff;cursor:pointer;white-space:nowrap;}
+  :root[data-theme="dark"] .tn-btn:not(.ghost){color:#16172A;}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .tn-btn:not(.ghost){color:#16172A;} }
+  .tn-btn.ghost{background:var(--surface);color:var(--ink-soft);border-color:var(--line);}
+  .tn-btn.ghost:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .tn-btn.go{background:var(--good);border-color:var(--good);}
+  .tn-btn.sm{font-size:12px;padding:6px 12px;}
+  .tn-btn.xs{font-size:11px;padding:3px 9px;}
+  .tn-btn.wide{width:100%;margin-top:12px;}
+  .tn-btn.danger{color:var(--crit);}
+  .tn-btn.armed{background:var(--crit);border-color:var(--crit);color:#fff;}
+  .tn-btn svg{flex:none;}
+  .tn-icon{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .tn-pill{display:inline-block;margin-left:8px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--plan-soft);color:var(--plan);vertical-align:2px;border:0;}
+  .tn-pill.link{cursor:pointer;font:inherit;font-size:10.5px;font-weight:700;}
+
+  .tn-sp{flex:none;width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;}
+  .tn-sp svg{width:21px;height:21px;}
+  .tn-sp.sm{width:30px;height:30px;border-radius:9px;}
+  .tn-sp.sm svg{width:17px;height:17px;}
+
+  /* week */
+  .tn-week{padding:14px 14px 12px;}
+  .tn-week-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .tn-week-title{font-size:13.5px;font-weight:700;text-align:center;}
+  .tn-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px;}
+  .tn-day{font:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 7px;border-radius:12px;border:1px solid transparent;background:none;color:var(--ink);cursor:pointer;min-width:0;}
+  .tn-day .wd{font-size:10.5px;color:var(--ink-faint);font-weight:700;}
+  .tn-day .dn{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;width:30px;height:30px;line-height:30px;border-radius:50%;text-align:center;}
+  .tn-day.today .dn{background:var(--ink);color:var(--bg);}
+  .tn-day.sel{background:var(--surface-2);border-color:var(--line);}
+  .tn-dots{display:flex;gap:3px;height:8px;align-items:center;}
+  .tn-dots i{width:7px;height:7px;border-radius:50%;border:1.6px solid var(--c);box-sizing:border-box;}
+  .tn-dots i.on{background:var(--c);}
+  .tn-dots i.miss{border-color:var(--ink-faint);opacity:.6;}
+  .tn-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+  .tn-sum div{text-align:center;}
+  .tn-sum b{display:block;font-size:19px;font-variant-numeric:tabular-nums;}
+  .tn-sum b small{font-size:12px;color:var(--ink-faint);font-weight:600;}
+  .tn-sum span{font-size:11px;color:var(--ink-faint);}
+
+  .tn-dayhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 10px;flex-wrap:wrap;}
+  .tn-dayhead h3{font-size:16px;margin:0;}
+  .tn-dayact{display:flex;gap:6px;}
+  .tn-resume{display:flex;align-items:center;gap:8px;padding:12px 14px;margin-bottom:12px;border-color:var(--good);}
+  .tn-resume > div{flex:1;min-width:0;display:flex;flex-direction:column;font-size:13px;}
+  .tn-resume span{font-size:11.5px;color:var(--ink-faint);}
+
+  /* workout card */
+  .tn-w{padding:14px 14px 12px;margin-bottom:12px;}
+  .tn-w.done{opacity:.92;}
+  .tn-w-top{display:flex;align-items:center;gap:11px;}
+  .tn-w-title{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;font:inherit;background:none;border:0;padding:0;color:var(--ink);cursor:pointer;}
+  .tn-w-name{font-size:15px;font-weight:700;line-height:1.3;}
+  .tn-w-meta{font-size:12px;color:var(--ink-faint);}
+  .tn-done-b{flex:none;font-size:11px;font-weight:700;color:var(--good);background:color-mix(in srgb, var(--good) 14%, transparent);padding:3px 9px;border-radius:999px;}
+  .tn-miss-b{flex:none;font-size:11px;font-weight:700;color:var(--ink-faint);border:1px solid var(--line);padding:2px 8px;border-radius:999px;}
+  .tn-seg{display:flex;gap:2px;height:6px;margin:12px 0 4px;border-radius:999px;overflow:hidden;}
+  .tn-seg span{min-width:3px;}
+  .tn-steps{list-style:none;margin:8px 0 0;padding:0;}
+  .tn-step{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px dashed var(--line);}
+  .tn-step:first-child{border-top:0;}
+  .tn-dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:5px;}
+  .tn-step-b{flex:1;min-width:0;}
+  .tn-step-r{display:flex;justify-content:space-between;gap:10px;align-items:baseline;}
+  .tn-step-r .nm{font-size:13px;min-width:0;}
+  .tn-step-r .tg{flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;max-width:55%;}
+  .tn-step-sub{font-size:11.5px;color:var(--ink-faint);margin-top:2px;line-height:1.45;}
+  .tn-steps.full .tn-step{padding:9px 0;}
+  .tn-sec-h{font-size:11px;font-weight:700;color:var(--ink-faint);letter-spacing:.04em;padding:12px 0 2px;border:0;}
+  .tn-more{font-size:12px;color:var(--ink-faint);padding:6px 0 0 19px;}
+  .tn-thumb-btn{flex:none;padding:0;border:0;background:none;cursor:pointer;border-radius:9px;}
+  .tn-thumb{width:46px;height:46px;border-radius:9px;object-fit:cover;display:block;background:var(--surface-2);border:1px solid var(--line);}
+  .tn-thumb.ph{display:flex;align-items:center;justify-content:center;color:var(--land);}
+  .tn-thumb.ph svg{width:22px;height:22px;}
+  .tn-w-act{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;}
+  .tn-done-line{font-size:12px;color:var(--ink-soft);margin-right:auto;}
+  .tn-logcard .tn-lognote{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;}
+  .tn-wd{display:flex;align-items:center;gap:4px;margin-top:12px;flex-wrap:wrap;}
+  .tn-wd-l{font-size:11.5px;color:var(--ink-faint);margin-right:4px;}
+  .tn-wd-b{font:inherit;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:12px;font-weight:700;cursor:pointer;padding:0;}
+  .tn-wd-b.on{background:var(--plan);border-color:var(--plan);color:#fff;}
+  .tn-toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .tn-group{font-size:13px;color:var(--ink-soft);margin:20px 0 10px;display:flex;align-items:center;gap:6px;}
+  .tn-group span{font-size:11px;color:var(--ink-faint);font-weight:600;}
+
+  /* onboarding */
+  .tn-onb{padding:18px 16px;margin-top:14px;}
+  .tn-onb h3{margin:0 0 4px;font-size:16px;}
+  .tn-pack{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);}
+  .tn-pack:first-of-type{margin-top:10px;}
+  .tn-pack-b{flex:1;min-width:0;}
+  .tn-pack-b b{font-size:14px;}
+  .tn-pack-b p{font-size:12px;color:var(--ink-faint);margin:2px 0 0;line-height:1.5;}
+
+  /* library */
+  .tn-libbar{display:flex;gap:8px;align-items:center;}
+  .tn-libbar input, #pkQ{flex:1;min-width:0;font:inherit;font-size:14px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);}
+  #pkQ{width:100%;box-sizing:border-box;}
+  .tn-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:12px 0;padding-bottom:2px;}
+  .tn-chips::-webkit-scrollbar{display:none;}
+  .tn-chips.sm{margin:0;}
+  .tn-chip{flex:none;font:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;}
+  .tn-chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+  .tn-lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:10px;}
+  .tn-ex{font:inherit;text-align:left;padding:0;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;color:var(--ink);}
+  .tn-ex-pic{position:relative;height:0;padding-top:75%;background:var(--surface-2);display:block;overflow:hidden;}
+  .tn-ex-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .tn-ex-pic .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--land);}
+  .tn-ex-pic .ph svg{width:34px;height:34px;}
+  .tn-play{position:absolute;right:8px;bottom:8px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:flex;align-items:center;justify-content:center;}
+  .tn-ex-b{padding:9px 11px 11px;display:flex;flex-direction:column;gap:3px;}
+  .tn-ex-n{font-size:13px;font-weight:700;line-height:1.3;}
+  .tn-ex-c{font-size:11.5px;color:var(--ink-faint);line-height:1.4;}
+  .tn-ex-cat{align-self:flex-start;font-size:10.5px;font-weight:700;color:var(--land);background:var(--land-soft);padding:2px 8px;border-radius:999px;margin-top:2px;}
+  .tn-exvid{width:100%;max-height:52vh;border-radius:12px;overflow:hidden;background:#000;margin:0 auto 12px;}
+  .tn-exvid video{width:100%;height:100%;object-fit:contain;display:block;}
+  .tn-exmeta{margin-bottom:6px;}
+  .tn-excue{font-size:13.5px;margin:6px 0 10px;line-height:1.6;}
+
+  /* history */
+  .tn-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .tn-stats .card{padding:12px 10px;text-align:center;}
+  .tn-stats b{display:block;font-size:20px;font-variant-numeric:tabular-nums;}
+  .tn-stats b small{font-size:12px;color:var(--ink-faint);}
+  .tn-stats span{font-size:11px;color:var(--ink-faint);}
+  @media (max-width:520px){ .tn-stats{grid-template-columns:repeat(2,1fr);} }
+  .tn-card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .tn-card-h h3{font-size:14.5px;margin:0;}
+  .tn-card-h h3 small{font-size:11.5px;color:var(--ink-faint);font-weight:600;}
+  .tn-chartcard, .tn-tests{padding:14px;margin-top:12px;}
+  .tn-chartwrap{position:relative;margin-top:10px;}
+  .tn-chart{width:100%;height:auto;display:block;overflow:visible;}
+  .tn-chart .g{stroke:var(--line);stroke-width:1;}
+  .tn-chart .ax{fill:var(--ink-faint);font-size:11px;font-family:inherit;}
+  .tn-chart .ax.cur{fill:var(--ink);font-weight:700;}
+  .tn-chart .vl{fill:var(--ink);font-size:12px;font-weight:700;font-family:inherit;}
+  .tn-chart .hit{fill:transparent;cursor:pointer;outline:none;}
+  .tn-chart .hit.on, .tn-chart .hit:focus-visible{fill:color-mix(in srgb, var(--ink) 6%, transparent);}
+  .tn-tip{position:absolute;top:-6px;transform:translate(-50%,-100%);background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:2;}
+  .tn-tip[hidden]{display:none;}
+  .tn-tbl{margin-top:8px;font-size:12px;}
+  .tn-tbl summary{cursor:pointer;color:var(--ink-faint);}
+  .tn-tbl table, .tn-ttable{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px;}
+  .tn-tbl th, .tn-tbl td, .tn-ttable th, .tn-ttable td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);}
+  .tn-tbl th, .tn-ttable th{font-size:11px;color:var(--ink-faint);font-weight:700;}
+  .tn-ttable tr[data-act]{cursor:pointer;}
+  .tn-ttable tr[data-act]:hover td{background:var(--surface-2);}
+  .tn-ttable td small{display:block;font-size:10.5px;color:var(--ink-faint);}
+  .tn-ttable td.pb{font-weight:700;font-variant-numeric:tabular-nums;}
+  .tn-ttable td.up{color:var(--good);font-weight:700;}
+  .tn-ttable td.down{color:var(--crit);}
+  .tn-histh{margin:24px 0 6px;}
+  .tn-month{font-size:11.5px;font-weight:700;color:var(--ink-faint);margin:14px 0 6px;}
+  .tn-hrow{width:100%;font:inherit;display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;margin-bottom:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;}
+  .tn-hrow:hover{border-color:var(--ink-faint);}
+  .tn-hdate{flex:none;width:30px;text-align:center;display:flex;flex-direction:column;}
+  .tn-hdate b{font-size:16px;line-height:1.1;}
+  .tn-hdate small{font-size:10px;color:var(--ink-faint);}
+  .tn-hb{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .tn-hb .nm{font-size:13.5px;font-weight:700;}
+  .tn-hb .mt{font-size:11.5px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tn-rpe{flex:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+  .tn-rpe.r1, .tn-rpeb.r1.on{background:#3E8E6E;} .tn-rpe.r2, .tn-rpeb.r2.on{background:#6E9A3C;} .tn-rpe.r3, .tn-rpeb.r3.on{background:#B58A1E;}
+  .tn-rpe.r4, .tn-rpeb.r4.on{background:#C4632E;} .tn-rpe.r5, .tn-rpeb.r5.on{background:#B23A3A;}
+  .tn-tlist{list-style:none;margin:0;padding:0;}
+  .tn-tlist li{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .tn-tlist li span{color:var(--ink-faint);font-size:12px;width:84px;}
+  .tn-tlist li b{flex:1;font-variant-numeric:tabular-nums;}
+  .tn-tlist li b.pb{color:var(--good);}
+  .tn-tlist li small{flex-basis:100%;color:var(--ink-faint);font-size:11.5px;padding-left:94px;}
+
+  /* sheets */
+  body.tn-lock{overflow:hidden;}
+  .tn-sheet-back{position:fixed;inset:0;background:rgba(10,14,20,.45);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .16s ease;}
+  .tn-sheet-back.open{opacity:1;}
+  .tn-sheet{background:var(--bg);color:var(--ink);width:100%;max-width:620px;max-height:92vh;max-height:92dvh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.25);transform:translateY(16px);transition:transform .18s ease;}
+  .tn-sheet-back.open .tn-sheet{transform:none;}
+  .tn-sheet.editor, .tn-sheet.wide{max-width:720px;}
+  @media (min-width:760px){ .tn-sheet-back{align-items:center;} .tn-sheet{border-radius:20px;max-height:86vh;} }
+  .tn-sh-head{display:flex;align-items:center;gap:10px;padding:16px 18px 10px;border-bottom:1px solid var(--line);}
+  .tn-sh-head h3{flex:1;min-width:0;margin:0;font-size:16px;line-height:1.35;}
+  .tn-x{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:19px;line-height:1;cursor:pointer;}
+  .tn-sh-body{padding:14px 18px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;}
+  .tn-sh-foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface);border-radius:0 0 20px 20px;}
+  .tn-sh-foot .sp{flex:1;}
+  .tn-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-size:12px;color:var(--ink-soft);font-weight:700;}
+  .tn-field > span small{font-weight:600;color:var(--ink-faint);margin-left:6px;}
+  .tn-field input, .tn-field select, .tn-field textarea{font:inherit;font-size:15px;font-weight:400;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0;}
+  .tn-field textarea{resize:vertical;}
+  .tn-field input:focus, .tn-field select:focus, .tn-field textarea:focus, .tn-st input:focus, .tn-st select:focus{outline:2px solid var(--plan);outline-offset:0;border-color:transparent;}
+  .tn-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .tn-segbtn{display:flex;gap:6px;flex-wrap:wrap;}
+  .tn-segbtn button{font:inherit;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;}
+  .tn-segbtn button svg{width:17px;height:17px;}
+  .tn-segbtn button.on{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+  .tn-rpes{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;}
+  .tn-rpeb{font:inherit;font-size:13px;font-weight:700;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;padding:0;}
+  .tn-rpeb.on{color:#fff;border-color:transparent;}
+  .tn-picklist{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+  .tn-pick{font:inherit;display:flex;align-items:center;gap:11px;text-align:left;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);cursor:pointer;}
+  .tn-pick:hover{border-color:var(--plan);}
+  .tn-pick span{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .tn-pick b{font-size:13.5px;}
+  .tn-pick small{font-size:11.5px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tn-dmeta{display:flex;align-items:center;gap:11px;}
+  .tn-dmeta div{display:flex;flex-direction:column;font-size:13px;}
+  .tn-dmeta span{font-size:12px;color:var(--ink-faint);}
+  .tn-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--ink-faint);margin:4px 0 4px;}
+  .tn-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px;}
+  .tn-wnote{font-size:13px;color:var(--ink-soft);background:var(--surface-2);border-radius:10px;padding:10px 12px;margin:12px 0 0;}
+
+  /* templates */
+  .tn-tplpack{margin-bottom:20px;}
+  .tn-tplhead{display:flex;gap:11px;align-items:flex-start;}
+  .tn-tplhead b{font-size:15px;}
+  .tn-tplhead p{font-size:12px;color:var(--ink-faint);margin:3px 0 0;line-height:1.5;}
+  .tn-tplph{font-size:11.5px;font-weight:700;color:var(--ink-faint);margin:14px 0 6px;}
+  .tn-tplw{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:6px;cursor:pointer;}
+  .tn-tplw.dis{opacity:.55;cursor:default;}
+  .tn-tplw input{width:18px;height:18px;accent-color:var(--plan);flex:none;}
+  .tn-tplw span{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .tn-tplw b{font-size:13px;}
+  .tn-tplw small{font-size:11.5px;color:var(--ink-faint);}
+  .tn-tplsched{display:flex;gap:8px;align-items:center;font-size:12.5px;margin-top:10px;color:var(--ink-soft);flex-wrap:wrap;}
+  .tn-tplsched input{width:17px;height:17px;accent-color:var(--plan);}
+  .tn-tplsched select{font:inherit;font-size:12.5px;padding:3px 6px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);}
+
+  /* editor */
+  .tn-ed-h{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 8px;font-size:13px;}
+  .tn-ed-empty{padding:10px 0;}
+  .tn-st{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px;margin-bottom:8px;}
+  .tn-st-h{display:flex;align-items:center;gap:8px;}
+  .tn-st-n{flex:none;font-size:11px;font-weight:700;color:var(--ink-faint);width:14px;text-align:center;}
+  .tn-st .tn-thumb{width:36px;height:36px;}
+  .tn-st input, .tn-st select{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-width:0;}
+  .tn-st .nm{flex:1;font-weight:700;}
+  .tn-st-h select{flex:none;width:auto;}
+  .tn-st-f{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap;}
+  .tn-st-f input[type=number]{width:62px;text-align:center;}
+  .tn-st-f .x{color:var(--ink-faint);font-weight:700;}
+  .tn-st-f .dt{flex:1;min-width:110px;}
+  .tn-st-f .rs{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--ink-faint);}
+  .tn-st-f .rs input{width:56px;}
+  .tn-st-b{display:flex;align-items:center;gap:4px;margin-top:8px;}
+  .tn-st-b .nt{flex:1;font-size:12.5px;}
+  .tn-mini{flex:none;width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:14px;cursor:pointer;padding:0;}
+  .tn-mini:disabled{opacity:.35;cursor:default;}
+  .tn-mini.danger{color:var(--crit);}
+  .tn-ed-add{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px;}
+
+  /* toast */
+  .tn-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .2s ease;z-index:900;max-width:calc(100% - 32px);text-align:center;}
+  .tn-toast.show{opacity:1;transform:translate(-50%,0);}
+
+  /* ================= player (always dark, like a sports watch) ================= */
+  .tn-player{position:fixed;inset:0;z-index:800;background:#0B0F14;color:#F2F5F7;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    --pl-go:#33C26E;--pl-soft:#1A222C;--pl-line:#26303B;--pl-faint:#8C98A6;}
+  .pl-top{display:flex;align-items:center;gap:10px;padding:12px 16px 8px;}
+  .pl-top > span{width:40px;}
+  .pl-ic{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--pl-line);background:var(--pl-soft);color:#F2F5F7;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .pl-title{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;}
+  .pl-title span{font-size:12.5px;color:var(--pl-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pl-title b{font-size:26px;font-variant-numeric:tabular-nums;letter-spacing:.02em;}
+  .pl-prog{display:flex;gap:3px;padding:4px 16px 0;}
+  .pl-prog span{flex:1;height:5px;border-radius:99px;background:var(--pl-line);overflow:hidden;}
+  .pl-prog span.cur{outline:1.5px solid #F2F5F7;outline-offset:1px;}
+  .pl-prog i{display:block;height:100%;background:var(--pl-go);}
+  .pl-main{flex:1;overflow-y:auto;padding:18px 20px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;}
+  .pl-main > *{flex:none;}
+  .pl-stepno{font-size:12.5px;color:var(--pl-faint);font-weight:700;}
+  .pl-name{font-size:24px;font-weight:800;line-height:1.25;max-width:620px;}
+  .pl-target{font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1;color:#fff;margin-top:4px;}
+  .pl-set{font-size:17px;font-weight:700;color:var(--pl-go);}
+  .pl-side{font-size:15px;font-weight:700;color:#FFD166;}
+  .pl-note{font-size:14px;color:#C9D2DB;max-width:520px;line-height:1.55;background:var(--pl-soft);border-radius:12px;padding:10px 14px;}
+  .pl-faint{font-size:12.5px;color:var(--pl-faint);}
+  .pl-vid{width:100%;max-width:420px;max-height:34vh;border-radius:14px;overflow:hidden;background:#000;margin-top:6px;}
+  .pl-vid video{width:100%;height:100%;object-fit:contain;display:block;}
+  .pl-rest{display:flex;flex-direction:column;align-items:center;gap:10px;margin:auto 0;}
+  .pl-lbl{font-size:16px;font-weight:800;color:#6FC3FF;letter-spacing:.1em;}
+  .pl-next{font-size:14px;color:#C9D2DB;max-width:520px;}
+  .pl-ring{position:relative;width:min(62vw,250px);aspect-ratio:1;margin:6px 0;}
+  .pl-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .pl-ring-bg{fill:none;stroke:var(--pl-line);stroke-width:12;}
+  .pl-ring-fg{fill:none;stroke:#6FC3FF;stroke-width:12;stroke-linecap:round;stroke-dasharray:565.5;transition:stroke-dashoffset .25s linear;}
+  .pl-main:not(.count) .pl-ring-fg, .pl-main .pl-name ~ .pl-ring .pl-ring-fg{stroke:var(--pl-go);}
+  .pl-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:min(15vw,62px);font-weight:800;font-variant-numeric:tabular-nums;}
+  .pl-upnext{text-align:center;font-size:12.5px;color:var(--pl-faint);padding:6px 20px;}
+  .pl-btns{display:flex;gap:10px;padding:10px 16px 16px;}
+  .pl-btn{flex:1;font:inherit;font-size:16px;font-weight:800;min-height:58px;border-radius:16px;border:1px solid var(--pl-line);background:var(--pl-soft);color:#F2F5F7;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;}
+  .pl-btn.go{flex:2.2;background:var(--pl-go);border-color:var(--pl-go);color:#06210F;}
+  .pl-btn:disabled{opacity:.35;}
+  .pl-btn.armed{background:#C9483F;border-color:#C9483F;color:#fff;}
+  .pl-btn:focus-visible, .pl-ic:focus-visible{outline:3px solid #6FC3FF;outline-offset:2px;}
+  .pl-paused{position:absolute;top:96px;left:50%;transform:translateX(-50%);background:#FFD166;color:#2A1F00;font-weight:800;font-size:13px;padding:4px 14px;border-radius:999px;}
+  .pl-sum{flex:1;overflow-y:auto;padding:12px 18px;}
+  .pl-sumstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:16px;}
+  .pl-sumstats div{background:var(--pl-soft);border-radius:14px;padding:14px 8px;text-align:center;}
+  .pl-sumstats b{display:block;font-size:24px;font-variant-numeric:tabular-nums;}
+  .pl-sumstats b small{font-size:13px;color:var(--pl-faint);}
+  .pl-sumstats span{font-size:12px;color:var(--pl-faint);}
+  .pl-form{max-width:560px;margin:0 auto;}
+  .tn-player .tn-field{color:#C9D2DB;}
+  .tn-player .tn-field input, .tn-player .tn-field textarea{background:var(--pl-soft);border-color:var(--pl-line);color:#F2F5F7;}
+  .tn-player .tn-rpeb{background:var(--pl-soft);border-color:var(--pl-line);color:#C9D2DB;}
+  .tn-player .tn-rpeb.on{color:#fff;}
+  @media (min-width:760px){ .pl-target{font-size:52px;} .pl-name{font-size:30px;} }
+
   /* ---------- installable-app additions ---------- */
   .sync-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;
     border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);white-space:nowrap;}
@@ -1050,7 +1373,7 @@
     <div class="brand">
       <div class="brand-text">
         <span class="name">有氧引擎计划</span>
-        <span class="tag">So Zheng Hao · 训练与营养指南</span>
+        <span class="tag">训练 · 饮食 · 日程</span>
       </div>
       <div class="top-actions">
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色/浅色模式">
@@ -1067,7 +1390,7 @@
         <span class="bp-title">备份全部数据</span>
         <button type="button" class="bp-close" id="bpClose" aria-label="关闭">×</button>
       </div>
-      <p class="bp-desc">一次备份全部内容——时间表、待办、笔记（含图片）、饮食记录——打包成一个 .zip。</p>
+      <p class="bp-desc">一次备份全部内容——时间表、待办、笔记（含图片）、饮食、训练计划和记录——打包成一个 .zip。</p>
       <div class="bp-stats" id="bpStats"></div>
       <div class="bp-meters" id="bpMeters"></div>
       <button type="button" class="bp-btn" id="bpDownload">下载完整备份（.zip）</button>
@@ -1079,814 +1402,33 @@
       <p class="bp-foot">zip 里有：<b>备份数据.json</b>（完整数据）、<b>images</b> 图片文件夹、<b>备份查看.html</b>（解压后双击就能离线看全部内容）。</p>
       <div class="bp-account" id="bpAccount"></div>
     </div>
-    <nav class="nav" id="trainingSubNav">
-      <a href="#diagnosis">现状分析</a>
-      <a href="#schedule">每周安排</a>
-      <a href="#pool">泳池训练</a>
-      <a href="#land">陆地训练</a>
-      <a href="#nutrition">营养补给</a>
-      <a href="#monitor">监测恢复</a>
-    </nav>
   </div>
 </div>
 
 <div class="wrap">
 
   <div class="app-page" data-page="training" id="pageTraining" hidden>
-
-  <div class="hero">
-    <span class="eyebrow">
-      <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M3 16c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 11c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>
-      个人定制 · 游泳耐力
-    </span>
-    <h1>先把有氧引擎建起来，速度已经够用了</h1>
-    <p class="lede">50m 自由泳 29 秒不慢，问题出在长距离掉速——这份指南把训练、陆地力量和你手上的两款营养品（ON 金标乳清、Gracekiar 代餐）安排进同一套节奏里。</p>
-
-    <div class="stat-row">
-      <div class="stat"><div class="v">80<span style="font-size:12px;">kg</span></div><div class="l">体重</div></div>
-      <div class="stat"><div class="v">175<span style="font-size:12px;">cm</span></div><div class="l">身高</div></div>
-      <div class="stat"><div class="v">0:29</div><div class="l">50m 自由泳</div></div>
-      <div class="stat"><div class="v">2<span style="font-size:12px;">次/周</span></div><div class="l">下水频率</div></div>
-    </div>
-  </div>
-
-  <section id="diagnosis">
+  <section id="train">
     <div class="sec-head">
       <div class="sec-icon" style="background:var(--pool-soft);color:var(--pool-ink);">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 16c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 11c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>
       </div>
       <div>
-        <h2>现状分析</h2>
-        <div class="sub">速度不缺，缺的是能撑住速度的底子</div>
+        <h2>训练</h2>
+        <div class="sub">自己的训练计划 · 动作库 · 训练记录</div>
       </div>
     </div>
-    <div class="card">
-      <p class="muted" style="margin-top:0;">50m 的成绩说明无氧爆发力和技术基础都不差；长距离明显掉速，是典型的<b style="color:var(--ink);">有氧代谢能力（有氧基础）跟不上</b>——游到中后段乳酸堆积快，动作变形，速度自然往下掉。每周只有 2 次下水，建立有氧基础的进度会比专业训练慢，所以每一次训练都要把"技术＋有氧＋阈值"三种刺激放进同一次课里，不能只是"游到累为止"。</p>
-      <div class="diag-bar">
-        <div class="diag-row">
-          <div class="diag-label">无氧／爆发</div>
-          <div class="diag-track"><div class="diag-fill" style="width:86%;background:var(--gold);"></div></div>
-          <div class="diag-val">较强</div>
-        </div>
-        <div class="diag-row">
-          <div class="diag-label">有氧基础</div>
-          <div class="diag-track"><div class="diag-fill" style="width:40%;background:var(--crit);"></div></div>
-          <div class="diag-val">待建立</div>
-        </div>
-      </div>
-      <p class="small" style="margin-top:10px;">示意图：根据训练反馈（速度快、长距离掉速明显）画出的相对水平，不是实测数据。</p>
+    <div class="tn-tabs" role="tablist" aria-label="训练">
+      <button type="button" class="tn-tab active" data-tn="today" role="tab" aria-selected="true">今天</button>
+      <button type="button" class="tn-tab" data-tn="plans" role="tab" aria-selected="false">我的训练</button>
+      <button type="button" class="tn-tab" data-tn="lib" role="tab" aria-selected="false">动作库</button>
+      <button type="button" class="tn-tab" data-tn="hist" role="tab" aria-selected="false">记录</button>
     </div>
+    <div class="tn-panel" data-tnp="today" id="tnToday" role="tabpanel"></div>
+    <div class="tn-panel" data-tnp="plans" id="tnPlans" role="tabpanel" hidden></div>
+    <div class="tn-panel" data-tnp="lib" id="tnLib" role="tabpanel" hidden></div>
+    <div class="tn-panel" data-tnp="hist" id="tnHist" role="tabpanel" hidden></div>
   </section>
-
-  <section id="schedule">
-    <div class="sec-head">
-      <div class="sec-icon" style="background:var(--land-soft);color:var(--land);">
-        <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <h2>每周训练结构</h2>
-        <div class="sub">目前确定周六、周日下水，其余天数待定</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="week-strip">
-        <div class="day"><div class="d">周一</div><div class="k">待定</div></div>
-        <div class="day"><div class="d">周二</div><div class="k">待定</div></div>
-        <div class="day"><div class="d">周三</div><div class="k">待定</div></div>
-        <div class="day"><div class="d">周四</div><div class="k">待定</div></div>
-        <div class="day"><div class="d">周五</div><div class="k">待定</div></div>
-        <div class="day swim"><div class="d">周六</div><div class="k">泳池 A</div></div>
-        <div class="day swim"><div class="d">周日</div><div class="k">泳池 B</div></div>
-      </div>
-      <div class="note" style="background:var(--gold-soft);margin-top:16px;">
-        <div class="h" style="color:var(--gold);">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M12 9v4M12 16.5h.01M10.3 3.9L2.7 17.3A1.8 1.8 0 004.3 20h15.4a1.8 1.8 0 001.6-2.7L13.7 3.9a1.8 1.8 0 00-3.4 0z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          周六周日连续两天，注意恢复
-        </div>
-        <p>两次下水连着来，中间没有休息日，疲劳会累积得比隔天训练快——周日训练后的营养和睡眠（见下方"营养补给"）比平时更重要。陆地训练两天定下来后，尽量选跟周日间隔 48 小时以上的日子（比如周二、周四），避免接在高强度蝶泳/抗阻组之后。</p>
-      </div>
-
-      <div class="period" style="margin-top:20px;">
-        <div style="flex:2;background:var(--pool);">Week 1–2 基础周</div>
-        <div style="flex:1;background:var(--gold);">Week 3 强度周</div>
-        <div style="flex:1;background:var(--land);">Week 4 恢复周</div>
-      </div>
-      <p class="small" style="margin-top:8px;">4 周一个周期，每完成一轮在原基础上小幅提高距离或配速，再进入下一轮。这套周内结构参考了你之前教练给 UKM 队里安排的训练配套，按现在每周 2 天下水的实际情况做了精简。</p>
-    </div>
-  </section>
-
-  <section id="pool">
-    <div class="sec-head">
-      <div class="sec-icon" style="background:var(--pool-soft);color:var(--pool-ink);">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7c1.6-1.6 3.6-2.4 5.5-2.4S13 5.4 14.5 7 18 9.4 20 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15" r="4.2" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
-      <div>
-        <h2>泳池训练内容</h2>
-        <div class="sub">3 个难度阶段，跟着感觉进阶，不用死记周数</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 style="font-size:14.5px;">你的装备，各管各的用途</h3>
-      <div class="gear-grid">
-        <div class="gear">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="3" width="12" height="14" rx="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <div class="gn">划手板</div>
-          <div class="gr">加大划水阻力，练力量耐力</div>
-        </div>
-        <div class="gear">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 16c3-6 6-9 8-9s5 3 8 9c-3 2-6-1-8-1s-5 3-8 1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-          <div class="gn">脚蹼</div>
-          <div class="gr">支撑打腿，延长有氧组不掉技术</div>
-        </div>
-        <div class="gear">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v11a4 4 0 004 4v3M8 8h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="gn">呼吸管</div>
-          <div class="gr">去掉换气干扰，专注技术/配速</div>
-        </div>
-        <div class="gear">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 13a8 8 0 0116 0H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 13v8M12 21l-3-3M12 21l3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <div class="gn">阻力伞</div>
-          <div class="gr">全身阻力，只适合短组高强度</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="note" style="background:var(--pool-soft);">
-      <div class="h" style="color:var(--pool-ink);">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M12 3l1.8 5.6H20l-4.8 3.5 1.8 5.6L12 14.2 6.9 17.7l1.9-5.6L4 9.6h6.2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        怎么判断该换下一阶段
-      </div>
-      <p>不是练满固定周数就换，看两个信号：① 这阶段的组数/趟数完成后不算吃力，休息时间内心率能恢复；② 计时测试（第七节）连续两次比上阶段稳或更快。两个都满足，大概率是3–4周左右，就切到下一个阶段的标签。</p>
-    </div>
-
-    <div class="phase-tabs" data-phase-group="pool" role="tablist">
-      <button class="phase-tab active" data-phase="1" role="tab"><span class="n">01</span>有氧打底</button>
-      <button class="phase-tab" data-phase="2" role="tab"><span class="n">02</span>阈值过渡</button>
-      <button class="phase-tab" data-phase="3" role="tab"><span class="n">03</span>阈值冲刺强化</button>
-    </div>
-
-    <div data-phase-group-panels="pool">
-      <div class="phase-panel" data-phase="1">
-        <div class="sessions">
-          <div class="card">
-            <div class="sess-head"><h3>Session A · 有氧技术（周六）</h3><span class="m">1100m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>热身</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>有氧主项</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:27%;background:var(--pool-soft);"></span>
-              <span style="width:55%;background:var(--pool);"></span>
-              <span style="width:18%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">自由泳轻松热身</span><span class="set-badge">300m</span></div></div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 戴呼吸管+脚蹼</span><span class="set-badge">6×100m @2:00–2:10</span></div>
-                  <div class="set-desc">休息20秒 — 先适应装备和配速节奏，不追速度</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">自由泳放松</span><span class="set-badge">200m</span></div></div>
-              </li>
-            </ul>
-          </div>
-          <div class="card">
-            <div class="sess-head"><h3>Session B · 装备适应（周日）</h3><span class="m">1550m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>踢水热身</span>
-              <span class="li"><span class="dot" style="background:var(--gold);"></span>抗阻主项</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>巡航</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>蝶泳/放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:13%;background:var(--pool-soft);"></span>
-              <span style="width:39%;background:var(--gold);"></span>
-              <span style="width:26%;background:var(--pool);"></span>
-              <span style="width:22%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">踢水热身</span><span class="set-badge">200m</span></div></div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--gold);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 阻力伞+划手板+脚蹼</span><span class="set-badge">600m</span></div>
-                  <div class="set-desc">重点是适应阻力，不是游快</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 巡航+顺畅</span><span class="set-badge">4×(75m+25m) @1:45</span></div>
-                  <div class="set-desc">≈400m，不戴装备</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">蝶泳轻松</span><span class="set-badge">200m</span></div>
-                  <div class="set-desc">不刻意冲刺</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">放松</span><span class="set-badge">150m</span></div></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p class="phase-note">这阶段的目的：习惯装备的阻力手感、把有氧配速节奏找回来，不追求量和强度。</p>
-      </div>
-
-      <div class="phase-panel" data-phase="2" hidden>
-        <div class="sessions">
-          <div class="card">
-            <div class="sess-head"><h3>Session A · 有氧技术（周六）</h3><span class="m">1600m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>热身</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>有氧主项</span>
-              <span class="li"><span class="dot" style="background:var(--gold);"></span>蝶泳技术</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:25%;background:var(--pool-soft);"></span>
-              <span style="width:50%;background:var(--pool);"></span>
-              <span style="width:12.5%;background:var(--gold);"></span>
-              <span style="width:12.5%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳热身 + drill/swim</span><span class="set-badge">400m + 4×50</span></div>
-                  <div class="set-desc">可混合泳姿</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 戴呼吸管+脚蹼</span><span class="set-badge">8×100m @1:50–2:00</span></div>
-                  <div class="set-desc">休息15秒 — 教练标注的稳定配速区间，专注技术不追速度</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--gold);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">蝶泳技术 drill（单臂蝶/蝶泳腿）</span><span class="set-badge">4×50m</span></div>
-                  <div class="set-desc">不戴装备，休息20秒</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳放松</span><span class="set-badge">200m</span></div>
-                  <div class="set-desc">摘掉装备找回真实划水感觉</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <div class="sess-head"><h3>Session B · 阈值＋抗阻（周日）</h3><span class="m">2500m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>踢水热身</span>
-              <span class="li"><span class="dot" style="background:var(--gold);"></span>抗阻主项</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>阈值/冲刺</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:20%;background:var(--pool-soft);"></span>
-              <span style="width:40%;background:var(--gold);"></span>
-              <span style="width:32%;background:var(--pool);"></span>
-              <span style="width:8%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">踢水热身</span><span class="set-badge">200m+300m</span></div></div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--gold);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 阻力伞+划手板+脚蹼</span><span class="set-badge">1000m</span></div>
-                  <div class="set-desc">中等偏低强度巡航 — 划水力量与抗疲劳技术</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 巡航+冲刺</span><span class="set-badge">5×(75m+25m) @1:30</span></div>
-                  <div class="set-desc">≈500m，不戴装备</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">蝶泳 · 蝶腰+全蝶冲刺</span><span class="set-badge">5×(75m+25m)</span></div>
-                  <div class="set-desc">≈500m 蝶泳</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">Push Sprint</span><span class="set-badge">4×25m</span></div>
-                  <div class="set-desc">教练特意给你加的项目</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">放松</span><span class="set-badge">200m</span></div>
-                  <div class="set-desc">可选，视当天疲劳程度</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p class="phase-note">这阶段就是你现在的实际训练内容——两天已经能各司其职（有氧技术／阈值抗阻），是承上启下的主力阶段，可以待得比其他阶段久一点。</p>
-      </div>
-
-      <div class="phase-panel" data-phase="3" hidden>
-        <div class="sessions">
-          <div class="card">
-            <div class="sess-head"><h3>Session A · 有氧技术（周六）</h3><span class="m">1800m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>热身</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>有氧主项</span>
-              <span class="li"><span class="dot" style="background:var(--gold);"></span>蝶泳技术</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:22%;background:var(--pool-soft);"></span>
-              <span style="width:56%;background:var(--pool);"></span>
-              <span style="width:11%;background:var(--gold);"></span>
-              <span style="width:11%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">热身 + drill</span><span class="set-badge">400m + 4×50</span></div></div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 戴呼吸管+脚蹼</span><span class="set-badge">10×100m @1:50–2:00</span></div>
-                  <div class="set-desc">休息15秒，保持在70–75%效果 — 量比阶段2多两组</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--gold);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">蝶泳技术 drill</span><span class="set-badge">4×50m</span></div>
-                  <div class="set-desc">不戴装备</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">放松</span><span class="set-badge">200m</span></div></div>
-              </li>
-            </ul>
-          </div>
-          <div class="card">
-            <div class="sess-head"><h3>Session B · 阈值冲刺强化（周日）</h3><span class="m">3275m</span></div>
-            <div class="legend">
-              <span class="li"><span class="dot" style="background:var(--pool-soft);"></span>热身</span>
-              <span class="li"><span class="dot" style="background:var(--gold);"></span>抗阻主项</span>
-              <span class="li"><span class="dot" style="background:var(--pool);"></span>阈值/冲刺</span>
-              <span class="li"><span class="dot" style="background:var(--land-soft);"></span>蝶泳/放松</span>
-            </div>
-            <div class="dist-bar">
-              <span style="width:15%;background:var(--pool-soft);"></span>
-              <span style="width:31%;background:var(--gold);"></span>
-              <span style="width:32%;background:var(--pool);"></span>
-              <span style="width:22%;background:var(--land-soft);"></span>
-            </div>
-            <ul class="set-list">
-              <li>
-                <span class="set-dot" style="background:var(--pool-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">踢水热身</span><span class="set-badge">200m+300m</span></div></div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--gold);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 阻力伞+划手板+脚蹼</span><span class="set-badge">1000m</span></div>
-                  <div class="set-desc">维持巡航强度</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 冲刺+巡航</span><span class="set-badge">8×50m @1:15</span></div>
-                  <div class="set-desc">≈400m — 教练常给的真实组合</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">自由泳 · 配速+快+冲刺</span><span class="set-badge">3×(100+50+25m) @3:30</span></div>
-                  <div class="set-desc">≈525m</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--pool);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">Sprint</span><span class="set-badge">6×25m @0:45</span></div>
-                  <div class="set-desc">≈150m</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body">
-                  <div class="set-row"><span class="set-title">蝶泳 · 蝶腰+全蝶冲刺</span><span class="set-badge">5×(75m+25m)</span></div>
-                  <div class="set-desc">≈500m 蝶泳</div>
-                </div>
-              </li>
-              <li>
-                <span class="set-dot" style="background:var(--land-soft);"></span>
-                <div class="set-body"><div class="set-row"><span class="set-title">放松</span><span class="set-badge">200m</span></div></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p class="phase-note">总量已经接近教练当年给UKM队的真实单次训练量（3.2–3.8km），到这阶段说明有氧底子和抗阻力量都上来了，可以吃下更大的量和更接近比赛节奏的组合。</p>
-      </div>
-    </div>
-
-    <div class="note">
-      <div class="h">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M12 3l1.8 5.6H20l-4.8 3.5 1.8 5.6L12 14.2 6.9 17.7l1.9-5.6L4 9.6h6.2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        为什么两天分工不同
-      </div>
-      <p>周六不戴阻力装备的重复组太少，容易只练到无氧；所以把呼吸管+脚蹼放进 Session A，专门服务有氧技术。周日的阻力伞+划手板+划水量本身就是力量／爆发导向，对掉速问题是间接帮助，不能替代 Session A 的纯有氧刺激——两天各司其职，缺一不可，这一点在三个阶段里都不变。</p>
-    </div>
-  </section>
-
-  <section id="land">
-    <div class="sec-head">
-      <div class="sec-icon" style="background:var(--land-soft);color:var(--land);">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17.5l11-11M4 9l3-3M17 4l3 3M4 15l3 3M17 20l3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <h2>陆地训练</h2>
-        <div class="sub">日子待定；3 个难度阶段，动作全部来自你教练给 UKM 队的 S&C 配套</div>
-      </div>
-    </div>
-
-    <div class="note" style="background:var(--land-soft);">
-      <div class="h" style="color:var(--land);">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M12 3l1.8 5.6H20l-4.8 3.5 1.8 5.6L12 14.2 6.9 17.7l1.9-5.6L4 9.6h6.2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        怎么判断该换下一阶段
-      </div>
-      <p>同一个信号：这阶段的组数/次数做完不觉得吃力、动作全程能保持标准，大概3–4周就可以点下一个标签。中间如果哪次觉得特别累或睡眠/正餐没跟上，留在原阶段多练几次没关系，不用勉强往前赶。</p>
-    </div>
-
-    <div class="phase-tabs" data-phase-group="land" role="tablist">
-      <button class="phase-tab active" data-phase="1" role="tab"><span class="n">01</span>基础与活动度</button>
-      <button class="phase-tab" data-phase="2" role="tab"><span class="n">02</span>力量耐力＋基础爆发</button>
-      <button class="phase-tab" data-phase="3" role="tab"><span class="n">03</span>团队级强度</button>
-    </div>
-
-    <div data-phase-group-panels="land">
-    <div class="phase-panel" data-phase="1">
-    <div class="land-grid">
-      <div class="card">
-        <h3>Day 1 · 活动度＋基础</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:468/660;"><video data-src="assets/v/shoulder-circle.mp4" poster="assets/v/shoulder-circle.jpg" muted loop playsinline preload="none" aria-label="Shoulder Circle with Stick/Band 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Shoulder Circle with Stick/Band</div><div class="ex-note">肩关节活动度，预防"游泳肩"</div></div>
-            <span class="badge">2组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/720;"><video data-src="assets/v/hip-switch.mp4" poster="assets/v/hip-switch.jpg" muted loop playsinline preload="none" aria-label="90/90 Hip Switch 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">90/90 Hip Switch</div><div class="ex-note">髋关节活动度</div></div>
-            <span class="badge">2组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/716;"><video data-src="assets/v/bird-dog.mp4" poster="assets/v/bird-dog.jpg" muted loop playsinline preload="none" aria-label="Bird Dog 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Bird Dog</div><div class="ex-note">核心＋对侧协调，最基础的抗旋转</div></div>
-            <span class="badge">3组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:472/686;"><video data-src="assets/v/pushup.mp4" poster="assets/v/pushup.jpg" muted loop playsinline preload="none" aria-label="Push Up（可跪姿） 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Push Up（可跪姿）</div><div class="ex-note">推起力量打底</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:470/638;"><video data-src="assets/v/bw-squat.mp4" poster="assets/v/bw-squat.jpg" muted loop playsinline preload="none" aria-label="Bodyweight Squat 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Bodyweight Squat</div><div class="ex-note">下肢力量打底</div></div>
-            <span class="badge">3组 × 12次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:472/496;"><video data-src="assets/v/side-plank.mp4" poster="assets/v/side-plank.jpg" muted loop playsinline preload="none" aria-label="Side Plank 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Side Plank</div><div class="ex-note">抗侧屈核心</div></div>
-            <span class="badge">2组 × 20秒/侧</span></div>
-          </li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Day 2 · 活动度＋基础</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:470/484;"><video data-src="assets/v/hip-rotation.mp4" poster="assets/v/hip-rotation.jpg" muted loop playsinline preload="none" aria-label="Quadruped Hip Rotation 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Quadruped Hip Rotation</div><div class="ex-note">髋关节活动度</div></div>
-            <span class="badge">2组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:474/412;"><video data-src="assets/v/dead-bug.mp4" poster="assets/v/dead-bug.jpg" muted loop playsinline preload="none" aria-label="Dead Bug 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Dead Bug</div><div class="ex-note">核心抗伸展基础版</div></div>
-            <span class="badge">3组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:482/640;"><video data-src="assets/v/down-up-dog.mp4" poster="assets/v/down-up-dog.jpg" muted loop playsinline preload="none" aria-label="Downward &amp; Up Dog 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Downward &amp; Up Dog</div><div class="ex-note">脊柱活动度</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/716;"><video data-src="assets/v/inverted-row.mp4" poster="assets/v/inverted-row.jpg" muted loop playsinline preload="none" aria-label="Inverted Row（或哑铃划船） 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Inverted Row（或哑铃划船）</div><div class="ex-note">背部拉力基础</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/714;"><video data-src="assets/v/leg-raise.mp4" poster="assets/v/leg-raise.jpg" muted loop playsinline preload="none" aria-label="Supine Leg Raise 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Supine Leg Raise</div><div class="ex-note">核心＋髋屈肌</div></div>
-            <span class="badge">3组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/716;"><video data-src="assets/v/cobra-child.mp4" poster="assets/v/cobra-child.jpg" muted loop playsinline preload="none" aria-label="Cobra to Child Pose Stretch 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Cobra to Child Pose Stretch</div><div class="ex-note">冷身拉伸</div></div>
-            <span class="badge">2组 × 20秒</span></div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <p class="phase-note">这阶段的目的：把关节活动度和基础动作模式建立好，重量和难度都不急，为后面加爆发力打地基。</p>
-    </div>
-
-    <div class="phase-panel" data-phase="2" hidden>
-    <div class="land-grid">
-      <div class="card">
-        <h3>Day 1 · 推拉力量＋爆发</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/720;"><video data-src="assets/v/inchworm.mp4" poster="assets/v/inchworm.jpg" muted loop playsinline preload="none" aria-label="Inchworm 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Inchworm</div><div class="ex-note">热身激活后链，模拟出发前屈体</div></div>
-            <span class="badge">3组 × 5次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/720;"><video data-src="assets/v/hip-switch.mp4" poster="assets/v/hip-switch.jpg" muted loop playsinline preload="none" aria-label="90/90 Hip Switch 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">90/90 Hip Switch</div><div class="ex-note">髋关节活动度，转体发力的基础</div></div>
-            <span class="badge">3组 × 8次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:476/308;"><video data-src="assets/v/hand-release-pushup.mp4" poster="assets/v/hand-release-pushup.jpg" muted loop playsinline preload="none" aria-label="Hand Release Push Up 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Hand Release Push Up</div><div class="ex-note">推起力量，对应出发/转身蹬壁</div></div>
-            <span class="badge">4组 × 8次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/708;"><video data-src="assets/v/lunge-jump.mp4" poster="assets/v/lunge-jump.jpg" muted loop playsinline preload="none" aria-label="Alternate Lunge Jump 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Alternate Lunge Jump</div><div class="ex-note">单侧爆发力，对应出发蹬边</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:464/354;"><video data-src="assets/v/back-extension.mp4" poster="assets/v/back-extension.jpg" muted loop playsinline preload="none" aria-label="Prone Back Extension w/ Pulldown 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Prone Back Extension w/ Pulldown</div><div class="ex-note">背部伸展＋下拉，强化划水后半程</div></div>
-            <span class="badge">3组 × 8次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:472/496;"><video data-src="assets/v/side-plank.mp4" poster="assets/v/side-plank.jpg" muted loop playsinline preload="none" aria-label="Side Plank 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Side Plank</div><div class="ex-note">抗侧屈核心，稳定身体一条线</div></div>
-            <span class="badge">3组 × 20秒/侧</span></div>
-          </li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Day 2 · 肩胛稳定＋抗旋转核心</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:468/660;"><video data-src="assets/v/shoulder-circle.mp4" poster="assets/v/shoulder-circle.jpg" muted loop playsinline preload="none" aria-label="Shoulder Circle w/ Stick 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Shoulder Circle w/ Stick</div><div class="ex-note">肩关节活动度，预防"游泳肩"</div></div>
-            <span class="badge">2组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:590/860;"><video data-src="assets/v/tspine-rotation.mp4" poster="assets/v/tspine-rotation.jpg" muted loop playsinline preload="none" aria-label="Quadruped T-Spine Rotation 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Quadruped T-Spine Rotation</div><div class="ex-note">胸椎旋转，改善自由泳转肩幅度</div></div>
-            <span class="badge">3组 × 8次/侧</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:474/412;"><video data-src="assets/v/dead-bug.mp4" poster="assets/v/dead-bug.jpg" muted loop playsinline preload="none" aria-label="Dead Bug 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Dead Bug</div><div class="ex-note">核心抗伸展，维持身体一条线</div></div>
-            <span class="badge">3组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:476/554;"><video data-src="assets/v/squat-jump.mp4" poster="assets/v/squat-jump.jpg" muted loop playsinline preload="none" aria-label="Squat Jump 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Squat Jump</div><div class="ex-note">下肢爆发力，对应出发蹬边</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/656;"><video data-src="assets/v/plyo-pushup.mp4" poster="assets/v/plyo-pushup.jpg" muted loop playsinline preload="none" aria-label="Plyo Push Up 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Plyo Push Up</div><div class="ex-note">爆发推力，对应出发跳水衔接</div></div>
-            <span class="badge">3组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/714;"><video data-src="assets/v/leg-raise.mp4" poster="assets/v/leg-raise.jpg" muted loop playsinline preload="none" aria-label="Supine Leg Raise 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Supine Leg Raise</div><div class="ex-note">核心+髋屈肌，减少打腿下沉</div></div>
-            <span class="badge">4组 × 10次</span></div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <p class="phase-note">这阶段就是你现在在跟的内容——推拉力量、爆发力和抗旋转核心都覆盖到了，动作名称、组数直接沿用教练给UKM队的S&C配套（bodyweight版本，不需要额外器材），可以待久一点。</p>
-    </div>
-
-    <div class="phase-panel" data-phase="3" hidden>
-    <div class="land-grid">
-      <div class="card">
-        <h3>Day 1 · 进阶推力＋核心</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/688;"><video data-src="assets/v/pike-pushup.mp4" poster="assets/v/pike-pushup.jpg" muted loop playsinline preload="none" aria-label="Pike Push Up 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Pike Push Up</div><div class="ex-note">肩部推力进阶，为爆发力铺垫</div></div>
-            <span class="badge">3组 × 5次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1000/562;"><video data-src="assets/v/staggered-pushup.mp4" poster="assets/v/staggered-pushup.jpg" muted loop playsinline preload="none" aria-label="Alternate Staggered Push Up 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Alternate Staggered Push Up</div><div class="ex-note">单侧负荷更高的推力变式</div></div>
-            <span class="badge">4组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1264/536;"><video data-src="assets/v/shoulder-tap.mp4" poster="assets/v/shoulder-tap.jpg" muted loop playsinline preload="none" aria-label="Shoulder Tap 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Shoulder Tap</div><div class="ex-note">抗旋转核心＋肩部稳定</div></div>
-            <span class="badge">4组 × 20次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:476/554;"><video data-src="assets/v/squat-jump.mp4" poster="assets/v/squat-jump.jpg" muted loop playsinline preload="none" aria-label="Squat Jumps 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Squat Jumps</div><div class="ex-note">下肢爆发力，量比阶段2多一组</div></div>
-            <span class="badge">4组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:488/354;"><video data-src="assets/v/knee-tuck-plank.mp4" poster="assets/v/knee-tuck-plank.jpg" muted loop playsinline preload="none" aria-label="Knee Tuck Plank 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Knee Tuck Plank</div><div class="ex-note">核心＋屈髋速度</div></div>
-            <span class="badge">4组 × 10次</span></div>
-          </li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Day 2 · 进阶爆发＋灵活性</h3>
-        <ul class="ex-list">
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/656;"><video data-src="assets/v/plyo-pushup.mp4" poster="assets/v/plyo-pushup.jpg" muted loop playsinline preload="none" aria-label="Plyo Push Up 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Plyo Push Up</div><div class="ex-note">爆发推力，量比阶段2多一组</div></div>
-            <span class="badge">4组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/708;"><video data-src="assets/v/lunge-jump.mp4" poster="assets/v/lunge-jump.jpg" muted loop playsinline preload="none" aria-label="Alternate Lunge Jump 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Alternate Lunge Jump</div><div class="ex-note">单侧爆发力进阶</div></div>
-            <span class="badge">4组 × 6次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:464/354;"><video data-src="assets/v/back-extension.mp4" poster="assets/v/back-extension.jpg" muted loop playsinline preload="none" aria-label="Prone Back Extension with Pulldown 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Prone Back Extension with Pulldown</div><div class="ex-note">背部力量进阶</div></div>
-            <span class="badge">4组 × 8次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:1280/714;"><video data-src="assets/v/leg-raise.mp4" poster="assets/v/leg-raise.jpg" muted loop playsinline preload="none" aria-label="Supine Leg Raise 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Supine Leg Raise</div><div class="ex-note">核心＋髋屈肌进阶</div></div>
-            <span class="badge">4组 × 10次</span></div>
-          </li>
-          <li>
-            <div class="ex-pic" style="aspect-ratio:590/860;"><video data-src="assets/v/tspine-rotation.mp4" poster="assets/v/tspine-rotation.jpg" muted loop playsinline preload="none" aria-label="Quadruped T-Spine Rotation 示范视频"></video></div>
-            <div class="ex-row"><div class="ex-info"><div class="ex-name">Quadruped T-Spine Rotation</div><div class="ex-note">胸椎旋转进阶</div></div>
-            <span class="badge">4组 × 8次/侧</span></div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <p class="phase-note">如果之后有哑铃或拉力带，可以把对应动作换成负重版本：DB Goblet Squat 3×8、Single Arm DB Row 3×8/侧、Pull Up (Neutral Grip) 3×3–5、Bent Over Row with Band 3×12——这些也是教练原本给队里进阶用的版本，量力而行替换，不强求。</p>
-    </div>
-    </div>
-
-    <p class="small" style="margin-top:12px;">肩部训练后 48 小时内避免高强度蝶泳；如果出现肩前部疼痛，立即降低蝶泳强度并加强康复训练，别拖成慢性"游泳肩"。</p>
-  </section>
-
-  <section id="nutrition">
-    <div class="sec-head">
-      <div class="sec-icon" style="background:var(--gold-soft);color:var(--gold);">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M8 3h8l-1 4H9L8 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 7h10l-1.3 12.2a2 2 0 01-2 1.8H10.3a2 2 0 01-2-1.8L7 7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <h2>营养补给</h2>
-        <div class="sub">蛋白粉负责训练后恢复，代餐负责替代正餐——时间点不能混用</div>
-      </div>
-    </div>
-
-    <div class="protein-goal">
-      <div class="num">128–160g</div>
-      <p>每天蛋白质总目标（三餐 + 蛋白粉合计，按 80kg × 1.6–2.0g/kg 估算），不是靠蛋白粉一项凑够。</p>
-    </div>
-
-    <div class="prod-grid">
-      <div class="prod">
-        <img class="ph" src="assets/on-whey.jpg" alt="ON 金标乳清蛋白粉双倍浓郁巧克力味，配 Blender Bottle 摇杯">
-        <div class="pb">
-          <h3>ON 金标乳清（双倍浓郁巧克力）</h3>
-          <span class="role" style="background:var(--gold-soft);color:var(--gold);">训练后恢复</span>
-          <p>标签写明每份 24g 蛋白、5.5g BCAA，5lb 装 74 份。几乎纯蛋白质、不含纤维，训练后马上喝也不会有肠胃负担，是本计划恢复窗口的首选。</p>
-        </div>
-      </div>
-      <div class="prod">
-        <img class="ph" src="assets/gracekiar.jpg" alt="Gracekiar 可可代餐罐子">
-        <div class="pb">
-          <h3>Gracekiar 可可代餐</h3>
-          <span class="role" style="background:var(--cocoa-soft);color:var(--cocoa);">替代正餐</span>
-          <p>可可+多谷物+益生菌，碳水与膳食纤维含量较高，消化比乳清慢。适合当一整顿正餐用，<b style="color:var(--ink);">不适合训练前 30 分钟内或训练中饮用</b>。</p>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="font-size:15px;margin-top:26px;">训练日时间轴</h3>
-    <div class="timeline">
-      <div class="t-step">
-        <div class="t-dot" style="background:var(--cocoa-soft);color:var(--cocoa);"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></div>
-        <div class="t-time">训练前 60–90 分钟</div>
-        <div class="t-title">Gracekiar 代餐 · 1 份</div>
-        <div class="t-desc">代替这一顿正餐，留足消化时间。</div>
-      </div>
-      <div class="t-step">
-        <div class="t-dot" style="background:var(--land-soft);color:var(--land);"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></div>
-        <div class="t-time">训练前 20–30 分钟（如仍觉得饿）</div>
-        <div class="t-title">快碳水垫底 · 目标15–30g碳水</div>
-        <div class="t-desc">选低纤维、低脂肪、消化快的，量小，够垫一口就行：</div>
-        <div class="food-chips">
-          <span class="chip">香蕉半根~1根</span><span class="chip">蜂蜜水1-2茶匙</span><span class="chip">白吐司1片</span><span class="chip">运动饮料200ml</span><span class="chip">葡萄干5-6颗</span>
-        </div>
-        <div class="t-desc" style="margin-top:6px;">避免：全麦/糙米/燕麦、牛奶酸奶、坚果牛油果——纤维或脂肪高，消化慢容易胀气。<b>不用代餐替代这一步。</b></div>
-      </div>
-      <div class="t-step">
-        <div class="t-dot" style="background:var(--pool-soft);color:var(--pool-ink);"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></div>
-        <div class="t-time">训练中</div>
-        <div class="t-title">只补水（可加电解质）</div>
-        <div class="t-desc">不喝代餐——游泳中无法消化，两段训练间若有 15 分钟以上休息，可喝半份代餐衔接。</div>
-      </div>
-      <div class="t-step">
-        <div class="t-dot" style="background:var(--gold);color:#fff;"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></div>
-        <div class="t-time">训练后 30–60 分钟内<span class="t-flag">关键窗口</span></div>
-        <div class="t-title">乳清蛋白粉 1 勺 + 快碳水</div>
-        <div class="t-desc">水或牛奶冲开，搭配香蕉等快碳水。这是全天恢复效果最直接的一步，尽量不省略。</div>
-      </div>
-      <div class="t-step">
-        <div class="t-dot" style="background:var(--cocoa-soft);color:var(--cocoa);"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></div>
-        <div class="t-time">训练后 2 小时以上才吃正餐</div>
-        <div class="t-title">Gracekiar 代餐过渡（可选）</div>
-        <div class="t-desc">与蛋白粉间隔 30 分钟以上，衔接到下一顿正餐前，不要和蛋白粉同时喝。</div>
-      </div>
-    </div>
-
-    <div class="two-col" style="margin-top:22px;">
-      <div class="card">
-        <h3 style="font-size:14.5px;">训练日</h3>
-        <p class="muted" style="margin-top:8px;">蛋白粉 1–2 勺（视强度，两次训练分开做各 1 勺）；代餐 1 份当训练前正餐，必要时训练后加 1 份过渡。</p>
-      </div>
-      <div class="card">
-        <h3 style="font-size:14.5px;">非训练日</h3>
-        <p class="muted" style="margin-top:8px;">三餐尽量吃真实食物（蛋、鸡胸、鱼、豆制品）；没时间吃正餐时用代餐替代那一餐即可，一般不需要额外蛋白粉。</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="monitor">
-    <div class="sec-head">
-      <div class="sec-icon" style="background:var(--pool-soft);color:var(--pool-ink);">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div>
-        <h2>监测与恢复</h2>
-        <div class="sub">每 4 周看一次效果，睡眠决定训练能不能真正落地</div>
-      </div>
-    </div>
-    <div class="two-col">
-      <div class="card">
-        <h3 style="font-size:14.5px;">每 4 周测试</h3>
-        <p class="muted" style="margin-top:8px;">50m 自由泳计时（速度是否保持）+ 400m 自由泳计时（<b style="color:var(--ink);">耐力提升的直接指标</b>）。记录距离、配速、主观疲劳感受 RPE 1–10。</p>
-      </div>
-      <div class="card">
-        <h3 style="font-size:14.5px;">恢复提醒</h3>
-        <p class="muted" style="margin-top:8px;">睡眠 7–8 小时是恢复的天花板；大量出汗后补水+电解质；若连续两周 RPE 偏高且成绩不升反降，主动减量。</p>
-      </div>
-    </div>
-  </section>
-
   </div>
 
   <div class="app-page" data-page="schedule" id="pageSchedule">
@@ -2116,9 +1658,6 @@
   </section>
   </div>
 
-  <footer>
-    <p>根据你的游泳数据、UKM 队教练给的训练配套、现有装备与营养品（ON 金标乳清 · Gracekiar 可可代餐）定制 · 2026 年 9 月</p>
-  </footer>
 
 </div>
 
@@ -3856,6 +3395,17 @@
       return '<tr><td>' + escHtml(k) + '</td><td>' + Math.round(p) + 'g</td><td>' + Math.round(kc) + '</td><td>' +
         escHtml(dietDays[k].map(function(e){ return e.name + ((Number(e.qty) || 1) > 1 ? '×' + e.qty : ''); }).join('、')) + '</td></tr>';
     }).join('');
+    var tsv = trainState();
+    var tlogs = tsv.trainLogs.slice().sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    var tlogRows = tlogs.map(function(l){
+      return '<tr><td>' + escHtml(l.date) + '</td><td>' + escHtml(l.name || '') + '</td><td>' + (l.durationSec ? Math.round(l.durationSec / 60) + ' 分钟' : '') + '</td><td>' + (l.distanceM ? l.distanceM + ' m' : '') + '</td><td>' + (l.rpe || '') + '</td><td>' + escHtml(l.note || '') + '</td></tr>';
+    }).join('');
+    var tws = tsv.workouts;
+    var twRows = tws.map(function(w){
+      return '<h3>' + escHtml(w.name || '') + '</h3><ul>' + (w.steps || []).map(function(st){
+        return '<li>' + escHtml((st.sec ? st.sec + ' · ' : '') + st.name + ' — ' + (st.sets > 1 ? st.sets + '×' : '') + st.amount + (st.unit || '') + (st.detail ? ' ' + st.detail : '') + (st.note ? '（' + st.note + '）' : '')) + '</li>';
+      }).join('') + '</ul>';
+    }).join('');
     var notes = noteItems.slice().sort(function(a, b){ return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0); });
     var noteCards = notes.map(function(n){
       var body;
@@ -3887,6 +3437,8 @@
       '<h2>时间表（' + sched.length + '）</h2><table><thead><tr><th>星期</th><th>时间</th><th>课程 / 内容</th><th>地点</th><th>类型</th></tr></thead><tbody>' + (schedRows || '<tr><td colspan="5">（空）</td></tr>') + '</tbody></table>' +
       '<h2>待办 / 记录（' + todos.length + '）</h2><ul class="todo">' + (todoRows || '<li>（空）</li>') + '</ul>' +
       '<h2>饮食记录（' + dietKeys.length + ' 天）</h2><table><thead><tr><th>日期</th><th>蛋白质</th><th>热量</th><th>吃了</th></tr></thead><tbody>' + (dietRows || '<tr><td colspan="4">（空）</td></tr>') + '</tbody></table>' +
+      '<h2>训练记录（' + tlogs.length + '）</h2><table><thead><tr><th>日期</th><th>训练</th><th>时长</th><th>距离</th><th>RPE</th><th>备注</th></tr></thead><tbody>' + (tlogRows || '<tr><td colspan="6">（空）</td></tr>') + '</tbody></table>' +
+      '<h2>我的训练（' + tws.length + '）</h2>' + (twRows || '<p>（空）</p>') +
       '<h2>笔记（' + notes.length + '）</h2><div class="notes">' + (noteCards || '（空）') + '</div></main></body></html>';
   }
 
@@ -3898,7 +3450,7 @@
     var stats = $id('bpStats');
     var imgs = allImageIds().length + inlineImageCount();
     stats.innerHTML = '';
-    [['课表', scheduleItems.length], ['待办', todoItems.length], ['笔记', noteItems.length], ['饮食', dietState().diet.length], ['图片', imgs]].forEach(function(s){
+    [['课表', scheduleItems.length], ['待办', todoItems.length], ['笔记', noteItems.length], ['饮食', dietState().diet.length], ['训练记录', trainState().trainLogs.length], ['图片', imgs]].forEach(function(s){
       var d = document.createElement('div');
       d.className = 'bp-stat';
       d.innerHTML = '<b></b><span></span>';
@@ -3958,6 +3510,7 @@
     }
   }
 
+  function trainState(){ return window.__trainState ? window.__trainState() : {workouts: [], trainLogs: [], trainCal: [], trainTests: [], exercises: []}; }
   function dietState(){ return window.__dietState ? window.__dietState() : {diet: [], dietFoods: [], dietSettings: null}; }
   function imageBlobFor(id){
     if(window.PWA && window.PWA.imageBlob) return window.PWA.imageBlob(id);
@@ -3980,13 +3533,14 @@
         imgMap[ids[i]] = name;
       }catch(e){ failed++; }
     }
-    var ds = dietState();
+    var ds = dietState(), ts = trainState();
     var payload = {
       app: 'swimguide-planner', version: 3, exportedAt: stamp.toISOString(),
-      counts: {schedule: scheduleItems.length, todos: todoItems.length, notes: noteItems.length, diet: ds.diet.length, images: ids.length - failed},
+      counts: {schedule: scheduleItems.length, todos: todoItems.length, notes: noteItems.length, diet: ds.diet.length, workouts: ts.workouts.length, trainLogs: ts.trainLogs.length, images: ids.length - failed},
       images: imgMap,
       schedule: stripIds(scheduleItems), todos: stripIds(todoItems), notes: stripIds(noteItems),
-      diet: ds.diet, dietFoods: ds.dietFoods, dietSettings: ds.dietSettings
+      diet: ds.diet, dietFoods: ds.dietFoods, dietSettings: ds.dietSettings,
+      workouts: ts.workouts, trainLogs: ts.trainLogs, trainCal: ts.trainCal, trainTests: ts.trainTests, exercises: ts.exercises
     };
     files.unshift({name: '备份数据.json', data: enc.encode(JSON.stringify(payload, null, 2))});
     files.push({name: '备份查看.html', data: enc.encode(buildViewerHtml(imgMap, exportedAt))});
@@ -4070,7 +3624,8 @@
     return ({jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', gif:'image/gif', webp:'image/webp'})[e] || 'image/jpeg';
   }
   var pendingImport = null;
-  var IMPORT_SETS = [['schedule','课表'], ['todos','待办'], ['notes','笔记'], ['diet','饮食']];
+  var IMPORT_SETS = [['schedule','课表'], ['todos','待办'], ['notes','笔记'], ['diet','饮食'], ['workouts','训练'], ['trainLogs','训练记录']];
+  var IMPORT_EXTRA = [['dietFoods','常用食物'], ['trainCal','训练安排'], ['trainTests','测试成绩'], ['exercises','自定义动作']];
   async function prepareImport(file){
     setBpMsg('正在读取备份…');
     var payload, files = {};
@@ -4083,9 +3638,10 @@
       payload = JSON.parse(new TextDecoder().decode(files[jsonName]));
     }
     var arr = function(x){ return Array.isArray(x) ? x : []; };
-    var data = {schedule: arr(payload.schedule), todos: arr(payload.todos), notes: arr(payload.notes), diet: arr(payload.diet), dietFoods: arr(payload.dietFoods)};
+    var data = {};
+    IMPORT_SETS.concat(IMPORT_EXTRA).forEach(function(x){ data[x[0]] = arr(payload[x[0]]); });
     var dietSettings = payload.dietSettings && typeof payload.dietSettings === 'object' ? payload.dietSettings : null;
-    if(!data.schedule.length && !data.todos.length && !data.notes.length && !data.diet.length) throw new Error('这个文件里没有可以导入的数据');
+    if(!IMPORT_SETS.concat(IMPORT_EXTRA).some(function(x){ return data[x[0]].length; })) throw new Error('这个文件里没有可以导入的数据');
     var imgs = [];
     var map = payload.images || {};
     Object.keys(map).forEach(function(oldId){
@@ -4120,7 +3676,7 @@
         }catch(e){}
       }
       var counts = {};
-      IMPORT_SETS.concat([['dietFoods','常用食物']]).forEach(function(s){
+      IMPORT_SETS.concat(IMPORT_EXTRA).forEach(function(s){
         var name = s[0];
         counts[name] = 0;
         job.data[name].forEach(function(item){
@@ -4952,6 +4508,7 @@
     ['protTarget','kcalRef','model'].forEach(function(k){ if(s[k] != null && s[k] !== '') d[k] = s[k]; });
     db.collection('settings').doc('diet').set(d);
   };
+  window.__appBanner = function(icon, text, label, fn){ banner(icon, text, label, fn); };
   window.__markDriveBackup = function(){ if(db) db.collection('settings').doc('backup').set({lastDrive: Date.now()}); };
 
   wire();
@@ -4981,6 +4538,1230 @@
       renderAll();
       maybeRemind();
     }, function(){});
+  })();
+})();
+</script>
+<script>
+/* ================= TRAINING: own plans, exercise library, workout player, history ================= */
+(function(){
+  'use strict';
+  var TPL = {"packs": [{"id": "swim", "sport": "swim", "name": "游泳 · 有氧耐力 3 阶段", "desc": "每周 2 次下水：A 练有氧技术，B 练阈值和抗阻。每阶段 3–4 周，做完不吃力就进下一阶段。", "phases": ["有氧打底", "阈值过渡", "阈值冲刺强化"], "days": {"a": 6, "b": 0}, "workouts": [{"tpl": "swim1a", "phase": 1, "sport": "swim", "name": "游泳 1A · 有氧技术", "steps": [{"sec": "热身", "name": "自由泳轻松热身", "sets": 1, "amount": 300, "unit": "m", "detail": "", "rest": 0, "note": ""}, {"sec": "主项", "name": "自由泳 · 戴呼吸管+脚蹼", "sets": 6, "amount": 100, "unit": "m", "detail": "@2:00–2:10", "rest": 20, "note": "先适应装备和配速节奏，不追速度"}, {"sec": "放松", "name": "自由泳放松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": ""}]}, {"tpl": "swim1b", "phase": 1, "sport": "swim", "name": "游泳 1B · 装备适应", "steps": [{"sec": "热身", "name": "踢水热身", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": ""}, {"sec": "主项", "name": "自由泳 · 阻力伞+划手板+脚蹼", "sets": 1, "amount": 600, "unit": "m", "detail": "", "rest": 0, "note": "重点是适应阻力，不是游快"}, {"sec": "主项", "name": "自由泳 · 巡航+顺畅", "sets": 4, "amount": 100, "unit": "m", "detail": "(75+25) @1:45", "rest": 0, "note": "不戴装备"}, {"sec": "主项", "name": "蝶泳轻松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": "不刻意冲刺"}, {"sec": "放松", "name": "放松", "sets": 1, "amount": 150, "unit": "m", "detail": "", "rest": 0, "note": ""}]}, {"tpl": "swim2a", "phase": 2, "sport": "swim", "name": "游泳 2A · 有氧技术", "steps": [{"sec": "热身", "name": "自由泳热身 + drill/swim", "sets": 1, "amount": 400, "unit": "m", "detail": "含 4×50 drill/swim", "rest": 0, "note": "可混合泳姿"}, {"sec": "主项", "name": "自由泳 · 戴呼吸管+脚蹼", "sets": 8, "amount": 100, "unit": "m", "detail": "@1:50–2:00", "rest": 15, "note": "稳定配速区间，专注技术不追速度"}, {"sec": "技术", "name": "蝶泳技术 drill（单臂蝶/蝶泳腿）", "sets": 4, "amount": 50, "unit": "m", "detail": "", "rest": 20, "note": "不戴装备"}, {"sec": "放松", "name": "自由泳放松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": "摘掉装备找回真实划水感觉"}]}, {"tpl": "swim2b", "phase": 2, "sport": "swim", "name": "游泳 2B · 阈值＋抗阻", "steps": [{"sec": "热身", "name": "踢水热身", "sets": 1, "amount": 500, "unit": "m", "detail": "200+300", "rest": 0, "note": ""}, {"sec": "主项", "name": "自由泳 · 阻力伞+划手板+脚蹼", "sets": 1, "amount": 1000, "unit": "m", "detail": "", "rest": 0, "note": "中等偏低强度巡航 — 划水力量与抗疲劳技术"}, {"sec": "主项", "name": "自由泳 · 巡航+冲刺", "sets": 5, "amount": 100, "unit": "m", "detail": "(75+25) @1:30", "rest": 0, "note": "不戴装备"}, {"sec": "主项", "name": "蝶泳 · 蝶腰+全蝶冲刺", "sets": 5, "amount": 100, "unit": "m", "detail": "(75+25)", "rest": 0, "note": "蝶泳"}, {"sec": "主项", "name": "Push Sprint", "sets": 4, "amount": 25, "unit": "m", "detail": "", "rest": 0, "note": "出发冲刺，练蹬壁和启动速度"}, {"sec": "放松", "name": "放松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": "可选，视当天疲劳程度"}]}, {"tpl": "swim3a", "phase": 3, "sport": "swim", "name": "游泳 3A · 有氧技术", "steps": [{"sec": "热身", "name": "热身 + drill", "sets": 1, "amount": 400, "unit": "m", "detail": "含 4×50 drill/swim", "rest": 0, "note": ""}, {"sec": "主项", "name": "自由泳 · 戴呼吸管+脚蹼", "sets": 10, "amount": 100, "unit": "m", "detail": "@1:50–2:00", "rest": 15, "note": "保持在70–75%效果 — 量比阶段2多两组"}, {"sec": "技术", "name": "蝶泳技术 drill", "sets": 4, "amount": 50, "unit": "m", "detail": "", "rest": 0, "note": "不戴装备"}, {"sec": "放松", "name": "放松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": ""}]}, {"tpl": "swim3b", "phase": 3, "sport": "swim", "name": "游泳 3B · 阈值冲刺强化", "steps": [{"sec": "热身", "name": "踢水热身", "sets": 1, "amount": 500, "unit": "m", "detail": "200+300", "rest": 0, "note": ""}, {"sec": "主项", "name": "自由泳 · 阻力伞+划手板+脚蹼", "sets": 1, "amount": 1000, "unit": "m", "detail": "", "rest": 0, "note": "维持巡航强度"}, {"sec": "主项", "name": "自由泳 · 冲刺+巡航", "sets": 8, "amount": 50, "unit": "m", "detail": "@1:15", "rest": 0, "note": "冲刺与巡航交替"}, {"sec": "主项", "name": "自由泳 · 配速+快+冲刺", "sets": 3, "amount": 175, "unit": "m", "detail": "(100+50+25) @3:30", "rest": 0, "note": ""}, {"sec": "主项", "name": "Sprint", "sets": 6, "amount": 25, "unit": "m", "detail": "@0:45", "rest": 0, "note": ""}, {"sec": "放松", "name": "蝶泳 · 蝶腰+全蝶冲刺", "sets": 5, "amount": 100, "unit": "m", "detail": "(75+25)", "rest": 0, "note": "蝶泳"}, {"sec": "放松", "name": "放松", "sets": 1, "amount": 200, "unit": "m", "detail": "", "rest": 0, "note": ""}]}]}, {"id": "land", "sport": "land", "name": "陆地 · 游泳体能 3 阶段", "desc": "徒手为主的力量、核心和活动度，每周 2 次，最好和下水日隔开 48 小时。每个动作都有示范视频。", "phases": ["基础与活动度", "力量耐力＋基础爆发", "团队级强度"], "days": {"a": 2, "b": 4}, "workouts": [{"tpl": "land1a", "phase": 1, "sport": "land", "name": "陆地 1A · 活动度＋基础", "steps": [{"sec": "主项", "name": "Shoulder Circle 肩绕环（棍/弹力带）", "exId": "shoulder-circle", "sets": 2, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "90/90 Hip Switch 髋转换", "exId": "hip-switch", "sets": 2, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Bird Dog 鸟狗式", "exId": "bird-dog", "sets": 3, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Push Up 俯卧撑", "exId": "pushup", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Bodyweight Squat 徒手深蹲", "exId": "bw-squat", "sets": 3, "amount": 12, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Side Plank 侧平板", "exId": "side-plank", "sets": 2, "amount": 20, "unit": "秒", "detail": "每侧", "rest": 45, "note": ""}]}, {"tpl": "land1b", "phase": 1, "sport": "land", "name": "陆地 1B · 活动度＋基础", "steps": [{"sec": "主项", "name": "Quadruped Hip Rotation 跪姿髋绕环", "exId": "hip-rotation", "sets": 2, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Dead Bug 死虫式", "exId": "dead-bug", "sets": 3, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Downward & Up Dog 上下犬式", "exId": "down-up-dog", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Inverted Row 反向划船", "exId": "inverted-row", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Supine Leg Raise 仰卧抬腿", "exId": "leg-raise", "sets": 3, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Cobra to Child Pose 眼镜蛇＋婴儿式", "exId": "cobra-child", "sets": 2, "amount": 20, "unit": "秒", "detail": "", "rest": 45, "note": ""}]}, {"tpl": "land2a", "phase": 2, "sport": "land", "name": "陆地 2A · 推拉力量＋爆发", "steps": [{"sec": "主项", "name": "Inchworm 尺蠖爬", "exId": "inchworm", "sets": 3, "amount": 5, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "90/90 Hip Switch 髋转换", "exId": "hip-switch", "sets": 3, "amount": 8, "unit": "次", "detail": "", "rest": 60, "note": "髋关节活动度，转体发力的基础"}, {"sec": "主项", "name": "Hand Release Push Up 离地俯卧撑", "exId": "hand-release-pushup", "sets": 4, "amount": 8, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Alternate Lunge Jump 交替弓步跳", "exId": "lunge-jump", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Prone Back Extension 俯卧背伸＋下拉", "exId": "back-extension", "sets": 3, "amount": 8, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Side Plank 侧平板", "exId": "side-plank", "sets": 3, "amount": 20, "unit": "秒", "detail": "每侧", "rest": 45, "note": "抗侧屈核心，稳定身体一条线"}]}, {"tpl": "land2b", "phase": 2, "sport": "land", "name": "陆地 2B · 肩胛稳定＋抗旋转核心", "steps": [{"sec": "主项", "name": "Shoulder Circle 肩绕环（棍/弹力带）", "exId": "shoulder-circle", "sets": 2, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Quadruped T-Spine Rotation 胸椎旋转", "exId": "tspine-rotation", "sets": 3, "amount": 8, "unit": "次", "detail": "每侧", "rest": 60, "note": ""}, {"sec": "主项", "name": "Dead Bug 死虫式", "exId": "dead-bug", "sets": 3, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": "核心抗伸展，维持身体一条线"}, {"sec": "主项", "name": "Squat Jump 深蹲跳", "exId": "squat-jump", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Plyo Push Up 爆发俯卧撑", "exId": "plyo-pushup", "sets": 3, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Supine Leg Raise 仰卧抬腿", "exId": "leg-raise", "sets": 4, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": "核心+髋屈肌，减少打腿下沉"}]}, {"tpl": "land3a", "phase": 3, "sport": "land", "name": "陆地 3A · 进阶推力＋核心", "steps": [{"sec": "主项", "name": "Pike Push Up 屈体俯卧撑", "exId": "pike-pushup", "sets": 3, "amount": 5, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Staggered Push Up 交错俯卧撑", "exId": "staggered-pushup", "sets": 4, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Shoulder Tap 平板拍肩", "exId": "shoulder-tap", "sets": 4, "amount": 20, "unit": "次", "detail": "", "rest": 60, "note": ""}, {"sec": "主项", "name": "Squat Jump 深蹲跳", "exId": "squat-jump", "sets": 4, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": "下肢爆发力，量比阶段2多一组"}, {"sec": "主项", "name": "Knee Tuck Plank 平板收膝", "exId": "knee-tuck-plank", "sets": 4, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": ""}]}, {"tpl": "land3b", "phase": 3, "sport": "land", "name": "陆地 3B · 进阶爆发＋灵活性", "steps": [{"sec": "主项", "name": "Plyo Push Up 爆发俯卧撑", "exId": "plyo-pushup", "sets": 4, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": "爆发推力，量比阶段2多一组"}, {"sec": "主项", "name": "Alternate Lunge Jump 交替弓步跳", "exId": "lunge-jump", "sets": 4, "amount": 6, "unit": "次", "detail": "", "rest": 60, "note": "单侧爆发力进阶"}, {"sec": "主项", "name": "Prone Back Extension 俯卧背伸＋下拉", "exId": "back-extension", "sets": 4, "amount": 8, "unit": "次", "detail": "", "rest": 60, "note": "背部力量进阶"}, {"sec": "主项", "name": "Supine Leg Raise 仰卧抬腿", "exId": "leg-raise", "sets": 4, "amount": 10, "unit": "次", "detail": "", "rest": 60, "note": "核心＋髋屈肌进阶"}, {"sec": "主项", "name": "Quadruped T-Spine Rotation 胸椎旋转", "exId": "tspine-rotation", "sets": 4, "amount": 8, "unit": "次", "detail": "每侧", "rest": 60, "note": "胸椎旋转进阶"}]}]}], "lib": [{"id": "shoulder-circle", "name": "Shoulder Circle 肩绕环（棍/弹力带）", "cat": "mob", "cue": "肩关节活动度，预防\"游泳肩\"", "ar": [468, 660]}, {"id": "hip-switch", "name": "90/90 Hip Switch 髋转换", "cat": "mob", "cue": "髋关节活动度", "ar": [1280, 720]}, {"id": "bird-dog", "name": "Bird Dog 鸟狗式", "cat": "core", "cue": "核心＋对侧协调，最基础的抗旋转", "ar": [1280, 716]}, {"id": "pushup", "name": "Push Up 俯卧撑", "cat": "push", "cue": "推起力量打底", "ar": [472, 686]}, {"id": "bw-squat", "name": "Bodyweight Squat 徒手深蹲", "cat": "legs", "cue": "下肢力量打底", "ar": [470, 638]}, {"id": "side-plank", "name": "Side Plank 侧平板", "cat": "core", "cue": "抗侧屈核心", "ar": [472, 496]}, {"id": "hip-rotation", "name": "Quadruped Hip Rotation 跪姿髋绕环", "cat": "mob", "cue": "髋关节活动度", "ar": [470, 484]}, {"id": "dead-bug", "name": "Dead Bug 死虫式", "cat": "core", "cue": "核心抗伸展基础版", "ar": [474, 412]}, {"id": "down-up-dog", "name": "Downward & Up Dog 上下犬式", "cat": "mob", "cue": "脊柱活动度", "ar": [482, 640]}, {"id": "inverted-row", "name": "Inverted Row 反向划船", "cat": "pull", "cue": "背部拉力基础", "ar": [1280, 716]}, {"id": "leg-raise", "name": "Supine Leg Raise 仰卧抬腿", "cat": "core", "cue": "核心＋髋屈肌", "ar": [1280, 714]}, {"id": "cobra-child", "name": "Cobra to Child Pose 眼镜蛇＋婴儿式", "cat": "mob", "cue": "冷身拉伸", "ar": [1280, 716]}, {"id": "inchworm", "name": "Inchworm 尺蠖爬", "cat": "mob", "cue": "热身激活后链，模拟出发前屈体", "ar": [1280, 720]}, {"id": "hand-release-pushup", "name": "Hand Release Push Up 离地俯卧撑", "cat": "push", "cue": "推起力量，对应出发/转身蹬壁", "ar": [476, 308]}, {"id": "lunge-jump", "name": "Alternate Lunge Jump 交替弓步跳", "cat": "plyo", "cue": "单侧爆发力，对应出发蹬边", "ar": [1280, 708]}, {"id": "back-extension", "name": "Prone Back Extension 俯卧背伸＋下拉", "cat": "pull", "cue": "背部伸展＋下拉，强化划水后半程", "ar": [464, 354]}, {"id": "tspine-rotation", "name": "Quadruped T-Spine Rotation 胸椎旋转", "cat": "mob", "cue": "胸椎旋转，改善自由泳转肩幅度", "ar": [590, 860]}, {"id": "squat-jump", "name": "Squat Jump 深蹲跳", "cat": "plyo", "cue": "下肢爆发力，对应出发蹬边", "ar": [476, 554]}, {"id": "plyo-pushup", "name": "Plyo Push Up 爆发俯卧撑", "cat": "plyo", "cue": "爆发推力，对应出发跳水衔接", "ar": [1280, 656]}, {"id": "pike-pushup", "name": "Pike Push Up 屈体俯卧撑", "cat": "push", "cue": "肩部推力进阶，为爆发力铺垫", "ar": [1280, 688]}, {"id": "staggered-pushup", "name": "Staggered Push Up 交错俯卧撑", "cat": "push", "cue": "单侧负荷更高的推力变式", "ar": [1000, 562]}, {"id": "shoulder-tap", "name": "Shoulder Tap 平板拍肩", "cat": "core", "cue": "抗旋转核心＋肩部稳定", "ar": [1264, 536]}, {"id": "knee-tuck-plank", "name": "Knee Tuck Plank 平板收膝", "cat": "core", "cue": "核心＋屈髋速度", "ar": [488, 354]}]};
+  function $(id){ return document.getElementById(id); }
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function keyOf(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function todayKey(){ return keyOf(new Date()); }
+  function parseKey(k){ var p = String(k).split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+  function shiftKey(k, days){ var d = parseKey(k); d.setDate(d.getDate() + days); return keyOf(d); }
+  function weekStart(k){ var d = parseKey(k); return shiftKey(k, -((d.getDay() + 6) % 7)); }
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function num(v, d){ var n = Number(v); return isFinite(n) ? n : (d || 0); }
+  function clean(o){ return JSON.parse(JSON.stringify(o)); }
+  var WDN = ['日','一','二','三','四','五','六'];
+  var WD_ORDER = [1, 2, 3, 4, 5, 6, 0];
+
+  /* ---------- reference data ---------- */
+  var VBASE = 'assets/v/';
+  var LIB = TPL.lib, LIBMAP = {};
+  LIB.forEach(function(e){ LIBMAP[e.id] = e; });
+  var CATS = [['all','全部'], ['mob','活动度'], ['core','核心'], ['push','上肢推'], ['pull','背 / 拉'], ['legs','下肢'], ['plyo','爆发'], ['custom','自定义']];
+  var CATNAME = {}; CATS.forEach(function(c){ CATNAME[c[0]] = c[1]; });
+  var ICON = {
+    swim: '<svg viewBox="0 0 24 24" fill="none"><path d="M3 16c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M3 11c1.5 1.3 3 1.3 4.5 0s3-1.3 4.5 0 3 1.3 4.5 0 3-1.3 4.5 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/></svg>',
+    land: '<svg viewBox="0 0 24 24" fill="none"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    run: '<svg viewBox="0 0 24 24" fill="none"><circle cx="14.5" cy="4.5" r="1.9" stroke="currentColor" stroke-width="1.7"/><path d="M7 21l3.2-5.6 3 2.1V22M5.5 11.5 9 8.6l4.2.9 2 3.6 3.3 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    other: '<svg viewBox="0 0 24 24" fill="none"><path d="M13 3 5 14h6l-1 7 8-11h-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>'
+  };
+  var SPORT = {
+    swim: {name: '游泳', c: 'var(--pool)', soft: 'var(--pool-soft)', ink: 'var(--pool-ink)'},
+    land: {name: '陆地', c: 'var(--land)', soft: 'var(--land-soft)', ink: 'var(--land)'},
+    run: {name: '跑步', c: 'var(--gold)', soft: 'var(--gold-soft)', ink: 'var(--gold)'},
+    other: {name: '其他', c: 'var(--plan)', soft: 'var(--plan-soft)', ink: 'var(--plan)'}
+  };
+  function sp(s){ return SPORT[s] || SPORT.other; }
+  var SECS = ['热身', '主项', '技术', '放松'];
+  function secColor(sec, sport){
+    var c = sp(sport).c;
+    if(sec === '热身') return 'color-mix(in srgb, ' + c + ' 38%, var(--surface))';
+    if(sec === '技术') return 'var(--gold)';
+    if(sec === '放松') return 'color-mix(in srgb, var(--ink-faint) 45%, var(--surface))';
+    return c;
+  }
+  var UNITS = ['m', '次', '秒', '分钟'];
+  var RPE = [[1,'很轻松'],[2,'很轻松'],[3,'轻松'],[4,'轻松'],[5,'中等'],[6,'中等'],[7,'吃力'],[8,'吃力'],[9,'极限'],[10,'极限']];
+  var EVENTS = ['50m 自由泳', '100m 自由泳', '200m 自由泳', '400m 自由泳', '50m 蝶泳', '100m 混合泳', '1km 跑步', '5km 跑步'];
+
+  /* ---------- state ---------- */
+  var db = null;
+  var W = {}, logs = [], cal = [], tests = [], customEx = {};
+  var loaded = {w: false, l: false};
+  var ui = {tab: 'today', sel: todayKey(), libCat: 'all', libQ: '', metric: 'dist'};
+  try{ var st = localStorage.getItem('tn-tab'); if(st && /^(today|plans|lib|hist)$/.test(st)) ui.tab = st; }catch(e){}
+
+  /* ---------- derived ---------- */
+  function workoutsArr(){
+    return Object.keys(W).map(function(id){ return Object.assign({id: id}, W[id]); }).sort(function(a, b){
+      return String(a.group || '').localeCompare(String(b.group || ''), 'zh') || num(a.order) - num(b.order) || num(a.createdAt) - num(b.createdAt);
+    });
+  }
+  function getW(id){ return W[id] ? Object.assign({id: id}, W[id]) : null; }
+  function getEx(id){
+    if(!id) return null;
+    if(LIBMAP[id]) return LIBMAP[id];
+    if(id.indexOf('cx-') === 0 && customEx[id.slice(3)]) return Object.assign({id: id, cat: 'custom', custom: true, docId: id.slice(3)}, customEx[id.slice(3)]);
+    return null;
+  }
+  function allEx(){
+    return LIB.concat(Object.keys(customEx).map(function(k){ return Object.assign({id: 'cx-' + k, custom: true, docId: k}, customEx[k], {cat: customEx[k].cat || 'custom'}); }));
+  }
+  function stepDist(s){ return s.unit === 'm' ? Math.max(1, num(s.sets, 1)) * num(s.amount) : 0; }
+  function stepSecs(s){
+    var sets = Math.max(1, num(s.sets, 1)), a = num(s.amount), rest = num(s.rest), side = /每侧|\/侧/.test(s.detail || '') ? 2 : 1;
+    var m = /@\s*(\d+):(\d{2})/.exec(s.detail || '');
+    if(s.unit === 'm') return m ? sets * ((+m[1]) * 60 + (+m[2])) : sets * a * 1.2 + rest * (sets - 1);
+    var work = s.unit === '秒' ? a * side : s.unit === '分钟' ? a * 60 * side : a * 3 * side;
+    return sets * work + rest * Math.max(0, sets - 1) + 20;
+  }
+  function totals(w){
+    var d = 0, t = 0;
+    (w.steps || []).forEach(function(s){ d += stepDist(s); t += stepSecs(s); });
+    return {dist: d, secs: t, n: (w.steps || []).length};
+  }
+  function fmtDist(m){ return Math.round(m).toLocaleString('en-US') + ' m'; }
+  function fmtKm(m){ return m >= 10000 ? Math.round(m / 1000) + ' km' : (m / 1000).toFixed(1).replace(/\.0$/, '') + ' km'; }
+  function fmtDur(sec){
+    var mn = Math.round(num(sec) / 60);
+    if(mn < 60) return mn + ' 分钟';
+    var h = Math.floor(mn / 60), r = mn % 60;
+    return h + ' 小时' + (r ? ' ' + r + ' 分' : '');
+  }
+  function fmtDurShort(sec){ var mn = Math.round(num(sec) / 60); return mn < 60 ? mn + '<small> 分</small>' : Math.floor(mn / 60) + '<small> 时</small>' + (mn % 60 ? ' ' + (mn % 60) + '<small> 分</small>' : ''); }
+  function fmtClock(sec){
+    sec = Math.max(0, Math.floor(sec));
+    var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    return (h ? h + ':' + pad(m) : pad(m)) + ':' + pad(s);
+  }
+  function fmtTime(sec){ // race time
+    sec = num(sec); if(!sec) return '—';
+    var m = Math.floor(sec / 60), s = sec - m * 60;
+    var ss = s.toFixed(s % 1 ? 1 : 0);
+    if(m) return m + ':' + (s < 10 ? '0' : '') + ss;
+    return ss + ' 秒';
+  }
+  function parseRaceTime(t){
+    var m = /^\s*(?:(\d+)\s*[:：]\s*)?(\d+(?:\.\d+)?)\s*$/.exec(String(t || ''));
+    if(!m) return 0;
+    return (m[1] ? +m[1] * 60 : 0) + parseFloat(m[2]);
+  }
+  function target(s){
+    var sets = Math.max(1, num(s.sets, 1)), a = num(s.amount), d = s.detail ? ' ' + s.detail : '';
+    if(s.unit === 'm') return (sets > 1 ? sets + '×' : '') + a + 'm' + d;
+    var u = s.unit === '秒' ? ' 秒' : s.unit === '分钟' ? ' 分钟' : ' 次';
+    return (sets > 1 ? sets + ' 组 × ' : '') + a + u + d;
+  }
+  function metaLine(w){
+    var t = totals(w), parts = [];
+    if(t.dist) parts.push(fmtDist(t.dist));
+    if(t.secs) parts.push('约 ' + fmtDur(t.secs));
+    parts.push(t.n + (w.sport === 'land' ? ' 个动作' : ' 步'));
+    return parts.join(' · ');
+  }
+  function createdKey(w){ return w.createdAt ? keyOf(new Date(w.createdAt)) : '2000-01-01'; }
+  function plannedOn(k){
+    var out = [], seen = {}, dow = parseKey(k).getDay();
+    var skip = {};
+    cal.forEach(function(c){ if(c.date === k && c.skip) skip[c.workoutId] = c.id; });
+    workoutsArr().forEach(function(w){
+      if((w.days || []).indexOf(dow) >= 0 && k >= createdKey(w) && !skip[w.id]){ out.push({w: w, src: 'week'}); seen[w.id] = 1; }
+    });
+    cal.forEach(function(c){
+      if(c.date === k && !c.skip && W[c.workoutId] && !seen[c.workoutId]){ out.push({w: getW(c.workoutId), src: 'cal', calId: c.id}); seen[c.workoutId] = 1; }
+    });
+    return out;
+  }
+  function logsOn(k){ return logs.filter(function(l){ return l.date === k; }).sort(function(a, b){ return num(a.createdAt) - num(b.createdAt); }); }
+  function logFor(wid, k){ return logs.filter(function(l){ return l.date === k && l.workoutId === wid; })[0] || null; }
+  function weekSum(ws){
+    var r = {planned: 0, done: 0, dist: 0, secs: 0, sessions: 0};
+    for(var i = 0; i < 7; i++){
+      var k = shiftKey(ws, i), pl = plannedOn(k);
+      r.planned += pl.length;
+      pl.forEach(function(p){ if(logFor(p.w.id, k)) r.done++; });
+      logsOn(k).forEach(function(l){ r.dist += num(l.distanceM); r.secs += num(l.durationSec); r.sessions++; });
+    }
+    return r;
+  }
+  function pendingToday(){
+    var k = todayKey();
+    return plannedOn(k).filter(function(p){ return !logFor(p.w.id, k); }).map(function(p){ return p.w; });
+  }
+
+  /* ---------- writes ---------- */
+  function col(n){ return db.collection(n); }
+  function saveW(id, data){ data = clean(data); if(id){ W[id] = data; return col('workouts').doc(id).set(data); } return col('workouts').add(data); }
+  function delW(id){
+    delete W[id];
+    col('workouts').doc(id).delete();
+    cal.filter(function(c){ return c.workoutId === id; }).forEach(function(c){ col('trainCal').doc(c.id).delete(); });
+  }
+
+  /* ---------- toast ---------- */
+  var toastT = null;
+  function toast(msg){
+    var t = $('tnToast');
+    if(!t){ t = document.createElement('div'); t.id = 'tnToast'; t.className = 'tn-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- sheets (stackable dialogs) ---------- */
+  var sheets = [];
+  function openSheet(o){
+    var back = document.createElement('div');
+    back.className = 'tn-sheet-back';
+    back.style.zIndex = 300 + sheets.length * 2;
+    back.innerHTML = '<div class="tn-sheet ' + (o.cls || '') + '" role="dialog" aria-modal="true" aria-label="' + esc(o.title) + '">' +
+      '<div class="tn-sh-head"><h3>' + esc(o.title) + '</h3><button type="button" class="tn-x" data-act="close" aria-label="关闭">×</button></div>' +
+      '<div class="tn-sh-body">' + (o.body || '') + '</div>' + (o.foot ? '<div class="tn-sh-foot">' + o.foot + '</div>' : '') + '</div>';
+    document.body.appendChild(back);
+    document.body.classList.add('tn-lock');
+    var entry = {el: back, acts: o.acts || {}, onClose: o.onClose};
+    sheets.push(entry);
+    back.addEventListener('click', function(e){
+      if(e.target === back){ closeSheet(entry); return; }
+      var b = e.target.closest('[data-act]');
+      if(!b || !back.contains(b)) return;
+      var a = b.dataset.act;
+      if(a === 'close'){ closeSheet(entry); return; }
+      if(entry.acts[a]) entry.acts[a](b, e);
+    });
+    var sh = back.querySelector('.tn-sheet');
+    if(o.mount) o.mount(sh, entry);
+    setTimeout(function(){ back.classList.add('open'); }, 10);
+    var f = sh.querySelector('[autofocus]'); if(f && window.innerWidth > 700) f.focus();
+    return entry;
+  }
+  function closeSheet(entry){
+    entry = entry || sheets[sheets.length - 1];
+    if(!entry) return;
+    var i = sheets.indexOf(entry);
+    if(i >= 0) sheets.splice(i, 1);
+    entry.el.querySelectorAll('video').forEach(function(v){ try{ v.pause(); }catch(e){} });
+    entry.el.remove();
+    if(!sheets.length && !playerOpen()) document.body.classList.remove('tn-lock');
+    if(entry.onClose) entry.onClose();
+  }
+  function setSheetBody(entry, html){ entry.el.querySelector('.tn-sh-body').innerHTML = html; }
+  function armDelete(btn, label, fn){
+    if(btn.dataset.armed){ fn(); return; }
+    btn.dataset.armed = '1'; var old = btn.textContent; btn.textContent = label || '再点一次确认删除'; btn.classList.add('armed');
+    setTimeout(function(){ if(btn.isConnected){ delete btn.dataset.armed; btn.textContent = old; btn.classList.remove('armed'); } }, 3000);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape') return;
+    if(sheets.length){ closeSheet(); e.preventDefault(); }
+  });
+
+  /* ---------- small renderers ---------- */
+  function spTile(sport, size){
+    var S = sp(sport);
+    return '<span class="tn-sp' + (size ? ' ' + size : '') + '" style="background:' + S.soft + ';color:' + S.ink + ';" aria-hidden="true">' + (ICON[sport] || ICON.other) + '</span>';
+  }
+  function segBar(w){
+    var steps = w.steps || [], tot = 0, by = {}, useDist = totals(w).dist > 0 && w.sport === 'swim';
+    steps.forEach(function(s){ var v = useDist ? stepDist(s) : stepSecs(s); by[s.sec || '主项'] = (by[s.sec || '主项'] || 0) + v; tot += v; });
+    if(!tot) return '';
+    var order = SECS.concat(Object.keys(by).filter(function(k){ return SECS.indexOf(k) < 0; }));
+    var h = '<div class="tn-seg" aria-hidden="true">';
+    order.forEach(function(k){ if(by[k]) h += '<span style="flex:' + by[k] + ';background:' + secColor(k, w.sport) + ';" title="' + esc(k) + '"></span>'; });
+    return h + '</div>';
+  }
+  function exThumb(id, cls){
+    var e = getEx(id);
+    if(e && LIBMAP[id]) return '<img class="' + (cls || 'tn-thumb') + '" src="' + VBASE + id + '.jpg" alt="" loading="lazy">';
+    return '<span class="' + (cls || 'tn-thumb') + ' ph" aria-hidden="true">' + ICON.land + '</span>';
+  }
+  function stepsList(w, limit, full){
+    var steps = w.steps || [];
+    if(!steps.length) return '<p class="tn-faint">还没有步骤，点「编辑」添加。</p>';
+    var h = '<ol class="tn-steps' + (full ? ' full' : '') + '">', lastSec = null;
+    steps.slice(0, limit).forEach(function(s, i){
+      if(full && s.sec !== lastSec){ h += '<li class="tn-sec-h">' + esc(s.sec || '主项') + '</li>'; lastSec = s.sec; }
+      var sub = [];
+      if(full && num(s.rest) && num(s.sets, 1) > 1) sub.push('组间休息 ' + num(s.rest) + ' 秒');
+      if(full && s.note) sub.push(esc(s.note));
+      if(full && s.exId && getEx(s.exId) && getEx(s.exId).cue) sub.push('要点：' + esc(getEx(s.exId).cue));
+      h += '<li class="tn-step">' + (full && s.exId ? '<button type="button" class="tn-thumb-btn" data-act="exinfo" data-ex="' + esc(s.exId) + '" aria-label="看 ' + esc(s.name) + ' 示范">' + exThumb(s.exId) + '</button>' :
+        '<span class="tn-dot" style="background:' + secColor(s.sec, w.sport) + ';"></span>') +
+        '<div class="tn-step-b"><div class="tn-step-r"><span class="nm">' + esc(s.name || '未命名') + '</span><span class="tg">' + esc(target(s)) + '</span></div>' +
+        (sub.length ? '<div class="tn-step-sub">' + sub.join(' · ') + '</div>' : '') + '</div></li>';
+    });
+    if(steps.length > limit) h += '<li class="tn-more">还有 ' + (steps.length - limit) + ' 步…</li>';
+    return h + '</ol>';
+  }
+  function wdChips(w){
+    var h = '<div class="tn-wd" role="group" aria-label="每周哪几天练"><span class="tn-wd-l">每周</span>';
+    WD_ORDER.forEach(function(d){
+      var on = (w.days || []).indexOf(d) >= 0;
+      h += '<button type="button" class="tn-wd-b' + (on ? ' on' : '') + '" data-act="wd" data-wid="' + w.id + '" data-d="' + d + '" aria-pressed="' + on + '">' + WDN[d] + '</button>';
+    });
+    return h + '</div>';
+  }
+  function wCard(w, o){
+    o = o || {};
+    var h = '<article class="tn-w card' + (o.done ? ' done' : '') + '" data-wid="' + w.id + '">';
+    h += '<div class="tn-w-top">' + spTile(w.sport) +
+      '<button type="button" class="tn-w-title" data-act="detail" data-wid="' + w.id + '"' + (o.date ? ' data-date="' + o.date + '"' : '') + '><span class="tn-w-name">' + esc(w.name || '未命名训练') + '</span>' +
+      '<span class="tn-w-meta">' + esc(metaLine(w)) + '</span></button>' + (o.badge || '') + '</div>';
+    h += segBar(w);
+    h += stepsList(w, o.limit || 4, false);
+    if(o.wd) h += wdChips(w);
+    if(o.actions) h += '<div class="tn-w-act">' + o.actions + '</div>';
+    return h + '</article>';
+  }
+  function rpeLabel(r){ r = num(r); return r ? 'RPE ' + r + ' · ' + RPE[Math.min(9, Math.max(0, r - 1))][1] : ''; }
+  function logLine(l){
+    var parts = [];
+    if(num(l.durationSec)) parts.push(fmtDur(l.durationSec));
+    if(num(l.distanceM)) parts.push(fmtDist(l.distanceM));
+    if(num(l.rpe)) parts.push('RPE ' + l.rpe);
+    return parts.join(' · ');
+  }
+
+  /* ================= TODAY ================= */
+  function dayTitle(k){
+    var d = parseKey(k), t = todayKey();
+    var pre = k === t ? '今天' : k === shiftKey(t, 1) ? '明天' : k === shiftKey(t, -1) ? '昨天' : '周' + WDN[d.getDay()];
+    return pre + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日' + (pre.indexOf('周') === 0 ? '' : ' 周' + WDN[d.getDay()]);
+  }
+  function onboardingHtml(){
+    var h = '<div class="tn-onb card"><h3>开始你的训练计划</h3><p class="tn-faint">从模板加入，或者自己从零开始建。加进来之后每一项都可以改、删，也可以选每周哪几天练。</p>';
+    TPL.packs.forEach(function(p){
+      h += '<div class="tn-pack">' + spTile(p.sport) + '<div class="tn-pack-b"><b>' + esc(p.name) + '</b><p>' + esc(p.desc) + '</p></div>' +
+        '<button type="button" class="tn-btn sm" data-act="tpl" data-pack="' + p.id + '">查看</button></div>';
+    });
+    h += '<button type="button" class="tn-btn ghost wide" data-act="new">自己新建一个训练</button></div>';
+    return h;
+  }
+  function resumeHtml(){
+    var P = loadPlayer();
+    if(!P) return '';
+    return '<div class="tn-resume card"><div><b>有一个训练还没结束</b><span>' + esc(P.name) + ' · 已进行 ' + fmtClock(elapsed(P)) + '</span></div>' +
+      '<button type="button" class="tn-btn sm" data-act="resume">继续</button><button type="button" class="tn-btn ghost sm" data-act="dropresume">放弃</button></div>';
+  }
+  function renderToday(){
+    var el = $('tnToday');
+    if(!el) return;
+    if(!loaded.w || !loaded.l){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; return; }
+    var t = todayKey(), ws = weekStart(ui.sel), h = resumeHtml();
+    h += '<div class="tn-week card"><div class="tn-week-head">' +
+      '<button type="button" class="tn-icon" data-act="wprev" aria-label="上一周">‹</button>' +
+      '<div class="tn-week-title">' + (parseKey(ws).getMonth() + 1) + '月' + parseKey(ws).getDate() + '日 – ' + (parseKey(shiftKey(ws, 6)).getMonth() + 1) + '月' + parseKey(shiftKey(ws, 6)).getDate() + '日' +
+      (ws === weekStart(t) ? '<span class="tn-pill">本周</span>' : '<button type="button" class="tn-pill link" data-act="wnow">回到本周</button>') + '</div>' +
+      '<button type="button" class="tn-icon" data-act="wnext" aria-label="下一周">›</button></div><div class="tn-days">';
+    for(var i = 0; i < 7; i++){
+      var k = shiftKey(ws, i), pl = plannedOn(k), lg = logsOn(k), dots = '', label = [];
+      pl.forEach(function(p){
+        var dn = !!logFor(p.w.id, k);
+        dots += '<i class="' + (dn ? 'on' : (k < t ? 'miss' : '')) + '" style="--c:' + sp(p.w.sport).c + '"></i>';
+        label.push(p.w.name + (dn ? '（已完成）' : ''));
+      });
+      lg.forEach(function(l){ if(!pl.some(function(p){ return p.w.id === l.workoutId; })){ dots += '<i class="on" style="--c:' + sp(l.sport).c + '"></i>'; label.push(l.name + '（已完成）'); } });
+      var d = parseKey(k);
+      h += '<button type="button" class="tn-day' + (k === ui.sel ? ' sel' : '') + (k === t ? ' today' : '') + '" data-act="day" data-day="' + k + '" aria-pressed="' + (k === ui.sel) + '" aria-label="' + esc((d.getMonth() + 1) + '月' + d.getDate() + '日' + (label.length ? '：' + label.join('、') : '：没有训练')) + '">' +
+        '<span class="wd">' + WDN[d.getDay()] + '</span><span class="dn">' + d.getDate() + '</span><span class="tn-dots">' + dots + '</span></button>';
+    }
+    var s = weekSum(ws);
+    h += '</div><div class="tn-sum">' +
+      '<div><b>' + s.done + '<small> / ' + s.planned + '</small></b><span>完成计划</span></div>' +
+      '<div><b>' + (s.dist ? fmtKm(s.dist) : '0') + '</b><span>游泳距离</span></div>' +
+      '<div><b>' + (s.secs ? fmtDurShort(s.secs) : '0') + '</b><span>训练时长</span></div></div></div>';
+
+    if(!workoutsArr().length && !logs.length){ el.innerHTML = h + onboardingHtml(); return; }
+
+    var k0 = ui.sel, pl0 = plannedOn(k0), lg0 = logsOn(k0);
+    h += '<div class="tn-dayhead"><h3>' + dayTitle(k0) + '</h3><div class="tn-dayact">' +
+      '<button type="button" class="tn-btn ghost sm" data-act="addday">+ 安排训练</button>' +
+      '<button type="button" class="tn-btn ghost sm" data-act="logday">+ 记一次</button></div></div>';
+    if(!pl0.length && !lg0.length) h += '<p class="tn-faint tn-pad">' + (k0 < t ? '这天没有训练记录。' : '这天没有安排训练，休息也是训练的一部分。') + '</p>';
+    pl0.forEach(function(p){
+      var lg = logFor(p.w.id, k0);
+      var badge = lg ? '<span class="tn-done-b">✓ 已完成</span>' : (k0 < t ? '<span class="tn-miss-b">没练</span>' : '');
+      var acts = lg ? '<span class="tn-done-line">' + esc(logLine(lg)) + '</span><button type="button" class="tn-btn ghost sm" data-act="editlog" data-log="' + lg.id + '">查看记录</button>' :
+        '<button type="button" class="tn-btn go" data-act="start" data-wid="' + p.w.id + '" data-date="' + k0 + '">' + playIcon() + '开始训练</button>' +
+        '<button type="button" class="tn-btn ghost sm" data-act="quicklog" data-wid="' + p.w.id + '" data-date="' + k0 + '">直接记完成</button>' +
+        (p.src === 'cal' ? '<button type="button" class="tn-btn ghost sm" data-act="uncal" data-cal="' + p.calId + '">移除</button>' :
+          '<button type="button" class="tn-btn ghost sm" data-act="skip" data-wid="' + p.w.id + '" data-date="' + k0 + '">这天不练</button>');
+      h += wCard(p.w, {date: k0, badge: badge, actions: acts, done: !!lg});
+    });
+    lg0.forEach(function(l){
+      if(pl0.some(function(p){ return p.w.id === l.workoutId; })) return;
+      h += '<article class="tn-w card done tn-logcard"><div class="tn-w-top">' + spTile(l.sport) + '<button type="button" class="tn-w-title" data-act="editlog" data-log="' + l.id + '"><span class="tn-w-name">' + esc(l.name || '训练') + '</span><span class="tn-w-meta">' + esc(logLine(l)) + '</span></button><span class="tn-done-b">✓ 已完成</span></div>' +
+        (l.note ? '<p class="tn-lognote">' + esc(l.note) + '</p>' : '') + '</article>';
+    });
+    el.innerHTML = h;
+  }
+  function playIcon(){ return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>'; }
+
+  /* ================= MY WORKOUTS ================= */
+  function renderPlans(){
+    var el = $('tnPlans');
+    if(!el) return;
+    if(!loaded.w){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; return; }
+    var arr = workoutsArr();
+    var h = '<div class="tn-toolbar"><button type="button" class="tn-btn" data-act="new">+ 新建训练</button><button type="button" class="tn-btn ghost" data-act="tpl">从模板添加</button></div>';
+    if(!arr.length){ el.innerHTML = h + onboardingHtml(); return; }
+    var groups = {}, order = [];
+    arr.forEach(function(w){ var g = w.group || '未分组'; if(!groups[g]){ groups[g] = []; order.push(g); } groups[g].push(w); });
+    order.sort(function(a, b){ return (a === '未分组') - (b === '未分组') || a.localeCompare(b, 'zh'); });
+    order.forEach(function(g){
+      h += '<h3 class="tn-group">' + esc(g) + ' <span>' + groups[g].length + '</span></h3>';
+      groups[g].forEach(function(w){
+        h += wCard(w, {wd: true, limit: 3, actions:
+          '<button type="button" class="tn-btn go sm" data-act="start" data-wid="' + w.id + '">' + playIcon() + '开始</button>' +
+          '<button type="button" class="tn-btn ghost sm" data-act="edit" data-wid="' + w.id + '">编辑</button>' +
+          '<button type="button" class="tn-btn ghost sm" data-act="dup" data-wid="' + w.id + '">复制</button>' +
+          '<button type="button" class="tn-btn ghost sm danger" data-act="del" data-wid="' + w.id + '">删除</button>'});
+      });
+    });
+    el.innerHTML = h;
+  }
+
+  /* ================= LIBRARY ================= */
+  function renderLib(){
+    var el = $('tnLib');
+    if(!el) return;
+    var q = ui.libQ.trim().toLowerCase();
+    var list = allEx().filter(function(e){
+      if(ui.libCat !== 'all' && (ui.libCat === 'custom' ? !e.custom : e.cat !== ui.libCat)) return false;
+      return !q || (e.name + ' ' + (e.cue || '')).toLowerCase().indexOf(q) >= 0;
+    });
+    var focusQ = document.activeElement && document.activeElement.id === 'tnLibQ';
+    var h = '<div class="tn-libbar"><input type="search" id="tnLibQ" placeholder="搜索动作（中文或英文）" value="' + esc(ui.libQ) + '" aria-label="搜索动作">' +
+      '<button type="button" class="tn-btn ghost sm" data-act="newex">+ 自定义动作</button></div><div class="tn-chips" role="group" aria-label="分类">';
+    CATS.forEach(function(c){ h += '<button type="button" class="tn-chip' + (ui.libCat === c[0] ? ' on' : '') + '" data-act="cat" data-cat="' + c[0] + '" aria-pressed="' + (ui.libCat === c[0]) + '">' + c[1] + '</button>'; });
+    h += '</div>';
+    if(!list.length) h += '<p class="tn-faint tn-pad">' + (ui.libCat === 'custom' && !q ? '还没有自定义动作。点「+ 自定义动作」加一个。' : '没有找到这个动作。') + '</p>';
+    h += '<div class="tn-lib-grid">';
+    list.forEach(function(e){
+      h += '<button type="button" class="tn-ex card" data-act="exinfo" data-ex="' + esc(e.id) + '">' +
+        '<span class="tn-ex-pic">' + (LIBMAP[e.id] ? '<img src="' + VBASE + e.id + '.jpg" alt="" loading="lazy"><span class="tn-play" aria-hidden="true">' + playIcon() + '</span>' : '<span class="ph">' + ICON.land + '</span>') + '</span>' +
+        '<span class="tn-ex-b"><span class="tn-ex-n">' + esc(e.name) + '</span>' + (e.cue ? '<span class="tn-ex-c">' + esc(e.cue) + '</span>' : '') +
+        '<span class="tn-ex-cat">' + esc(CATNAME[e.cat] || '自定义') + '</span></span></button>';
+    });
+    el.innerHTML = h + '</div>';
+    var inp = $('tnLibQ');
+    if(focusQ && inp){ inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  }
+  function openExInfo(id){
+    var e = getEx(id);
+    if(!e){ toast('这个动作已经被删除了。'); return; }
+    var users = workoutsArr().filter(function(w){ return (w.steps || []).some(function(s){ return s.exId === id; }); });
+    var body = (LIBMAP[id] ? '<div class="tn-exvid" style="aspect-ratio:' + (e.ar ? e.ar[0] + '/' + e.ar[1] : '16/9') + ';"><video src="' + VBASE + id + '.mp4" poster="' + VBASE + id + '.jpg" muted loop playsinline autoplay preload="auto"></video></div>' : '') +
+      '<div class="tn-exmeta"><span class="tn-ex-cat">' + esc(CATNAME[e.cat] || '自定义') + '</span></div>' +
+      (e.cue ? '<p class="tn-excue"><b>要点：</b>' + esc(e.cue) + '</p>' : '') +
+      '<p class="tn-faint">' + (users.length ? '用在：' + users.map(function(w){ return esc(w.name); }).join('、') : '还没有用在任何训练里。') + '</p>';
+    var foot = (e.custom ? '<button type="button" class="tn-btn ghost sm danger" data-act="delex">删除</button><button type="button" class="tn-btn ghost sm" data-act="editex">编辑</button>' : '') +
+      '<span class="sp"></span><button type="button" class="tn-btn" data-act="addto">加入训练…</button>';
+    openSheet({title: e.name, body: body, foot: foot, cls: 'ex', acts: {
+      addto: function(){ pickWorkoutFor(id); },
+      editex: function(){ editCustomEx(e.docId); },
+      delex: function(b){ armDelete(b, '再点一次删除', function(){ col('exercises').doc(e.docId).delete(); delete customEx[e.docId]; closeSheet(); renderLib(); toast('已删除动作'); }); }
+    }});
+  }
+  function pickWorkoutFor(exId){
+    var e = getEx(exId), arr = workoutsArr();
+    arr.sort(function(a, b){ return (b.sport === 'land') - (a.sport === 'land'); });
+    var body = '<div class="tn-picklist">' + arr.map(function(w){
+      return '<button type="button" class="tn-pick" data-act="pick" data-wid="' + w.id + '">' + spTile(w.sport, 'sm') + '<span><b>' + esc(w.name) + '</b><small>' + esc(metaLine(w)) + '</small></span></button>';
+    }).join('') + '</div>' + (arr.length ? '' : '<p class="tn-faint">还没有训练。</p>');
+    openSheet({title: '把「' + e.name + '」加到…', body: body, foot: '<button type="button" class="tn-btn ghost" data-act="newwith">新建一个训练</button>', acts: {
+      pick: function(b){
+        var w = getW(b.dataset.wid);
+        w.steps = (w.steps || []).concat([newExStep(exId)]);
+        w.updatedAt = Date.now();
+        var id = w.id; delete w.id; saveW(id, w);
+        closeSheet(); closeSheet();
+        toast('已加入「' + w.name + '」（3 组 × 10 次，可以在编辑里改）');
+        renderAll();
+      },
+      newwith: function(){ closeSheet(); closeSheet(); openEditor(null, {sport: 'land', name: '', steps: [newExStep(exId)]}); }
+    }});
+  }
+  function newExStep(exId){
+    var e = getEx(exId) || {name: '动作'};
+    var timed = /plank|stretch|平板|拉伸|child/i.test(e.name) && !/tap|tuck|拍肩|收膝/i.test(e.name);
+    return {sec: '主项', name: e.name, exId: exId, sets: 3, amount: timed ? 30 : 10, unit: timed ? '秒' : '次', detail: '', rest: 60, note: ''};
+  }
+  function editCustomEx(docId){
+    var e = docId ? customEx[docId] : {name: '', cat: 'core', cue: ''};
+    var opts = CATS.filter(function(c){ return c[0] !== 'all'; }).map(function(c){ return '<option value="' + c[0] + '"' + ((e.cat || 'custom') === c[0] ? ' selected' : '') + '>' + c[1] + '</option>'; }).join('');
+    openSheet({title: docId ? '编辑动作' : '自定义动作', body:
+      '<label class="tn-field"><span>动作名称</span><input id="cxName" maxlength="60" value="' + esc(e.name) + '" placeholder="例如：哑铃划船" autofocus></label>' +
+      '<label class="tn-field"><span>分类</span><select id="cxCat">' + opts + '</select></label>' +
+      '<label class="tn-field"><span>要点（可选）</span><textarea id="cxCue" maxlength="160" rows="3" placeholder="动作要领、注意事项">' + esc(e.cue || '') + '</textarea></label>' +
+      '<p class="tn-msg" id="cxMsg"></p>',
+      foot: '<span class="sp"></span><button type="button" class="tn-btn ghost" data-act="close">取消</button><button type="button" class="tn-btn" data-act="save">保存</button>',
+      acts: {save: function(){
+        var name = $('cxName').value.trim();
+        if(!name){ $('cxMsg').textContent = '先填动作名称。'; return; }
+        var d = {name: name, cat: $('cxCat').value, cue: $('cxCue').value.trim(), updatedAt: Date.now()};
+        if(docId){ d.createdAt = e.createdAt || Date.now(); customEx[docId] = d; col('exercises').doc(docId).set(d); }
+        else { d.createdAt = Date.now(); col('exercises').add(d); }
+        closeSheet(); if(docId) closeSheet();
+        toast('已保存动作'); renderLib();
+      }}});
+  }
+
+  /* ================= HISTORY ================= */
+  function streakWeeks(){
+    var ws = weekStart(todayKey()), n = 0;
+    var has = function(w){ for(var i = 0; i < 7; i++) if(logsOn(shiftKey(w, i)).length) return true; return false; };
+    if(!has(ws)) ws = shiftKey(ws, -7);
+    while(has(ws) && n < 520){ n++; ws = shiftKey(ws, -7); }
+    return n;
+  }
+  function chartHtml(){
+    var weeks = [], ws = weekStart(todayKey());
+    for(var i = 7; i >= 0; i--) weeks.push(shiftKey(ws, -7 * i));
+    var M = {dist: ['游泳距离', 'km'], time: ['训练时长', '分钟'], count: ['训练次数', '次']}[ui.metric];
+    var vals = weeks.map(function(w){
+      var v = 0;
+      for(var i = 0; i < 7; i++) logsOn(shiftKey(w, i)).forEach(function(l){
+        if(ui.metric === 'dist'){ if(l.sport === 'swim') v += num(l.distanceM) / 1000; }
+        else if(ui.metric === 'time') v += num(l.durationSec) / 60;
+        else v += 1;
+      });
+      return Math.round(v * 10) / 10;
+    });
+    if(ui.metric === 'time'){
+      if(Math.max.apply(null, vals) >= 180){ M = ['训练时长', '小时']; vals = vals.map(function(v){ return Math.round(v / 6) / 10; }); }
+      else vals = vals.map(function(v){ return Math.round(v); });
+    }
+    var host = $('tnHist'), cw0 = host && host.clientWidth ? host.clientWidth - 30 : 640;
+    var max = Math.max.apply(null, vals), top = niceTop(max || 1), Wd = Math.max(280, Math.min(720, cw0)), Hh = 190, L = 34, R = 8, T = 16, B = 26;
+    var pw = Wd - L - R, ph = Hh - T - B, cw = pw / weeks.length, bw = Math.min(38, cw * 0.56);
+    var color = ui.metric === 'dist' ? 'var(--pool)' : 'var(--plan)';
+    var svg = '<svg class="tn-chart" viewBox="0 0 ' + Wd + ' ' + Hh + '" role="img" aria-label="最近 8 周' + M[0] + '">';
+    [0, 0.5, 1].forEach(function(f){
+      var y = T + ph - ph * f;
+      svg += '<line x1="' + L + '" x2="' + (Wd - R) + '" y1="' + y + '" y2="' + y + '" class="g"/>' +
+        '<text x="' + (L - 6) + '" y="' + (y + 4) + '" text-anchor="end" class="ax">' + fmtNum(top * f) + '</text>';
+    });
+    vals.forEach(function(v, i){
+      var x = L + cw * i + (cw - bw) / 2, hgt = top ? ph * v / top : 0, y = T + ph - hgt, d = parseKey(weeks[i]);
+      var cur = i === vals.length - 1;
+      if(hgt > 0.5){
+        var r = Math.min(4, hgt, bw / 2);
+        svg += '<path class="bar" d="M' + x + ' ' + (T + ph) + 'V' + (y + r) + 'Q' + x + ' ' + y + ' ' + (x + r) + ' ' + y + 'H' + (x + bw - r) + 'Q' + (x + bw) + ' ' + y + ' ' + (x + bw) + ' ' + (y + r) + 'V' + (T + ph) + 'Z" style="fill:' + color + ';' + (cur ? '' : 'opacity:.78;') + '"/>';
+      }
+      if(cur && v) svg += '<text x="' + (x + bw / 2) + '" y="' + (y - 5) + '" text-anchor="middle" class="vl">' + fmtNum(v) + '</text>';
+      svg += '<text x="' + (x + bw / 2) + '" y="' + (Hh - 8) + '" text-anchor="middle" class="ax' + (cur ? ' cur' : '') + '">' + (cur ? '本周' : (d.getMonth() + 1) + '/' + d.getDate()) + '</text>' +
+        '<rect class="hit" x="' + (L + cw * i) + '" y="' + T + '" width="' + cw + '" height="' + (ph + B) + '" data-tip="' + esc((d.getMonth() + 1) + '月' + d.getDate() + '日那周 · ' + M[0] + ' ' + fmtNum(v) + ' ' + M[1]) + '" tabindex="0"/>';
+    });
+    svg += '</svg>';
+    var segs = [['dist','游泳距离'], ['time','时长'], ['count','次数']].map(function(m){
+      return '<button type="button" class="tn-chip' + (ui.metric === m[0] ? ' on' : '') + '" data-act="metric" data-m="' + m[0] + '" aria-pressed="' + (ui.metric === m[0]) + '">' + m[1] + '</button>';
+    }).join('');
+    var table = '<details class="tn-tbl"><summary>看表格</summary><table><thead><tr><th>那周（周一）</th><th>' + M[0] + '（' + M[1] + '）</th></tr></thead><tbody>' +
+      weeks.map(function(w, i){ var d = parseKey(w); return '<tr><td>' + (d.getMonth() + 1) + '月' + d.getDate() + '日</td><td>' + fmtNum(vals[i]) + '</td></tr>'; }).reverse().join('') + '</tbody></table></details>';
+    return '<div class="card tn-chartcard"><div class="tn-card-h"><h3>每周' + M[0] + '<small>（' + M[1] + '）</small></h3><div class="tn-chips sm">' + segs + '</div></div>' +
+      '<div class="tn-chartwrap">' + svg + '<div class="tn-tip" hidden></div></div>' + table + '</div>';
+  }
+  function niceTop(v){ var p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; }
+  function fmtNum(v){ return (Math.round(v * 10) / 10).toString(); }
+  function testsHtml(){
+    var by = {};
+    tests.forEach(function(t){ (by[t.event] = by[t.event] || []).push(t); });
+    var evs = Object.keys(by).sort(function(a, b){ return a.localeCompare(b, 'zh'); });
+    var h = '<div class="card tn-tests"><div class="tn-card-h"><h3>测试成绩 · 个人最好</h3><button type="button" class="tn-btn ghost sm" data-act="addtest">+ 记成绩</button></div>';
+    if(!evs.length) h += '<p class="tn-faint">每 4 周测一次，例如 50m 和 400m 自由泳计时，就能看到耐力有没有进步。</p>';
+    else {
+      h += '<table class="tn-ttable"><thead><tr><th>项目</th><th>最好</th><th>最近</th><th>比第一次</th></tr></thead><tbody>';
+      evs.forEach(function(ev){
+        var arr = by[ev].slice().sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : num(a.createdAt) - num(b.createdAt); });
+        var best = arr.reduce(function(m, t){ return num(t.sec) < num(m.sec) ? t : m; }, arr[0]), last = arr[arr.length - 1], first = arr[0];
+        var diff = arr.length > 1 ? num(last.sec) - num(first.sec) : 0;
+        h += '<tr data-act="testev" data-ev="' + esc(ev) + '" tabindex="0"><td>' + esc(ev) + '<small>' + arr.length + ' 次</small></td><td class="pb">' + fmtTime(best.sec) + '</td><td>' + fmtTime(last.sec) + '<small>' + esc(last.date.slice(5).replace('-', '/')) + '</small></td>' +
+          '<td class="' + (diff < 0 ? 'up' : diff > 0 ? 'down' : '') + '">' + (arr.length > 1 ? (diff < 0 ? '快 ' : diff > 0 ? '慢 ' : '') + (diff ? Math.abs(diff).toFixed(1) + ' 秒' : '持平') : '—') + '</td></tr>';
+      });
+      h += '</tbody></table>';
+    }
+    return h + '</div>';
+  }
+  function renderHist(){
+    var el = $('tnHist');
+    if(!el) return;
+    if(!loaded.l){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; return; }
+    var t = todayKey(), mk = t.slice(0, 7), month = logs.filter(function(l){ return String(l.date).slice(0, 7) === mk; });
+    var mDist = 0, mSecs = 0;
+    month.forEach(function(l){ if(l.sport === 'swim') mDist += num(l.distanceM); mSecs += num(l.durationSec); });
+    var h = '<div class="tn-stats">' +
+      '<div class="card"><b>' + month.length + '</b><span>本月训练次数</span></div>' +
+      '<div class="card"><b>' + streakWeeks() + '<small> 周</small></b><span>连续训练</span></div>' +
+      '<div class="card"><b>' + (mDist ? fmtKm(mDist) : '0') + '</b><span>本月游泳</span></div>' +
+      '<div class="card"><b>' + (mSecs ? fmtDurShort(mSecs) : '0') + '</b><span>本月时长</span></div></div>';
+    h += chartHtml() + testsHtml();
+    h += '<div class="tn-card-h tn-histh"><h3>训练记录</h3><button type="button" class="tn-btn ghost sm" data-act="logday" data-today="1">+ 记一次训练</button></div>';
+    var sorted = logs.slice().sort(function(a, b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : num(b.createdAt) - num(a.createdAt); });
+    if(!sorted.length) h += '<p class="tn-faint tn-pad">还没有记录。完成一次训练后会出现在这里。</p>';
+    var lastM = '';
+    sorted.slice(0, 200).forEach(function(l){
+      var m = String(l.date).slice(0, 7);
+      if(m !== lastM){ h += '<div class="tn-month">' + m.replace('-', ' 年 ') + ' 月</div>'; lastM = m; }
+      var d = parseKey(l.date);
+      h += '<button type="button" class="tn-hrow" data-act="editlog" data-log="' + l.id + '"><span class="tn-hdate"><b>' + d.getDate() + '</b><small>周' + WDN[d.getDay()] + '</small></span>' + spTile(l.sport, 'sm') +
+        '<span class="tn-hb"><span class="nm">' + esc(l.name || '训练') + '</span><span class="mt">' + esc(logLine(l)) + (l.note ? ' · ' + esc(l.note) : '') + '</span></span>' +
+        (num(l.rpe) ? '<span class="tn-rpe r' + Math.ceil(num(l.rpe) / 2) + '">' + l.rpe + '</span>' : '') + '</button>';
+    });
+    el.innerHTML = h;
+  }
+  function openTestEv(ev){
+    var arr = tests.filter(function(t){ return t.event === ev; }).sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    var best = Math.min.apply(null, arr.map(function(t){ return num(t.sec); }));
+    var body = '<ul class="tn-tlist">' + arr.map(function(t){
+      return '<li><span>' + esc(t.date) + '</span><b' + (num(t.sec) === best ? ' class="pb"' : '') + '>' + fmtTime(t.sec) + (num(t.sec) === best ? ' · 最好' : '') + '</b>' + (t.note ? '<small>' + esc(t.note) + '</small>' : '') +
+        '<button type="button" class="tn-btn ghost xs danger" data-act="deltest" data-id="' + t.id + '">删除</button></li>';
+    }).join('') + '</ul>';
+    openSheet({title: ev, body: body, foot: '<span class="sp"></span><button type="button" class="tn-btn" data-act="add">+ 再记一次</button>', acts: {
+      deltest: function(b){ armDelete(b, '确认？', function(){ col('trainTests').doc(b.dataset.id).delete(); tests = tests.filter(function(t){ return t.id !== b.dataset.id; }); closeSheet(); renderHist(); toast('已删除'); }); },
+      add: function(){ closeSheet(); addTest(ev); }
+    }});
+  }
+  function addTest(ev){
+    var known = {}; EVENTS.concat(tests.map(function(t){ return t.event; })).forEach(function(e){ known[e] = 1; });
+    openSheet({title: '记测试成绩', body:
+      '<label class="tn-field"><span>项目</span><input id="tsEv" list="tsEvList" value="' + esc(ev || '') + '" placeholder="例如：50m 自由泳" maxlength="40" autofocus></label>' +
+      '<datalist id="tsEvList">' + Object.keys(known).map(function(e){ return '<option value="' + esc(e) + '">'; }).join('') + '</datalist>' +
+      '<div class="tn-row2"><label class="tn-field"><span>成绩（分:秒）</span><input id="tsTime" inputmode="decimal" placeholder="0:29.5 或 29.5"></label>' +
+      '<label class="tn-field"><span>日期</span><input id="tsDate" type="date" value="' + todayKey() + '" max="' + todayKey() + '"></label></div>' +
+      '<label class="tn-field"><span>备注（可选）</span><input id="tsNote" maxlength="80" placeholder="例如：短池、出发台"></label><p class="tn-msg" id="tsMsg"></p>',
+      foot: '<span class="sp"></span><button type="button" class="tn-btn ghost" data-act="close">取消</button><button type="button" class="tn-btn" data-act="save">保存</button>',
+      acts: {save: function(){
+        var e = $('tsEv').value.trim(), s = parseRaceTime($('tsTime').value);
+        if(!e){ $('tsMsg').textContent = '先填项目。'; return; }
+        if(!s){ $('tsMsg').textContent = '成绩格式不对，例如 0:29.5 或 6:45。'; return; }
+        col('trainTests').add({event: e, sec: Math.round(s * 10) / 10, date: $('tsDate').value || todayKey(), note: $('tsNote').value.trim(), createdAt: Date.now()});
+        closeSheet(); toast('已记下 ' + e + ' ' + fmtTime(s));
+      }}});
+  }
+
+  /* ================= LOG SHEET (manual / edit) ================= */
+  function openLog(o){
+    // o: {log} to edit, or {date, wid}
+    var l = o.log ? Object.assign({}, o.log) : {date: o.date || todayKey(), workoutId: o.wid || '', name: '', sport: 'swim', durationSec: 0, distanceM: 0, rpe: 0, note: ''};
+    if(!o.log && o.wid && W[o.wid]){ var w = getW(o.wid), t = totals(w); l.name = w.name; l.sport = w.sport; l.durationSec = Math.round(t.secs / 60) * 60; l.distanceM = t.dist; }
+    var wopts = '<option value="">（自由训练，不对应计划）</option>' + workoutsArr().map(function(w){ return '<option value="' + w.id + '"' + (w.id === l.workoutId ? ' selected' : '') + '>' + esc(w.name) + '</option>'; }).join('');
+    var spOpts = Object.keys(SPORT).map(function(k){ return '<option value="' + k + '"' + (l.sport === k ? ' selected' : '') + '>' + SPORT[k].name + '</option>'; }).join('');
+    var body =
+      '<div class="tn-row2"><label class="tn-field"><span>日期</span><input id="lgDate" type="date" value="' + esc(l.date) + '" max="' + todayKey() + '"></label>' +
+      '<label class="tn-field"><span>类型</span><select id="lgSport">' + spOpts + '</select></label></div>' +
+      '<label class="tn-field"><span>对应的训练</span><select id="lgW">' + wopts + '</select></label>' +
+      '<label class="tn-field"><span>名称</span><input id="lgName" maxlength="60" value="' + esc(l.name) + '" placeholder="例如：自由游 30 分钟"></label>' +
+      '<div class="tn-row2"><label class="tn-field"><span>时长（分钟）</span><input id="lgDur" type="number" min="0" inputmode="numeric" value="' + (num(l.durationSec) ? Math.round(num(l.durationSec) / 60) : '') + '"></label>' +
+      '<label class="tn-field"><span>距离（米）</span><input id="lgDist" type="number" min="0" inputmode="numeric" value="' + (num(l.distanceM) || '') + '"></label></div>' +
+      rpeField(l.rpe) +
+      '<label class="tn-field"><span>备注</span><textarea id="lgNote" rows="2" maxlength="300" placeholder="感觉、配速、哪里不舒服…">' + esc(l.note || '') + '</textarea></label><p class="tn-msg" id="lgMsg"></p>';
+    var foot = (o.log ? '<button type="button" class="tn-btn ghost sm danger" data-act="dellog">删除记录</button>' : '') + '<span class="sp"></span>' +
+      '<button type="button" class="tn-btn ghost" data-act="close">取消</button><button type="button" class="tn-btn" data-act="save">保存</button>';
+    openSheet({title: o.log ? '训练记录' : '记一次训练', body: body, foot: foot, mount: function(sh){
+      wireRpe(sh);
+      $('lgW').addEventListener('change', function(){
+        var w = getW(this.value); if(!w) return;
+        var t = totals(w);
+        $('lgName').value = w.name; $('lgSport').value = w.sport || 'other';
+        if(!$('lgDur').value) $('lgDur').value = Math.round(t.secs / 60);
+        if(!$('lgDist').value && t.dist) $('lgDist').value = t.dist;
+      });
+    }, acts: {
+      rpe: function(b){ selectRpe(b); },
+      save: function(){
+        var d = {
+          date: $('lgDate').value || todayKey(), workoutId: $('lgW').value || '', sport: $('lgSport').value,
+          name: $('lgName').value.trim() || (getW($('lgW').value) || {}).name || SPORT[$('lgSport').value].name + '训练',
+          durationSec: Math.max(0, Math.round(num($('lgDur').value) * 60)), distanceM: Math.max(0, Math.round(num($('lgDist').value))),
+          rpe: num(currentRpe()), note: $('lgNote').value.trim(),
+          createdAt: o.log ? (o.log.createdAt || Date.now()) : Date.now(), updatedAt: Date.now()
+        };
+        if(d.date > todayKey()){ $('lgMsg').textContent = '不能记未来的日期。'; return; }
+        if(o.log) col('trainLogs').doc(o.log.id).set(clean(d)); else col('trainLogs').add(clean(d));
+        closeSheet(); toast(o.log ? '已更新记录' : '已记下 ✓');
+      },
+      dellog: function(b){ armDelete(b, '再点一次删除', function(){ col('trainLogs').doc(o.log.id).delete(); logs = logs.filter(function(x){ return x.id !== o.log.id; }); closeSheet(); renderAll(); toast('已删除记录'); }); }
+    }});
+  }
+  var rpeSel = 0;
+  function rpeField(v){
+    rpeSel = num(v);
+    var h = '<div class="tn-field"><span>疲劳度 RPE <small id="rpeLbl">' + (rpeSel ? esc(rpeLabel(rpeSel)) : '1 很轻松 → 10 极限') + '</small></span><div class="tn-rpes" role="radiogroup" aria-label="疲劳度">';
+    for(var i = 1; i <= 10; i++) h += '<button type="button" class="tn-rpeb r' + Math.ceil(i / 2) + (rpeSel === i ? ' on' : '') + '" data-act="rpe" data-v="' + i + '" role="radio" aria-checked="' + (rpeSel === i) + '">' + i + '</button>';
+    return h + '</div></div>';
+  }
+  function wireRpe(){}
+  function selectRpe(b){
+    rpeSel = num(b.dataset.v);
+    b.parentNode.querySelectorAll('.tn-rpeb').forEach(function(x){ var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+    var lb = $('rpeLbl'); if(lb) lb.textContent = rpeLabel(rpeSel);
+  }
+  function currentRpe(){ return rpeSel; }
+
+  /* ================= TEMPLATES ================= */
+  function openTemplates(packId){
+    var have = {};
+    workoutsArr().forEach(function(w){ if(w.tpl) have[w.tpl] = 1; });
+    var packs = TPL.packs.filter(function(p){ return !packId || p.id === packId; });
+    var body = '';
+    packs.forEach(function(p){
+      body += '<div class="tn-tplpack"><div class="tn-tplhead">' + spTile(p.sport) + '<div><b>' + esc(p.name) + '</b><p>' + esc(p.desc) + '</p></div></div>';
+      p.phases.forEach(function(phName, pi){
+        body += '<div class="tn-tplph">阶段 ' + (pi + 1) + ' · ' + esc(phName) + '</div>';
+        p.workouts.filter(function(w){ return w.phase === pi + 1; }).forEach(function(w){
+          var dis = have[w.tpl];
+          body += '<label class="tn-tplw' + (dis ? ' dis' : '') + '"><input type="checkbox" data-tpl="' + w.tpl + '"' + (dis ? ' disabled' : ' checked') + '>' +
+            '<span><b>' + esc(w.name) + '</b><small>' + (dis ? '已添加' : esc(metaLine(w))) + '</small></span>' +
+            '<button type="button" class="tn-btn ghost xs" data-act="tplview" data-tpl="' + w.tpl + '">看内容</button></label>';
+        });
+      });
+      var dsel = function(name, v){ return '<select data-day="' + name + '" data-pack="' + p.id + '">' + WD_ORDER.map(function(d){ return '<option value="' + d + '"' + (d === v ? ' selected' : '') + '>周' + WDN[d] + '</option>'; }).join('') + '</select>'; };
+      body += '<label class="tn-tplsched"><input type="checkbox" data-sched="' + p.id + '" checked><span>把阶段 1 排进每周：A ' + dsel('a', p.days.a) + ' B ' + dsel('b', p.days.b) + '</span></label></div>';
+    });
+    openSheet({title: '从模板添加', body: body, cls: 'wide',
+      foot: '<span class="tn-faint sm">之后可以随时编辑、删除。</span><span class="sp"></span><button type="button" class="tn-btn" data-act="apply">加入选中的训练</button>',
+      acts: {
+        tplview: function(b, e){ e.preventDefault(); var w = tplById(b.dataset.tpl); openSheet({title: w.name, body: '<p class="tn-faint">' + esc(metaLine(w)) + '</p>' + segBar(w) + stepsList(Object.assign({id: ''}, w), 99, true), cls: 'detail'}); },
+        apply: function(){
+          var sh = sheets[sheets.length - 1].el, n = 0, now = Date.now();
+          sh.querySelectorAll('input[data-tpl]:checked:not(:disabled)').forEach(function(cb, i){
+            var w = tplById(cb.dataset.tpl), p = TPL.packs.filter(function(x){ return x.workouts.indexOf(w) >= 0; })[0];
+            var days = [];
+            var sc = sh.querySelector('input[data-sched="' + p.id + '"]');
+            if(sc && sc.checked && w.phase === 1){
+              var letter = w.tpl.slice(-1);
+              days = [num(sh.querySelector('select[data-pack="' + p.id + '"][data-day="' + letter + '"]').value)];
+            }
+            saveW(null, {name: w.name, sport: w.sport, group: p.name.split(' · ')[0] + ' · 阶段' + w.phase + ' ' + p.phases[w.phase - 1], note: '', steps: w.steps, days: days, tpl: w.tpl, order: i, createdAt: now + i, updatedAt: now});
+            n++;
+          });
+          if(!n){ toast('没有选中训练。'); return; }
+          closeSheet();
+          toast('已加入 ' + n + ' 个训练');
+          switchTab('plans');
+        }
+      }});
+  }
+  function tplById(id){ var r = null; TPL.packs.forEach(function(p){ p.workouts.forEach(function(w){ if(w.tpl === id) r = w; }); }); return r; }
+
+  /* ================= DETAIL ================= */
+  function openDetail(wid, date){
+    var w = getW(wid);
+    if(!w) return;
+    var body = '<div class="tn-dmeta">' + spTile(w.sport) + '<div><b>' + esc(sp(w.sport).name) + (w.group ? ' · ' + esc(w.group) : '') + '</b><span>' + esc(metaLine(w)) + '</span></div></div>' +
+      segBar(w) + legendHtml(w) + stepsList(w, 999, true) + (w.note ? '<p class="tn-wnote">' + esc(w.note) + '</p>' : '') + wdChips(w);
+    openSheet({title: w.name, body: body, cls: 'detail',
+      foot: '<button type="button" class="tn-btn ghost sm danger" data-act="del">删除</button><button type="button" class="tn-btn ghost sm" data-act="dup">复制</button><button type="button" class="tn-btn ghost sm" data-act="edit">编辑</button><span class="sp"></span>' +
+        '<button type="button" class="tn-btn go" data-act="start">' + playIcon() + '开始训练</button>',
+      acts: {
+        start: function(){ closeSheet(); startPlayer(wid, date); },
+        edit: function(){ closeSheet(); openEditor(wid); },
+        dup: function(){ closeSheet(); dupW(wid); },
+        del: function(b){ armDelete(b, '再点一次删除', function(){ closeSheet(); delW(wid); renderAll(); toast('已删除训练'); }); },
+        exinfo: function(b){ openExInfo(b.dataset.ex); },
+        wd: function(b){ toggleWd(b); }
+      }});
+  }
+  function legendHtml(w){
+    var seen = {}, h = '<div class="tn-legend">';
+    (w.steps || []).forEach(function(s){ var k = s.sec || '主项'; if(!seen[k]){ seen[k] = 1; h += '<span><i style="background:' + secColor(k, w.sport) + '"></i>' + esc(k) + '</span>'; } });
+    return h + '</div>';
+  }
+  function dupW(wid){
+    var w = getW(wid); delete w.id;
+    w.name = w.name + '（副本）'; w.days = []; delete w.tpl; w.createdAt = Date.now(); w.updatedAt = Date.now();
+    saveW(null, w); toast('已复制');
+  }
+  function toggleWd(b){
+    var w = getW(b.dataset.wid); if(!w) return;
+    var d = num(b.dataset.d), days = (w.days || []).slice(), i = days.indexOf(d);
+    if(i >= 0) days.splice(i, 1); else days.push(d);
+    w.days = days; w.updatedAt = Date.now();
+    var id = w.id; delete w.id; saveW(id, w);
+    var on = i < 0;
+    document.querySelectorAll('.tn-wd-b[data-wid="' + id + '"][data-d="' + d + '"]').forEach(function(x){ x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+    toast(on ? '每周' + WDN[d] + '练「' + w.name + '」' : '周' + WDN[d] + '不再安排');
+    renderToday();
+  }
+
+  /* ================= EDITOR ================= */
+  var ed = null;
+  function openEditor(wid, preset){
+    var src = wid ? getW(wid) : Object.assign({name: '', sport: 'swim', group: '', note: '', steps: [], days: []}, preset || {});
+    ed = clean(src); ed.id = wid || null;
+    if(!ed.steps) ed.steps = [];
+    var groups = {}; workoutsArr().forEach(function(w){ if(w.group) groups[w.group] = 1; });
+    var body = '<label class="tn-field"><span>训练名称</span><input id="edName" maxlength="60" value="' + esc(ed.name) + '" placeholder="例如：周六 · 有氧耐力"' + (wid ? '' : ' autofocus') + '></label>' +
+      '<div class="tn-field"><span>类型</span><div class="tn-segbtn" role="radiogroup" aria-label="类型">' + Object.keys(SPORT).map(function(k){
+        return '<button type="button" data-act="sport" data-sp="' + k + '" role="radio" aria-checked="' + (ed.sport === k) + '" class="' + (ed.sport === k ? 'on' : '') + '">' + ICON[k] + SPORT[k].name + '</button>'; }).join('') + '</div></div>' +
+      '<label class="tn-field"><span>分组（可选，用来整理）</span><input id="edGroup" list="edGroups" maxlength="40" value="' + esc(ed.group || '') + '" placeholder="例如：游泳 · 阶段1"></label>' +
+      '<datalist id="edGroups">' + Object.keys(groups).map(function(g){ return '<option value="' + esc(g) + '">'; }).join('') + '</datalist>' +
+      '<div class="tn-ed-h"><b>步骤</b><span id="edTot" class="tn-faint"></span></div><div id="edSteps"></div>' +
+      '<div class="tn-ed-add"><button type="button" class="tn-btn ghost sm" data-act="addswim">+ 游泳组</button><button type="button" class="tn-btn ghost sm" data-act="addex">+ 动作（动作库）</button><button type="button" class="tn-btn ghost sm" data-act="addother">+ 其他步骤</button></div>' +
+      '<label class="tn-field"><span>备注（可选）</span><textarea id="edNote" rows="2" maxlength="400" placeholder="这次训练的目的、注意事项">' + esc(ed.note || '') + '</textarea></label><p class="tn-msg" id="edMsg"></p>';
+    openSheet({title: wid ? '编辑训练' : '新建训练', body: body, cls: 'editor',
+      foot: (wid ? '<button type="button" class="tn-btn ghost sm danger" data-act="del">删除</button>' : '') + '<span class="sp"></span><button type="button" class="tn-btn ghost" data-act="close">取消</button><button type="button" class="tn-btn" data-act="save">保存</button>',
+      mount: function(sh){
+        renderSteps();
+        sh.addEventListener('input', onEdInput);
+        sh.addEventListener('change', onEdInput);
+      },
+      acts: {
+        sport: function(b){ ed.sport = b.dataset.sp; b.parentNode.querySelectorAll('button').forEach(function(x){ var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); }); renderSteps(); },
+        addswim: function(){ ed.steps.push({sec: '主项', name: '自由泳', sets: 4, amount: 100, unit: 'm', detail: '', rest: 20, note: ''}); renderSteps(true); },
+        addother: function(){ ed.steps.push({sec: '主项', name: '', sets: 1, amount: 10, unit: '分钟', detail: '', rest: 0, note: ''}); renderSteps(true); },
+        addex: function(){ pickExercise(function(id){ ed.steps.push(newExStep(id)); renderSteps(true); }); },
+        up: function(b){ var i = num(b.dataset.i); if(i > 0){ var t = ed.steps[i]; ed.steps[i] = ed.steps[i - 1]; ed.steps[i - 1] = t; renderSteps(); } },
+        down: function(b){ var i = num(b.dataset.i); if(i < ed.steps.length - 1){ var t = ed.steps[i]; ed.steps[i] = ed.steps[i + 1]; ed.steps[i + 1] = t; renderSteps(); } },
+        rm: function(b){ ed.steps.splice(num(b.dataset.i), 1); renderSteps(); },
+        dupstep: function(b){ var i = num(b.dataset.i); ed.steps.splice(i + 1, 0, clean(ed.steps[i])); renderSteps(); },
+        exinfo: function(b){ openExInfo(b.dataset.ex); },
+        save: saveEditor,
+        del: function(b){ armDelete(b, '再点一次删除', function(){ closeSheet(); delW(ed.id); renderAll(); toast('已删除训练'); }); }
+      }});
+  }
+  function onEdInput(e){
+    var f = e.target.dataset && e.target.dataset.f;
+    if(!f) return;
+    var row = e.target.closest('.tn-st'); if(!row) return;
+    var s = ed.steps[num(row.dataset.i)]; if(!s) return;
+    s[f] = (f === 'sets' || f === 'amount' || f === 'rest') ? (e.target.value === '' ? '' : num(e.target.value)) : e.target.value;
+    if(f === 'sec'){ var dot = row.querySelector('.tn-dot'); if(dot) dot.style.background = secColor(s.sec, ed.sport); }
+    updEdTot();
+  }
+  function updEdTot(){
+    var t = totals(ed), el = $('edTot');
+    if(el) el.textContent = (t.dist ? fmtDist(t.dist) + ' · ' : '') + (t.secs ? '约 ' + fmtDur(t.secs) : '');
+  }
+  function renderSteps(scrollEnd){
+    var box = $('edSteps'); if(!box) return;
+    if(!ed.steps.length){ box.innerHTML = '<p class="tn-faint tn-ed-empty">还没有步骤。用下面的按钮加游泳组或动作。</p>'; updEdTot(); return; }
+    box.innerHTML = ed.steps.map(function(s, i){
+      var secOpts = SECS.map(function(x){ return '<option' + (s.sec === x ? ' selected' : '') + '>' + x + '</option>'; }).join('');
+      var unitOpts = UNITS.map(function(u){ return '<option value="' + u + '"' + (s.unit === u ? ' selected' : '') + '>' + u + '</option>'; }).join('');
+      return '<div class="tn-st" data-i="' + i + '">' +
+        '<div class="tn-st-h"><span class="tn-st-n">' + (i + 1) + '</span>' +
+        (s.exId ? '<button type="button" class="tn-thumb-btn" data-act="exinfo" data-ex="' + esc(s.exId) + '" aria-label="看示范">' + exThumb(s.exId) + '</button>' : '<span class="tn-dot" style="background:' + secColor(s.sec, ed.sport) + ';"></span>') +
+        '<input class="nm" data-f="name" value="' + esc(s.name) + '" placeholder="' + (s.unit === 'm' ? '例如：自由泳 · 戴脚蹼' : '步骤名称') + '" maxlength="60" aria-label="步骤名称">' +
+        '<select data-f="sec" aria-label="阶段">' + secOpts + '</select></div>' +
+        '<div class="tn-st-f"><input data-f="sets" type="number" min="1" max="99" inputmode="numeric" value="' + esc(s.sets) + '" aria-label="组数"><span class="x">×</span>' +
+        '<input data-f="amount" type="number" min="0" inputmode="numeric" value="' + esc(s.amount) + '" aria-label="数量"><select data-f="unit" aria-label="单位">' + unitOpts + '</select>' +
+        '<input class="dt" data-f="detail" value="' + esc(s.detail || '') + '" placeholder="' + (s.unit === 'm' ? '@2:00 / 配速' : '每侧') + '" maxlength="40" aria-label="补充">' +
+        '<label class="rs">休<input data-f="rest" type="number" min="0" max="900" inputmode="numeric" value="' + esc(s.rest || 0) + '" aria-label="组间休息秒数">秒</label></div>' +
+        '<div class="tn-st-b"><input class="nt" data-f="note" value="' + esc(s.note || '') + '" placeholder="备注（可选）" maxlength="120" aria-label="备注">' +
+        '<button type="button" class="tn-mini" data-act="up" data-i="' + i + '" aria-label="上移"' + (i ? '' : ' disabled') + '>↑</button>' +
+        '<button type="button" class="tn-mini" data-act="down" data-i="' + i + '" aria-label="下移"' + (i < ed.steps.length - 1 ? '' : ' disabled') + '>↓</button>' +
+        '<button type="button" class="tn-mini" data-act="dupstep" data-i="' + i + '" aria-label="复制这一步">⧉</button>' +
+        '<button type="button" class="tn-mini danger" data-act="rm" data-i="' + i + '" aria-label="删除这一步">×</button></div></div>';
+    }).join('');
+    updEdTot();
+    if(scrollEnd){ var last = box.lastElementChild; if(last && last.scrollIntoView) last.scrollIntoView({block: 'nearest', behavior: 'smooth'}); var nm = last && last.querySelector('.nm'); if(nm && !nm.value) nm.focus(); }
+  }
+  function saveEditor(){
+    var name = $('edName').value.trim();
+    if(!name){ $('edMsg').textContent = '先给训练取个名字。'; $('edName').focus(); return; }
+    if(!ed.steps.length){ $('edMsg').textContent = '至少加一个步骤。'; return; }
+    var steps = ed.steps.map(function(s){
+      return {sec: s.sec || '主项', name: String(s.name || '').trim() || '未命名', exId: s.exId || '', sets: Math.max(1, Math.round(num(s.sets, 1))), amount: Math.max(0, num(s.amount)),
+        unit: UNITS.indexOf(s.unit) >= 0 ? s.unit : '次', detail: String(s.detail || '').trim(), rest: Math.max(0, Math.round(num(s.rest))), note: String(s.note || '').trim()};
+    });
+    var d = {name: name, sport: ed.sport, group: $('edGroup').value.trim(), note: $('edNote').value.trim(), steps: steps, days: ed.days || [],
+      order: num(ed.order), createdAt: ed.createdAt || Date.now(), updatedAt: Date.now()};
+    if(ed.tpl) d.tpl = ed.tpl;
+    saveW(ed.id, d);
+    closeSheet();
+    toast(ed.id ? '已保存修改' : '已新建「' + name + '」');
+    renderAll();
+  }
+  function pickExercise(cb){
+    var q = '', cat = 'all';
+    function list(){
+      return allEx().filter(function(e){
+        if(cat !== 'all' && (cat === 'custom' ? !e.custom : e.cat !== cat)) return false;
+        return !q || (e.name + ' ' + (e.cue || '')).toLowerCase().indexOf(q) >= 0;
+      }).map(function(e){
+        return '<button type="button" class="tn-pick" data-act="pick" data-ex="' + esc(e.id) + '">' + exThumb(e.id) + '<span><b>' + esc(e.name) + '</b><small>' + esc(CATNAME[e.cat] || '自定义') + (e.cue ? ' · ' + esc(e.cue) : '') + '</small></span></button>';
+      }).join('') || '<p class="tn-faint">没有找到。可以先到「动作库」加自定义动作。</p>';
+    }
+    var entry = openSheet({title: '选动作', cls: 'picker', body:
+      '<input type="search" id="pkQ" placeholder="搜索动作" aria-label="搜索动作"><div class="tn-chips sm">' + CATS.map(function(c){ return '<button type="button" class="tn-chip' + (c[0] === 'all' ? ' on' : '') + '" data-act="pcat" data-cat="' + c[0] + '">' + c[1] + '</button>'; }).join('') +
+      '</div><div class="tn-picklist" id="pkList">' + list() + '</div>',
+      mount: function(sh){ sh.querySelector('#pkQ').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); $('pkList').innerHTML = list(); }); },
+      acts: {
+        pcat: function(b){ cat = b.dataset.cat; b.parentNode.querySelectorAll('.tn-chip').forEach(function(x){ x.classList.toggle('on', x === b); }); $('pkList').innerHTML = list(); },
+        pick: function(b){ closeSheet(entry); cb(b.dataset.ex); }
+      }});
+  }
+
+  /* ================= SCHEDULE ON A DATE ================= */
+  function openAddDay(k){
+    var arr = workoutsArr();
+    var body = arr.length ? '<div class="tn-picklist">' + arr.map(function(w){
+      return '<button type="button" class="tn-pick" data-act="pick" data-wid="' + w.id + '">' + spTile(w.sport, 'sm') + '<span><b>' + esc(w.name) + '</b><small>' + esc(metaLine(w)) + '</small></span></button>';
+    }).join('') + '</div>' : '<p class="tn-faint">还没有训练，先建一个。</p>';
+    openSheet({title: '安排到 ' + dayTitle(k), body: body, foot: '<button type="button" class="tn-btn ghost" data-act="new">新建训练</button>', acts: {
+      pick: function(b){
+        var wid = b.dataset.wid;
+        var sk = cal.filter(function(c){ return c.date === k && c.workoutId === wid && c.skip; })[0];
+        if(sk) col('trainCal').doc(sk.id).delete();
+        else if(!plannedOn(k).some(function(p){ return p.w.id === wid; })) col('trainCal').add({date: k, workoutId: wid, createdAt: Date.now()});
+        closeSheet(); toast('已安排');
+      },
+      'new': function(){ closeSheet(); openEditor(null); }
+    }});
+  }
+
+  /* ================= PLAYER ================= */
+  var P = null, tickT = null, wakeLock = null, actx = null;
+  function playerOpen(){ return !!$('tnPlayer'); }
+  function savePlayer(){ try{ if(P) localStorage.setItem('tn-player', JSON.stringify(P)); else localStorage.removeItem('tn-player'); }catch(e){} }
+  function loadPlayer(){
+    try{
+      var p = JSON.parse(localStorage.getItem('tn-player') || 'null');
+      if(p && p.start && Date.now() - p.start < 12 * 3600 * 1000 && p.steps && p.steps.length) return p;
+    }catch(e){}
+    return null;
+  }
+  function elapsed(p){ var now = p.pausedAt || Date.now(); return (now - p.start - num(p.pauseTotal)) / 1000; }
+  function startPlayer(wid, date){
+    var w = getW(wid);
+    if(!w || !(w.steps || []).length){ toast('这个训练还没有步骤。'); return; }
+    var d = date && date <= todayKey() ? date : todayKey();
+    P = {wid: wid, name: w.name, sport: w.sport, steps: clean(w.steps), i: 0, set: 1, side: 1, mode: 'work', until: 0, start: Date.now(), pauseTotal: 0, pausedAt: 0, done: w.steps.map(function(){ return 0; }), date: d};
+    savePlayer(); openPlayer();
+  }
+  function openPlayer(){
+    if(!P) return;
+    try{ if(!actx && (window.AudioContext || window.webkitAudioContext)) actx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){}
+    var el = $('tnPlayer');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'tnPlayer'; el.className = 'tn-player';
+      el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', '训练中');
+      document.body.appendChild(el);
+      el.addEventListener('click', onPlayerClick);
+    }
+    document.body.classList.add('tn-lock');
+    requestWake();
+    renderPlayer(true);
+    clearInterval(tickT); tickT = setInterval(tick, 250);
+  }
+  function closePlayer(){
+    clearInterval(tickT); tickT = null;
+    var el = $('tnPlayer'); if(el) el.remove();
+    if(!sheets.length) document.body.classList.remove('tn-lock');
+    releaseWake();
+  }
+  function requestWake(){ try{ if(navigator.wakeLock && !wakeLock) navigator.wakeLock.request('screen').then(function(l){ wakeLock = l; l.addEventListener('release', function(){ wakeLock = null; }); }).catch(function(){}); }catch(e){} }
+  function releaseWake(){ try{ if(wakeLock) wakeLock.release(); }catch(e){} wakeLock = null; }
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden && playerOpen()) requestWake(); });
+  function beep(times){
+    try{ if(navigator.vibrate) navigator.vibrate(times > 1 ? [220, 120, 220, 120, 420] : [260]); }catch(e){}
+    if(!actx) return;
+    try{
+      if(actx.state === 'suspended') actx.resume();
+      for(var i = 0; i < (times || 1); i++){
+        var o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + i * 0.28;
+        o.type = 'sine'; o.frequency.value = i === (times || 1) - 1 ? 1175 : 880;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.35, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22);
+        o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0 + 0.24);
+      }
+    }catch(e){}
+  }
+  function cur(){ return P.steps[P.i]; }
+  function isTimed(s){ return s && (s.unit === '秒' || s.unit === '分钟'); }
+  function perSide(s){ return /每侧|\/侧/.test(s.detail || ''); }
+  function stepTargetSecs(s){ return num(s.amount) * (s.unit === '分钟' ? 60 : 1); }
+  function tick(){
+    if(!P){ return; }
+    var clk = document.querySelector('#tnPlayer .pl-clock'); if(clk) clk.textContent = fmtClock(elapsed(P));
+    if(P.pausedAt) return;
+    if(P.mode === 'rest' || P.mode === 'timer'){
+      var left = (P.until - Date.now()) / 1000;
+      var big = document.querySelector('#tnPlayer .pl-count'); if(big) big.textContent = fmtClock(Math.ceil(Math.max(0, left)));
+      var ring = document.querySelector('#tnPlayer .pl-ring-fg');
+      if(ring){ var tot = num(P.total) || 1; ring.style.strokeDashoffset = String(565.5 * (1 - Math.max(0, left) / tot)); }
+      if(left <= 3.05 && left > 0 && !P.warned){ P.warned = true; beep(1); }
+      if(left <= 0){
+        P.warned = false;
+        if(P.mode === 'timer'){
+          var s = cur();
+          if(perSide(s) && P.side === 1){ P.side = 2; P.total = stepTargetSecs(s); P.until = Date.now() + P.total * 1000; beep(2); savePlayer(); renderPlayer(); return; }
+          beep(2); completeSet();
+        } else { beep(2); P.mode = 'work'; savePlayer(); renderPlayer(); }
+      }
+    }
+  }
+  function completeSet(){
+    var s = cur(), sets = Math.max(1, num(s.sets, 1));
+    if(s.unit === 'm'){ P.done[P.i] = sets; return advance(0); }
+    P.done[P.i] = P.set;
+    P.side = 1;
+    if(P.set < sets){ P.set++; return startRest(num(s.rest)); }
+    advance(P.i < P.steps.length - 1 ? num(s.rest) : 0);
+  }
+  function advance(rest){
+    P.i++; P.set = 1; P.side = 1;
+    if(P.i >= P.steps.length){ P.i = P.steps.length - 1; P.finished = true; P.mode = 'work'; savePlayer(); return renderSummary(); }
+    if(rest > 0) return startRest(rest);
+    P.mode = 'work'; savePlayer(); renderPlayer(true);
+  }
+  function startRest(sec){
+    if(sec <= 0){ P.mode = 'work'; savePlayer(); renderPlayer(); return; }
+    P.mode = 'rest'; P.total = sec; P.until = Date.now() + sec * 1000; P.warned = false; savePlayer(); renderPlayer();
+  }
+  function startTimer(){
+    var s = cur(); P.mode = 'timer'; P.total = stepTargetSecs(s); P.until = Date.now() + P.total * 1000; P.warned = false; savePlayer(); renderPlayer();
+  }
+  function progressHtml(){
+    return '<div class="pl-prog" aria-hidden="true">' + P.steps.map(function(s, i){
+      var f = Math.min(1, num(P.done[i]) / Math.max(1, num(s.sets, 1)));
+      return '<span class="' + (i === P.i && !P.finished ? 'cur' : '') + '"><i style="width:' + (f * 100) + '%"></i></span>';
+    }).join('') + '</div>';
+  }
+  function renderPlayer(fresh){
+    var el = $('tnPlayer'); if(!el || !P) return;
+    if(P.finished) return renderSummary();
+    var s = cur(), sets = Math.max(1, num(s.sets, 1)), next = P.steps[P.i + 1];
+    var head = '<div class="pl-top"><button type="button" class="pl-ic" data-pl="end" aria-label="结束训练">×</button><div class="pl-title"><span>' + esc(P.name) + '</span><b class="pl-clock">' + fmtClock(elapsed(P)) + '</b></div>' +
+      '<button type="button" class="pl-ic" data-pl="pause" aria-label="' + (P.pausedAt ? '继续' : '暂停') + '">' + (P.pausedAt ? playIcon() : '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>') + '</button></div>' + progressHtml();
+    var mid = '', btns = '';
+    var stepNo = '<div class="pl-stepno">第 ' + (P.i + 1) + ' / ' + P.steps.length + ' 步 · <span style="color:' + secColor(s.sec, P.sport) + '">' + esc(s.sec || '主项') + '</span></div>';
+    if(P.mode === 'rest'){
+      var nx = P.set > 1 && P.done[P.i] < sets ? '下一组：第 ' + P.set + ' / ' + sets + ' 组 · ' + esc(s.name) : '下一步：' + esc(s.name) + ' · ' + esc(target(s));
+      mid = '<div class="pl-rest"><div class="pl-lbl">休息</div>' + ringHtml() + '<div class="pl-next">' + nx + '</div></div>';
+      btns = '<button type="button" class="pl-btn ghost" data-pl="plus">+10 秒</button><button type="button" class="pl-btn go" data-pl="skiprest">跳过休息</button>';
+    } else if(P.mode === 'timer'){
+      mid = stepNo + '<div class="pl-name">' + esc(s.name) + '</div>' + (perSide(s) ? '<div class="pl-side">' + (P.side === 1 ? '第一侧' : '换另一侧') + '</div>' : '') + ringHtml() +
+        '<div class="pl-set">第 ' + P.set + ' / ' + sets + ' 组</div>' + videoHtml(s);
+      btns = '<button type="button" class="pl-btn ghost" data-pl="stoptimer">停止</button><button type="button" class="pl-btn go" data-pl="doneset">完成这一组</button>';
+    } else {
+      mid = stepNo + '<div class="pl-name">' + esc(s.name) + '</div><div class="pl-target">' + esc(s.unit === 'm' ? target(s) : setTarget(s)) + '</div>' +
+        (s.unit !== 'm' && sets > 1 ? '<div class="pl-set">第 ' + P.set + ' / ' + sets + ' 组</div>' : '') +
+        ((s.note || (s.exId && getEx(s.exId) && getEx(s.exId).cue)) ? '<div class="pl-note">' + esc(s.note || getEx(s.exId).cue) + '</div>' : '') +
+        (num(s.rest) && sets > 1 && s.unit !== 'm' ? '<div class="pl-faint">组间休息 ' + num(s.rest) + ' 秒</div>' : '') + videoHtml(s);
+      btns = '<button type="button" class="pl-btn ghost" data-pl="prev"' + (P.i === 0 && P.set === 1 ? ' disabled' : '') + '>上一步</button>' +
+        (isTimed(s) ? '<button type="button" class="pl-btn go" data-pl="timer">' + playIcon() + '开始计时 ' + fmtClock(stepTargetSecs(s)) + '</button>' :
+          '<button type="button" class="pl-btn go" data-pl="doneset">' + (s.unit === 'm' ? '完成这一步' : sets > 1 ? '完成第 ' + P.set + ' 组' : '完成') + '</button>') +
+        '<button type="button" class="pl-btn ghost" data-pl="skip">跳过</button>';
+    }
+    var foot = next && P.mode !== 'rest' ? '<div class="pl-upnext">接下来：' + esc(next.name) + ' · ' + esc(target(next)) + '</div>' : '';
+    el.innerHTML = head + '<div class="pl-main' + (P.mode !== 'work' ? ' count' : '') + '">' + mid + '</div>' + foot + '<div class="pl-btns">' + btns + '</div>' + (P.pausedAt ? '<div class="pl-paused">已暂停</div>' : '');
+    var v = el.querySelector('video'); if(v){ var pr = v.play(); if(pr && pr.catch) pr.catch(function(){}); }
+    tick();
+  }
+  function setTarget(s){ return num(s.amount) + (s.unit === '秒' ? ' 秒' : s.unit === '分钟' ? ' 分钟' : ' 次') + (s.detail ? ' ' + s.detail : ''); }
+  function ringHtml(){
+    var left = Math.max(0, (P.until - Date.now()) / 1000);
+    return '<div class="pl-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" class="pl-ring-bg"/><circle cx="100" cy="100" r="90" class="pl-ring-fg" style="stroke-dashoffset:' + (565.5 * (1 - left / (num(P.total) || 1))) + '"/></svg><b class="pl-count">' + fmtClock(Math.ceil(left)) + '</b></div>';
+  }
+  function videoHtml(s){
+    if(!s.exId || !LIBMAP[s.exId]) return '';
+    var e = LIBMAP[s.exId];
+    return '<div class="pl-vid" style="aspect-ratio:' + (e.ar ? e.ar[0] + '/' + e.ar[1] : '16/9') + ';"><video src="' + VBASE + s.exId + '.mp4" poster="' + VBASE + s.exId + '.jpg" muted loop playsinline autoplay preload="auto"></video></div>';
+  }
+  function plDist(){
+    var d = 0;
+    P.steps.forEach(function(s, i){ if(s.unit === 'm') d += num(P.done[i]) * num(s.amount); });
+    return d;
+  }
+  function renderSummary(){
+    var el = $('tnPlayer'); if(!el) return;
+    if(!P.endAt) P.endAt = Date.now();
+    var secs = (P.endAt - P.start - num(P.pauseTotal) - (P.pausedAt ? P.endAt - P.pausedAt : 0)) / 1000;
+    var doneSteps = P.steps.filter(function(s, i){ return num(P.done[i]) >= Math.max(1, num(s.sets, 1)); }).length;
+    var dist = plDist();
+    el.innerHTML = '<div class="pl-top"><span></span><div class="pl-title"><span>' + esc(P.name) + '</span><b>' + (P.finished ? '训练完成' : '结束训练') + '</b></div><span></span></div>' +
+      '<div class="pl-sum"><div class="pl-sumstats"><div><b>' + fmtClock(secs) + '</b><span>用时</span></div>' + (dist || P.sport === 'swim' ? '<div><b>' + dist + '<small> m</small></b><span>距离</span></div>' : '') +
+      '<div><b>' + doneSteps + '<small> / ' + P.steps.length + '</small></b><span>完成步骤</span></div></div>' +
+      '<div class="pl-form"><label class="tn-field"><span>时长（分钟）</span><input id="plDur" type="number" min="0" inputmode="numeric" value="' + Math.max(1, Math.round(secs / 60)) + '"></label>' +
+      (P.sport === 'swim' || dist ? '<label class="tn-field"><span>距离（米）</span><input id="plDist" type="number" min="0" inputmode="numeric" value="' + dist + '"></label>' : '') +
+      rpeField(P.rpe || 0) + '<label class="tn-field"><span>备注</span><textarea id="plNote" rows="2" maxlength="300" placeholder="感觉怎样？配速、哪里累、哪里不舒服…"></textarea></label></div></div>' +
+      '<div class="pl-btns"><button type="button" class="pl-btn ghost" data-pl="discard">不保存</button>' + (P.finished ? '' : '<button type="button" class="pl-btn ghost" data-pl="back">继续训练</button>') +
+      '<button type="button" class="pl-btn go" data-pl="save">保存记录</button></div>';
+  }
+  function onPlayerClick(e){
+    var r = e.target.closest('[data-act="rpe"]');
+    if(r){ selectRpe(r); P.rpe = rpeSel; return; }
+    var b = e.target.closest('[data-pl]'); if(!b || !P) return;
+    var a = b.dataset.pl, s = cur();
+    try{ if(actx && actx.state === 'suspended') actx.resume(); }catch(x){}
+    if(a === 'pause'){
+      if(P.pausedAt){ var pd = Date.now() - P.pausedAt; P.pauseTotal = num(P.pauseTotal) + pd; if(P.until) P.until += pd; P.pausedAt = 0; }
+      else P.pausedAt = Date.now();
+      savePlayer(); renderPlayer(); return;
+    }
+    if(P.pausedAt && a !== 'end' && a !== 'save' && a !== 'discard' && a !== 'back'){ var pd2 = Date.now() - P.pausedAt; P.pauseTotal = num(P.pauseTotal) + pd2; if(P.until) P.until += pd2; P.pausedAt = 0; }
+    if(a === 'doneset'){ completeSet(); savePlayer(); }
+    else if(a === 'timer') startTimer();
+    else if(a === 'stoptimer'){ P.mode = 'work'; P.side = 1; savePlayer(); renderPlayer(); }
+    else if(a === 'skip'){ advance(0); }
+    else if(a === 'prev'){
+      if(P.set > 1){ P.set--; P.done[P.i] = P.set - 1; }
+      else if(P.i > 0){ P.i--; var ps = cur(); P.done[P.i] = 0; P.set = 1; if(ps.unit !== 'm') P.set = 1; }
+      P.mode = 'work'; savePlayer(); renderPlayer(true);
+    }
+    else if(a === 'plus'){ P.until += 10000; P.total = num(P.total) + 10; savePlayer(); tick(); }
+    else if(a === 'skiprest'){ P.mode = 'work'; savePlayer(); renderPlayer(); }
+    else if(a === 'end'){ P.endAt = Date.now(); savePlayer(); renderSummary(); }
+    else if(a === 'back'){ if(P.endAt){ P.pauseTotal = num(P.pauseTotal) + 0; delete P.endAt; } savePlayer(); renderPlayer(true); }
+    else if(a === 'discard'){
+      if(!b.dataset.armed){ armDelete(b, '再点一次，不保存'); return; }
+      P = null; savePlayer(); closePlayer(); renderAll();
+    }
+    else if(a === 'save'){
+      var d = {date: P.date || todayKey(), workoutId: P.wid, name: P.name, sport: P.sport,
+        durationSec: Math.max(0, Math.round(num($('plDur').value) * 60)), distanceM: $('plDist') ? Math.max(0, Math.round(num($('plDist').value))) : 0,
+        rpe: num(rpeSel), note: $('plNote').value.trim(),
+        stepsDone: P.steps.filter(function(st, i){ return num(P.done[i]) >= Math.max(1, num(st.sets, 1)); }).length, stepsTotal: P.steps.length,
+        createdAt: Date.now()};
+      if(db) col('trainLogs').add(clean(d));
+      P = null; savePlayer(); closePlayer();
+      ui.sel = d.date; switchTab('today');
+      toast('训练已记录 ✓ 辛苦了');
+    }
+  }
+
+  /* ================= wiring ================= */
+  function switchTab(t){
+    ui.tab = t;
+    try{ localStorage.setItem('tn-tab', t); }catch(e){}
+    document.querySelectorAll('.tn-tab').forEach(function(b){ var on = b.dataset.tn === t; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+    document.querySelectorAll('.tn-panel').forEach(function(p){ p.hidden = p.dataset.tnp !== t; });
+    renderTab();
+  }
+  function renderTab(){
+    if(ui.tab === 'today') renderToday();
+    else if(ui.tab === 'plans') renderPlans();
+    else if(ui.tab === 'lib') renderLib();
+    else renderHist();
+  }
+  var renderQueued = false;
+  function renderAll(){
+    if(renderQueued) return;
+    renderQueued = true;
+    setTimeout(function(){
+      renderQueued = false;
+      if(document.body.getAttribute('data-active-page') === 'training' || !document.body.getAttribute('data-active-page')) renderTab();
+      updateDot();
+    }, 0);
+  }
+  function updateDot(){
+    var btn = document.querySelector('.tabbar-btn[data-apptab="training"]');
+    if(!btn) return;
+    var show = loaded.w && loaded.l && pendingToday().length > 0;
+    var dot = btn.querySelector('.tab-dot');
+    if(show && !dot){ dot = document.createElement('span'); dot.className = 'tab-dot'; dot.setAttribute('aria-hidden', 'true'); btn.appendChild(dot); }
+    if(!show && dot) dot.remove();
+    btn.setAttribute('aria-label', '训练' + (show ? '（今天有训练）' : ''));
+  }
+  function onClick(e){
+    var tab = e.target.closest('.tn-tab');
+    if(tab){ switchTab(tab.dataset.tn); return; }
+    var hit = e.target.closest('.tn-chart .hit');
+    if(hit){ showTip(hit); return; }
+    var b = e.target.closest('[data-act]');
+    if(!b) return;
+    var a = b.dataset.act, wid = b.dataset.wid;
+    if(!db && /^(new|tpl|edit|dup|del|wd|addday|logday|quicklog|skip|uncal|newex|addtest|start)$/.test(a)){ toast('还在连接数据，稍等一下。'); return; }
+    switch(a){
+      case 'day': ui.sel = b.dataset.day; renderToday(); break;
+      case 'wprev': ui.sel = shiftKey(ui.sel, -7); renderToday(); break;
+      case 'wnext': ui.sel = shiftKey(ui.sel, 7); renderToday(); break;
+      case 'wnow': ui.sel = todayKey(); renderToday(); break;
+      case 'detail': openDetail(wid, b.dataset.date); break;
+      case 'start': startPlayer(wid, b.dataset.date); break;
+      case 'new': openEditor(null); break;
+      case 'tpl': openTemplates(b.dataset.pack); break;
+      case 'edit': openEditor(wid); break;
+      case 'dup': dupW(wid); break;
+      case 'del': armDelete(b, '再点一次删除', function(){ delW(wid); renderAll(); toast('已删除训练'); }); break;
+      case 'wd': toggleWd(b); break;
+      case 'addday': openAddDay(ui.sel); break;
+      case 'logday': openLog({date: b.dataset.today ? todayKey() : (ui.sel <= todayKey() ? ui.sel : todayKey())}); break;
+      case 'quicklog': openLog({date: b.dataset.date, wid: wid}); break;
+      case 'editlog': var lg = logs.filter(function(x){ return x.id === b.dataset.log; })[0]; if(lg) openLog({log: lg}); break;
+      case 'skip': col('trainCal').add({date: b.dataset.date, workoutId: wid, skip: true, createdAt: Date.now()}); toast('这天不练了（每周的安排不变）'); break;
+      case 'uncal': col('trainCal').doc(b.dataset.cal).delete(); cal = cal.filter(function(c){ return c.id !== b.dataset.cal; }); renderAll(); break;
+      case 'resume': P = loadPlayer(); if(P) openPlayer(); break;
+      case 'dropresume': P = null; savePlayer(); renderToday(); break;
+      case 'cat': ui.libCat = b.dataset.cat; renderLib(); break;
+      case 'newex': editCustomEx(null); break;
+      case 'exinfo': openExInfo(b.dataset.ex); break;
+      case 'metric': ui.metric = b.dataset.m; renderHist(); break;
+      case 'addtest': addTest(''); break;
+      case 'testev': openTestEv(b.dataset.ev); break;
+    }
+  }
+  function showTip(hit){
+    var wrap = hit.closest('.tn-chartwrap'), tip = wrap.querySelector('.tn-tip');
+    var r = hit.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+    tip.textContent = hit.getAttribute('data-tip'); tip.hidden = false;
+    var x = r.left - wr.left + r.width / 2;
+    tip.style.left = Math.max(70, Math.min(wr.width - 70, x)) + 'px';
+    wrap.querySelectorAll('.hit').forEach(function(h){ h.classList.toggle('on', h === hit); });
+  }
+  function wire(){
+    var root = $('train');
+    if(!root) return;
+    root.addEventListener('click', onClick);
+    root.addEventListener('input', function(e){ if(e.target.id === 'tnLibQ'){ ui.libQ = e.target.value; renderLib(); } });
+    root.addEventListener('mouseover', function(e){ var h = e.target.closest && e.target.closest('.tn-chart .hit'); if(h) showTip(h); });
+    root.addEventListener('focusin', function(e){ var h = e.target.closest && e.target.closest('.tn-chart .hit'); if(h) showTip(h); });
+    root.addEventListener('mouseleave', function(){ var t = root.querySelector('.tn-tip'); if(t) t.hidden = true; root.querySelectorAll('.tn-chart .hit.on').forEach(function(h){ h.classList.remove('on'); }); }, true);
+    root.addEventListener('keydown', function(e){ if((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-act]')){ e.preventDefault(); e.target.click(); } });
+    new MutationObserver(function(){ if(document.body.getAttribute('data-active-page') === 'training') renderTab(); }).observe(document.body, {attributes: true, attributeFilter: ['data-active-page']});
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) renderAll(); });
+    switchTab(ui.tab);
+  }
+
+  /* ---------- open-app reminder ---------- */
+  var reminded = false;
+  function maybeRemind(){
+    if(reminded || !loaded.w || !loaded.l) return;
+    reminded = true;
+    var p = pendingToday();
+    if(!p.length || new Date().getHours() < 6) return;
+    if(document.body.getAttribute('data-active-page') === 'training') return;
+    try{ if(sessionStorage.getItem('planner-reminded')) return; sessionStorage.setItem('planner-reminded', '1'); }catch(e){}
+    if(window.__appBanner) window.__appBanner(p[0].sport === 'swim' ? '🏊' : '💪', '今天的训练：' + p[0].name + (p.length > 1 ? ' 等 ' + p.length + ' 个' : ''), '去训练', function(){
+      var btn = document.querySelector('.tabbar-btn[data-apptab="training"]'); if(btn) btn.click();
+      ui.sel = todayKey(); switchTab('today');
+    });
+  }
+
+  /* ---------- backup hooks ---------- */
+  window.__trainState = function(){
+    return {
+      workouts: Object.keys(W).map(function(id){ return Object.assign({id: id}, W[id]); }),
+      trainLogs: logs.map(function(l){ return Object.assign({}, l); }),
+      trainCal: cal.map(function(c){ return Object.assign({}, c); }),
+      trainTests: tests.map(function(t){ return Object.assign({}, t); }),
+      exercises: Object.keys(customEx).map(function(id){ return Object.assign({id: id}, customEx[id]); })
+    };
+  };
+  window.__trainToday = function(){ return {loaded: loaded.w && loaded.l, pending: pendingToday().map(function(w){ return w.name; })}; };
+
+  wire();
+  renderAll();
+  (async function(){
+    if(!window.claude || typeof window.claude.use !== 'function') return;
+    try{ db = await window.claude.use('db'); }catch(e){ db = null; }
+    if(!db) return;
+    function sub(name, fn){ db.collection(name).onSnapshot(function(snap){ fn(snap.docs); renderAll(); maybeRemind(); }, function(){}); }
+    sub('workouts', function(docs){ W = {}; docs.forEach(function(d){ W[d.id] = d.data(); }); loaded.w = true; });
+    sub('trainLogs', function(docs){ logs = docs.map(function(d){ return Object.assign({id: d.id}, d.data()); }); loaded.l = true; });
+    sub('trainCal', function(docs){ cal = docs.map(function(d){ return Object.assign({id: d.id}, d.data()); }); });
+    sub('trainTests', function(docs){ tests = docs.map(function(d){ return Object.assign({id: d.id}, d.data()); }); });
+    sub('exercises', function(docs){ customEx = {}; docs.forEach(function(d){ customEx[d.id] = d.data(); }); });
+    var resume = loadPlayer();
+    if(resume) renderAll();
   })();
 })();
 </script>
