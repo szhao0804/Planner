@@ -12,4 +12,11 @@
  *   appId: "1:1234567890:web:abcdef"
  * };
  */
-window.FIREBASE_CONFIG = null;
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA1vxpVGhwbMUV05RcYltH_VfRoAGsq_Ug",
+  authDomain: "training-planner-5d79b.firebaseapp.com",
+  projectId: "training-planner-5d79b",
+  storageBucket: "training-planner-5d79b.firebasestorage.app",
+  messagingSenderId: "53128941364",
+  appId: "1:53128941364:web:33f63a6a847dbef03f9f61"
+};
