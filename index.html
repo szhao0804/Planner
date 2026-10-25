@@ -1343,6 +1343,17 @@
   .tn-full .sess-head .m{flex:none;}
   .tn-pempty{padding:16px;margin-top:12px;}
   .tn-pempty p{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.6;}
+  .tn-sportsw{display:flex;gap:8px;margin-bottom:14px;}
+  .tn-sw{flex:1;font:inherit;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 10px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:14.5px;font-weight:700;cursor:pointer;min-width:0;}
+  .tn-sw svg{width:20px;height:20px;flex:none;}
+  .tn-sw small{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-faint);}
+  .tn-sw.on{border-color:var(--c);background:var(--s);color:var(--i);}
+  .tn-sw.on small{background:var(--surface);color:var(--i);}
+  .tn-sw:focus-visible{outline:2px solid var(--plan);outline-offset:2px;}
+  .tn-btn:disabled{opacity:.45;cursor:default;}
+  #tnPlans .tn-ptip{margin:0 0 4px;}
+  .tn-row2 > *{min-width:0;}
+  .tn-field input, .tn-field select, .tn-field textarea{width:100%;box-sizing:border-box;}
 
   /* ---------- installable-app additions ---------- */
   .sync-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;
@@ -4610,6 +4621,7 @@
   var W = {}, logs = [], cal = [], tests = [], customEx = {};
   var loaded = {w: false, l: false};
   var ui = {tab: 'today', sel: todayKey(), libCat: 'all', libQ: '', metric: 'dist'};
+  try{ ui.psport = localStorage.getItem('tn-psport') || 'swim'; }catch(e){ ui.psport = 'swim'; }
   try{ var st = localStorage.getItem('tn-tab'); if(st && /^(today|plans|lib|hist)$/.test(st)) ui.tab = st; }catch(e){}
 
   /* ---------- derived ---------- */
@@ -4902,8 +4914,9 @@
       var lg = logFor(p.w.id, k0);
       var badge = lg ? '<span class="tn-done-b">✓ 已完成</span>' : (k0 < t ? '<span class="tn-miss-b">没练</span>' : '');
       var acts = lg ? '<span class="tn-done-line">' + esc(logLine(lg)) + '</span><button type="button" class="tn-btn ghost sm" data-act="editlog" data-log="' + lg.id + '">查看记录</button>' :
-        '<button type="button" class="tn-btn go" data-act="start" data-wid="' + p.w.id + '" data-date="' + k0 + '">' + playIcon() + '开始训练</button>' +
-        '<button type="button" class="tn-btn ghost sm" data-act="quicklog" data-wid="' + p.w.id + '" data-date="' + k0 + '">直接记完成</button>' +
+        (isLive(p.w) ? '<button type="button" class="tn-btn go" data-act="start" data-wid="' + p.w.id + '" data-date="' + k0 + '">' + playIcon() + '开始训练</button>' +
+          '<button type="button" class="tn-btn ghost sm" data-act="quicklog" data-wid="' + p.w.id + '" data-date="' + k0 + '">直接记完成</button>' :
+          '<button type="button" class="tn-btn go" data-act="quicklog" data-wid="' + p.w.id + '" data-date="' + k0 + '"' + (k0 > t ? ' disabled' : '') + '>' + checkIcon() + '记录完成</button>') +
         (p.src === 'cal' ? '<button type="button" class="tn-btn ghost sm" data-act="uncal" data-cal="' + p.calId + '">移除</button>' :
           '<button type="button" class="tn-btn ghost sm" data-act="skip" data-wid="' + p.w.id + '" data-date="' + k0 + '">这天不练</button>');
       h += wCard(p.w, {date: k0, badge: badge, actions: acts, done: !!lg, limit: 99});
@@ -4915,6 +4928,7 @@
     });
     el.innerHTML = h;
   }
+  function checkIcon(){ return '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
   function playIcon(){ return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>'; }
 
   /* ================= MY WORKOUTS (classic layout: stage tabs, everything visible, videos inline) ================= */
@@ -4940,9 +4954,11 @@
     if(!tot) return '';
     return '<div class="dist-bar" aria-hidden="true">' + runs.map(function(r){ return '<span style="width:' + (r.v / tot * 100).toFixed(1) + '%;background:' + secColor(r.sec, w.sport) + ';"></span>'; }).join('') + '</div>';
   }
+  function isLive(w){ return w && w.sport === 'land'; }
   function fullFoot(w){
     return '<div class="tn-full-foot">' + wdChips(w) + '<div class="tn-w-act">' +
-      '<button type="button" class="tn-btn go sm" data-act="start" data-wid="' + w.id + '">' + playIcon() + '开始</button>' +
+      (isLive(w) ? '<button type="button" class="tn-btn go sm" data-act="start" data-wid="' + w.id + '">' + playIcon() + '开始</button>' :
+        '<button type="button" class="tn-btn go sm" data-act="quicklog" data-wid="' + w.id + '">' + checkIcon() + '记录完成</button>') +
       '<button type="button" class="tn-btn ghost sm" data-act="edit" data-wid="' + w.id + '">编辑</button>' +
       '<button type="button" class="tn-btn ghost sm" data-act="dup" data-wid="' + w.id + '">复制</button>' +
       '<button type="button" class="tn-btn ghost sm danger" data-act="del" data-wid="' + w.id + '">删除</button></div></div>';
@@ -4990,24 +5006,28 @@
     if(!el) return;
     if(!loaded.w){ el.innerHTML = '<p class="tn-faint tn-pad">载入中…</p>'; lastPlansHtml = ''; return; }
     var arr = workoutsArr();
-    var h = '<div class="tn-toolbar"><button type="button" class="tn-btn" data-act="new">+ 新建训练</button><button type="button" class="tn-btn ghost" data-act="tpl">从模板添加</button></div>';
-    ['swim', 'land', 'run', 'other'].forEach(function(spk){
-      var list = arr.filter(function(w){ return (SPORT[w.sport] ? w.sport : 'other') === spk; });
-      if(!list.length){
-        var pack = TPL.packs.filter(function(p){ return p.sport === spk; })[0];
-        if(!pack) return;
-        h += '<div class="tn-psec"><div class="tn-psec-h">' + spTile(spk) + '<h3>' + SPORT_SEC[spk] + '</h3><span>还没有</span></div>' +
-          '<div class="card tn-pempty"><p>' + esc(pack.desc) + '</p><div class="tn-w-act">' +
-          '<button type="button" class="tn-btn" data-act="tpl" data-pack="' + pack.id + '">从模板加入（3 个阶段 · ' + pack.workouts.length + ' 个训练）</button>' +
-          '<button type="button" class="tn-btn ghost" data-act="newsp" data-sp="' + spk + '">自己新建' + SPORT[spk].name + '训练</button></div></div></div>';
-        return;
-      }
+    var sportOf = function(w){ return SPORT[w.sport] ? w.sport : 'other'; };
+    var sports = ['swim', 'land'].concat(['run', 'other'].filter(function(k){ return arr.some(function(w){ return sportOf(w) === k; }); }));
+    var spk = sports.indexOf(ui.psport) >= 0 ? ui.psport : 'swim';
+    var h = '<div class="tn-sportsw" role="tablist" aria-label="训练类型">' + sports.map(function(k){
+      var n = arr.filter(function(w){ return sportOf(w) === k; }).length, on = k === spk;
+      return '<button type="button" class="tn-sw' + (on ? ' on' : '') + '" role="tab" aria-selected="' + on + '" data-act="psport" data-sp="' + k + '" style="--c:' + SPORT[k].c + ';--s:' + SPORT[k].soft + ';--i:' + SPORT[k].ink + ';">' +
+        ICON[k] + '<span>' + SPORT_SEC[k] + '</span>' + (n ? '<small>' + n + '</small>' : '') + '</button>';
+    }).join('') + '</div>';
+    var pack = TPL.packs.filter(function(p){ return p.sport === spk; })[0];
+    var list = arr.filter(function(w){ return sportOf(w) === spk; });
+    h += '<div class="tn-toolbar"><button type="button" class="tn-btn" data-act="newsp" data-sp="' + spk + '">+ 新建' + SPORT[spk].name + '训练</button>' +
+      (pack ? '<button type="button" class="tn-btn ghost" data-act="tpl" data-pack="' + pack.id + '">从模板添加</button>' : '') + '</div>';
+    if(spk === 'swim') h += '<p class="tn-ptip">泳池训练是给你在池边参考的：练完回来点「记录完成」，距离会自动填好，再补上用时和感觉就行。</p>';
+    if(!list.length){
+      h += '<div class="card tn-pempty"><p>' + (pack ? esc(pack.desc) : '还没有' + SPORT[spk].name + '训练。') + '</p><div class="tn-w-act">' +
+        (pack ? '<button type="button" class="tn-btn" data-act="tpl" data-pack="' + pack.id + '">从模板加入（3 个阶段 · ' + pack.workouts.length + ' 个训练）</button>' : '') +
+        '<button type="button" class="tn-btn ghost" data-act="newsp" data-sp="' + spk + '">自己新建' + SPORT[spk].name + '训练</button></div></div>';
+    } else {
       var groups = [], by = {};
       list.forEach(function(w){ var g = w.group || ''; if(!by[g]){ by[g] = []; groups.push(g); } by[g].push(w); });
       groups.sort(function(a, b){ return (a === '') - (b === '') || a.localeCompare(b, 'zh', {numeric: true}); });
       var sel = groups.indexOf(phaseSel[spk]) >= 0 ? phaseSel[spk] : groups[0];
-      h += '<div class="tn-psec"><div class="tn-psec-h">' + spTile(spk) + '<h3>' + SPORT_SEC[spk] + '</h3><span>' + list.length + ' 个训练</span></div>';
-      if(SPORT_TIP[spk] && groups.length > 1) h += '<p class="tn-ptip">' + SPORT_TIP[spk] + '</p>';
       if(groups.length > 1){
         h += '<div class="phase-tabs" role="tablist" aria-label="' + SPORT_SEC[spk] + '阶段">';
         groups.forEach(function(g){
@@ -5017,9 +5037,10 @@
         h += '</div>';
       }
       h += '<div class="' + (spk === 'land' ? 'land-grid' : 'sessions') + '">';
-      by[sel].forEach(function(w){ h += spk === 'land' || (w.steps || []).some(function(s){ return s.exId; }) ? landCard(w) : sessCard(w); });
-      h += '</div></div>';
-    });
+      by[sel].forEach(function(w){ h += spk === 'land' ? landCard(w) : sessCard(w); });
+      h += '</div>';
+      if(SPORT_TIP[spk] && groups.length > 1) h += '<p class="phase-note">' + SPORT_TIP[spk] + '</p>';
+    }
     if(h === lastPlansHtml && el.innerHTML) return;
     lastPlansHtml = h;
     el.innerHTML = h;
@@ -5365,6 +5386,8 @@
           closeSheet();
           toast('已加入 ' + n + ' 个训练');
           phaseSel = {}; try{ localStorage.removeItem('tn-phase'); }catch(e){}
+          var firstPack = TPL.packs.filter(function(x){ return sh.querySelector('input[data-tpl^="' + (x.sport === 'swim' ? 'swim' : 'land') + '"]:checked'); })[0];
+          if(firstPack){ ui.psport = firstPack.sport; try{ localStorage.setItem('tn-psport', ui.psport); }catch(e){} }
           switchTab('plans');
         }
       }});
@@ -5379,9 +5402,10 @@
       segBar(w) + legendHtml(w) + stepsList(w, 999, true) + (w.note ? '<p class="tn-wnote">' + esc(w.note) + '</p>' : '') + wdChips(w);
     openSheet({title: w.name, body: body, cls: 'detail',
       foot: '<button type="button" class="tn-btn ghost sm danger" data-act="del">删除</button><button type="button" class="tn-btn ghost sm" data-act="dup">复制</button><button type="button" class="tn-btn ghost sm" data-act="edit">编辑</button><span class="sp"></span>' +
-        '<button type="button" class="tn-btn go" data-act="start">' + playIcon() + '开始训练</button>',
+        (isLive(w) ? '<button type="button" class="tn-btn go" data-act="start">' + playIcon() + '开始训练</button>' : '<button type="button" class="tn-btn go" data-act="qlog">' + checkIcon() + '记录完成</button>'),
       acts: {
         start: function(){ closeSheet(); startPlayer(wid, date); },
+        qlog: function(){ closeSheet(); openLog({date: date && date <= todayKey() ? date : todayKey(), wid: wid}); },
         edit: function(){ closeSheet(); openEditor(wid); },
         dup: function(){ closeSheet(); dupW(wid); },
         del: function(b){ armDelete(b, '再点一次删除', function(){ closeSheet(); delW(wid); renderAll(); toast('已删除训练'); }); },
@@ -5424,17 +5448,18 @@
       '<label class="tn-field"><span>分组（可选，用来整理）</span><input id="edGroup" list="edGroups" maxlength="40" value="' + esc(ed.group || '') + '" placeholder="例如：游泳 · 阶段1"></label>' +
       '<datalist id="edGroups">' + Object.keys(groups).map(function(g){ return '<option value="' + esc(g) + '">'; }).join('') + '</datalist>' +
       '<div class="tn-ed-h"><b>步骤</b><span id="edTot" class="tn-faint"></span></div><div id="edSteps"></div>' +
-      '<div class="tn-ed-add"><button type="button" class="tn-btn ghost sm" data-act="addswim">+ 游泳组</button><button type="button" class="tn-btn ghost sm" data-act="addex">+ 动作（动作库）</button><button type="button" class="tn-btn ghost sm" data-act="addother">+ 其他步骤</button></div>' +
+      '<div class="tn-ed-add" id="edAdd"></div>' +
       '<label class="tn-field"><span>备注（可选）</span><textarea id="edNote" rows="2" maxlength="400" placeholder="这次训练的目的、注意事项">' + esc(ed.note || '') + '</textarea></label><p class="tn-msg" id="edMsg"></p>';
     openSheet({title: wid ? '编辑训练' : '新建训练', body: body, cls: 'editor',
       foot: (wid ? '<button type="button" class="tn-btn ghost sm danger" data-act="del">删除</button>' : '') + '<span class="sp"></span><button type="button" class="tn-btn ghost" data-act="close">取消</button><button type="button" class="tn-btn" data-act="save">保存</button>',
       mount: function(sh){
+        renderAddBtns();
         renderSteps();
         sh.addEventListener('input', onEdInput);
         sh.addEventListener('change', onEdInput);
       },
       acts: {
-        sport: function(b){ ed.sport = b.dataset.sp; b.parentNode.querySelectorAll('button').forEach(function(x){ var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); }); renderSteps(); },
+        sport: function(b){ ed.sport = b.dataset.sp; b.parentNode.querySelectorAll('button').forEach(function(x){ var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); }); renderAddBtns(); renderSteps(); },
         addswim: function(){ ed.steps.push({sec: '主项', name: '自由泳', sets: 4, amount: 100, unit: 'm', detail: '', rest: 20, note: ''}); renderSteps(true); },
         addother: function(){ ed.steps.push({sec: '主项', name: '', sets: 1, amount: 10, unit: '分钟', detail: '', rest: 0, note: ''}); renderSteps(true); },
         addex: function(){ pickExercise(function(id){ ed.steps.push(newExStep(id)); renderSteps(true); }); },
@@ -5446,6 +5471,13 @@
         save: saveEditor,
         del: function(b){ armDelete(b, '再点一次删除', function(){ closeSheet(); delW(ed.id); renderAll(); toast('已删除训练'); }); }
       }});
+  }
+  function renderAddBtns(){
+    var box = $('edAdd'); if(!box) return;
+    var b = function(act, t){ return '<button type="button" class="tn-btn ghost sm" data-act="' + act + '">' + t + '</button>'; };
+    box.innerHTML = ed.sport === 'swim' ? b('addswim', '+ 游泳组') + b('addother', '+ 其他步骤') :
+      ed.sport === 'land' ? b('addex', '+ 动作（动作库）') + b('addother', '+ 其他步骤') :
+      b('addother', '+ 步骤') + b('addswim', '+ 距离组') + b('addex', '+ 动作');
   }
   function onEdInput(e){
     var f = e.target.dataset && e.target.dataset.f;
@@ -5809,12 +5841,13 @@
       case 'wd': toggleWd(b); break;
       case 'addday': openAddDay(ui.sel); break;
       case 'logday': openLog({date: b.dataset.today ? todayKey() : (ui.sel <= todayKey() ? ui.sel : todayKey())}); break;
-      case 'quicklog': openLog({date: b.dataset.date, wid: wid}); break;
+      case 'quicklog': openLog({date: b.dataset.date && b.dataset.date <= todayKey() ? b.dataset.date : todayKey(), wid: wid}); break;
       case 'editlog': var lg = logs.filter(function(x){ return x.id === b.dataset.log; })[0]; if(lg) openLog({log: lg}); break;
       case 'skip': col('trainCal').add({date: b.dataset.date, workoutId: wid, skip: true, createdAt: Date.now()}); toast('这天不练了（每周的安排不变）'); break;
       case 'uncal': col('trainCal').doc(b.dataset.cal).delete(); cal = cal.filter(function(c){ return c.id !== b.dataset.cal; }); renderAll(); break;
       case 'resume': P = loadPlayer(); if(P) openPlayer(); break;
       case 'dropresume': P = null; savePlayer(); renderToday(); break;
+      case 'psport': ui.psport = b.dataset.sp; try{ localStorage.setItem('tn-psport', ui.psport); }catch(e){} renderPlans(); break;
       case 'phase': phaseSel[b.dataset.sp] = b.dataset.g; try{ localStorage.setItem('tn-phase', JSON.stringify(phaseSel)); }catch(e){} renderPlans(); break;
       case 'cat': ui.libCat = b.dataset.cat; renderLib(); break;
       case 'newex': editCustomEx(null); break;
