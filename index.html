@@ -2727,9 +2727,9 @@
     {id:'font', menu:'font', title:'字体', text:'默认', wide:true},
     {id:'size', menu:'size', title:'字号', icon:'size'},
     'sep',
-    {id:'bold', html:'<b>B</b>', title:'加粗 (Ctrl+B)', run:function(){ exec('bold'); }, state:'bold'},
-    {id:'italic', html:'<i style="font-family:Georgia,serif">I</i>', title:'斜体 (Ctrl+I)', run:function(){ exec('italic'); }, state:'italic'},
-    {id:'underline', html:'<u>U</u>', title:'下划线 (Ctrl+U)', run:function(){ exec('underline'); }, state:'underline'},
+    {id:'bold', html:'<b>B</b>', title:'加粗 (Ctrl+B)', run:function(){ inlineToggle('bold'); }, state:'bold'},
+    {id:'italic', html:'<i style="font-family:Georgia,serif">I</i>', title:'斜体 (Ctrl+I)', run:function(){ inlineToggle('italic'); }, state:'italic'},
+    {id:'underline', html:'<u>U</u>', title:'下划线 (Ctrl+U)', run:function(){ inlineToggle('underline'); }, state:'underline'},
     {id:'color', menu:'color', title:'文字颜色 / 背景颜色', icon:'color'},
     {id:'hilite', icon:'hilite', title:'高亮（再点一次取消）', run:toggleHilite},
     'sep',
@@ -2763,6 +2763,33 @@
       sel.addRange(r);
     }
   }
+  function body_unwrapMarks(){
+    // <mark> (from pasted text) has no inline style to clear; unwrap marks the selection fully covers
+    var sel = window.getSelection(); if(!sel.rangeCount) return;
+    var r = sel.getRangeAt(0);
+    $id('neBody').querySelectorAll('mark').forEach(function(m){
+      if(r.intersectsNode(m)){ while(m.firstChild) m.parentNode.insertBefore(m.firstChild, m); m.remove(); }
+    });
+  }
+  // drop styles that only restate the default (left alignment, normal size) so toggling back leaves clean text
+  function cleanDefaults(){
+    var body = $id('neBody');
+    body.querySelectorAll('[style]').forEach(function(el){
+      if(el.style.textAlign === 'left' || el.style.textAlign === 'start') el.style.removeProperty('text-align');
+      if(el.style.fontSize === 'medium') el.style.removeProperty('font-size');
+      if(!el.getAttribute('style')) el.removeAttribute('style');
+    });
+    body.querySelectorAll('font[size="3"]').forEach(function(el){ el.removeAttribute('size'); });
+    var keep = selOffsets();
+    body.querySelectorAll('span:not([style]):not([class]), font:not([color]):not([style]):not([face]):not([size])').forEach(function(el){
+      while(el.firstChild) el.parentNode.insertBefore(el.firstChild, el);
+      el.remove();
+    });
+    body.querySelectorAll('div:not([style]):not([class])').forEach(function(el){
+      if(el.parentNode === body && el.previousSibling === null && el.nextSibling === null){ while(el.firstChild) body.insertBefore(el.firstChild, el); el.remove(); }
+    });
+    setOffsets(keep);
+  }
   function stripSentinels(){
     var body = $id('neBody');
     body.querySelectorAll('[style]').forEach(function(el){
@@ -2778,15 +2805,64 @@
       el.remove();
     });
   }
+  function selOffsets(){
+    var body = $id('neBody'), sel = window.getSelection();
+    if(!sel.rangeCount) return null;
+    var r = sel.getRangeAt(0);
+    if(!body.contains(r.commonAncestorContainer)) return null;
+    function off(node, o){ var pre = document.createRange(); pre.selectNodeContents(body); pre.setEnd(node, o); return pre.toString().length; }
+    try{ return {s: off(r.startContainer, r.startOffset), e: off(r.endContainer, r.endOffset)}; }catch(e){ return null; }
+  }
+  function setOffsets(o){
+    if(!o) return;
+    var body = $id('neBody'), w = document.createTreeWalker(body, NodeFilter.SHOW_TEXT), n, pos = 0, r = document.createRange(), started = false;
+    while((n = w.nextNode())){
+      var len = n.data.length;
+      if(!started && o.s <= pos + len){ r.setStart(n, o.s - pos); started = true; }
+      if(started && o.e <= pos + len){
+        r.setEnd(n, o.e - pos);
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        savedRange = r.cloneRange();
+        return;
+      }
+      pos += len;
+    }
+  }
+  // the element that gives the caret its highlight / text colour (set by this editor)
+  function styledAncestor(node, kind){
+    var body = $id('neBody');
+    for(var el = node && node.nodeType === 3 ? node.parentNode : node; el && el !== body; el = el.parentNode){
+      if(el.nodeType !== 1) continue;
+      if(kind === 'back' && el.style && el.style.backgroundColor && !isClearColor(el.style.backgroundColor)) return el;
+      if(kind === 'back' && el.tagName === 'MARK') return el;
+      if(kind === 'fore' && ((el.style && el.style.color && !isClearColor(el.style.color)) || (el.tagName === 'FONT' && el.getAttribute('color')))) return el;
+    }
+    return null;
+  }
+  // caret (no selection) inside highlighted/coloured text: act on that whole run, like Google Docs
+  function expandCaretTo(kind){
+    var sel = window.getSelection();
+    if(!sel.rangeCount || !sel.getRangeAt(0).collapsed) return false;
+    var el = styledAncestor(sel.getRangeAt(0).startContainer, kind);
+    if(!el) return false;
+    var r = document.createRange(); r.selectNodeContents(el);
+    sel.removeAllRanges(); sel.addRange(r); savedRange = r.cloneRange();
+    return true;
+  }
   function exec(cmd, val){
     restoreRange();
+    var keep = val === SENTINEL ? selOffsets() : null;
     try{ document.execCommand('styleWithCSS', false, !!CSS_CMDS[cmd]); }catch(e){}
     var ok = false;
     try{ ok = document.execCommand(cmd, false, val == null ? null : val); }catch(e){}
     if(!ok && cmd === 'hiliteColor'){
       try{ document.execCommand('styleWithCSS', false, true); document.execCommand('backColor', false, val); }catch(e){}
     }
-    if(val === SENTINEL) stripSentinels();
+    if(val === SENTINEL){
+      stripSentinels();
+      body_unwrapMarks();
+      setOffsets(keep);
+    }
     var sel = window.getSelection();
     if(sel.rangeCount) savedRange = sel.getRangeAt(0).cloneRange();
     updateToolbarState();
@@ -2821,22 +2897,61 @@
     var cmd = kind === 'fore' ? 'foreColor' : 'hiliteColor';
     var cur = kind === 'fore' ? q('foreColor') : curBack();
     if(color === null || (color && normColor(cur) === normColor(color))){
+      var caret = expandCaretTo(kind);
       exec(cmd, SENTINEL);             // same colour again -> remove it
+      if(caret){ var s1 = window.getSelection(); if(s1.rangeCount){ s1.collapseToEnd(); savedRange = s1.getRangeAt(0).cloneRange(); } updateToolbarState(); }
     }else{
       if(kind === 'back') lastBg = color;
       exec(cmd, color);
     }
   }
+  // caret inside a word (no selection) -> select that word; returns the caret offset to put back, or null
+  function caretWord(){
+    var sel = window.getSelection();
+    if(!sel.rangeCount || !sel.getRangeAt(0).collapsed || !sel.modify) return null;
+    var r0 = sel.getRangeAt(0), n = r0.startContainer, o = r0.startOffset;
+    if(n.nodeType !== 3 || o <= 0 || o >= n.data.length || !/\S/.test(n.data[o - 1]) || !/\S/.test(n.data[o])) return null;
+    var keep = selOffsets();
+    sel.modify('move', 'backward', 'word');
+    sel.modify('extend', 'forward', 'word');
+    var r = sel.getRangeAt(0);
+    if(r.collapsed || !/\S/.test(r.toString())){ setOffsets(keep); return null; }
+    var t = r.toString(), trail = t.length - t.replace(/\s+$/, '').length;
+    if(trail){ var o2 = selOffsets(); setOffsets({s: o2.s, e: o2.e - trail}); }
+    savedRange = window.getSelection().getRangeAt(0).cloneRange();
+    return keep;
+  }
+  function backToCaret(keep){ if(keep){ setOffsets({s: keep.s, e: keep.s}); } updateToolbarState(); }
+  function inlineToggle(cmd){
+    restoreRange();
+    var keep = caretWord();
+    exec(cmd);
+    if(keep) backToCaret(keep);
+  }
   function toggleHilite(){
     restoreRange();
-    if(curBack()) exec('hiliteColor', SENTINEL);
-    else exec('hiliteColor', lastBg);
+    var wasCaret = window.getSelection().rangeCount && window.getSelection().getRangeAt(0).collapsed;
+    if(wasCaret && expandCaretTo('back')){
+      exec('hiliteColor', SENTINEL);
+      var s1 = window.getSelection(); if(s1.rangeCount){ s1.collapseToEnd(); savedRange = s1.getRangeAt(0).cloneRange(); }
+      updateToolbarState();
+      return;
+    }
+    if(curBack() || hasMark()){ exec('hiliteColor', SENTINEL); return; }
+    var kw = wasCaret ? caretWord() : null;
+    exec('hiliteColor', lastBg);
+    if(kw) backToCaret(kw);
+  }
+  function hasMark(){
+    var sel = window.getSelection(); if(!sel.rangeCount) return false;
+    return !!styledAncestor(sel.getRangeAt(0).startContainer, 'back');
   }
   function setAlign(a){
     restoreRange();
     var cur = currentAlign();
     if(a === cur && a !== 'left') a = 'left';     // clicking the active alignment again turns it off
     exec({left:'justifyLeft', center:'justifyCenter', right:'justifyRight', justify:'justifyFull'}[a]);
+    if(a === 'left') cleanDefaults();
   }
   function pickImage(){
     closeMenu();
@@ -2938,7 +3053,7 @@
       var curS = SIZE_BY_CSS[String(q('fontSize') || '').toLowerCase()] || String(q('fontSize') || '3');
       SIZES.forEach(function(s){
         var px = {'2':'13px','3':'15px','5':'22px','6':'28px'}[s.v];
-        pop.appendChild(menuItem(s.label, {on: curS === s.v, style: 'font-size:' + px, run: function(){ exec('fontSize', s.v); }}));
+        pop.appendChild(menuItem(s.label, {on: curS === s.v, style: 'font-size:' + px, run: function(){ exec('fontSize', curS === s.v && s.v !== '3' ? '3' : s.v); cleanDefaults(); }}));
       });
     }else if(name === 'color'){
       pop.classList.add('wide');
@@ -2956,7 +3071,7 @@
       var block = String(q('formatBlock') || '').toLowerCase();
       [['div','正文','font-size:14px'],['h2','大标题','font-size:19px;font-weight:800'],['h3','小标题','font-size:16px;font-weight:700']].forEach(function(h){
         var on = h[0] === 'div' ? !(block === 'h2' || block === 'h3') : block === h[0];
-        pop.appendChild(menuItem(h[1], {on: on, style: h[2], run: function(){ exec('formatBlock', '<' + h[0] + '>'); }}));
+        pop.appendChild(menuItem(h[1], {on: on, style: h[2], run: function(){ exec('formatBlock', on && h[0] !== 'div' ? '<div>' : '<' + h[0] + '>'); cleanDefaults(); }}));
       });
     }else if(name === 'link'){
       var curA = null;
@@ -3068,6 +3183,7 @@
     });
     // keep the text selection when toolbar / menu buttons are pressed
     tb.addEventListener('mousedown', function(e){ if(e.target.closest('.tb-btn')) e.preventDefault(); });
+    tb.addEventListener('pointerdown', function(e){ if(e.target.closest('.tb-btn') && e.pointerType !== 'mouse') e.preventDefault(); });
     $id('tbPop').addEventListener('mousedown', function(e){ if(!e.target.closest('input')) e.preventDefault(); });
     tb.style.setProperty('--tb-bg', lastBg);
   }
